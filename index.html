@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huvudkontoret</title>
+  <link rel="icon" type="image/png" href="assets/avatar.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'AktivGrotesk-Black';
+      src: url('assets/AktivGrotesk-BlackItalic.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --aqua: #3BCFC9;
+      --raspberry: #FF0093;
+      --blackred: #26071C;
+      --aqua-dim: rgba(59, 207, 201, 0.15);
+      --aqua-mid: rgba(59, 207, 201, 0.5);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--blackred);
+      color: var(--aqua);
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      overflow: hidden;
+    }
+
+    canvas#bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .stage {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      padding: 2rem;
+    }
+
+    .card {
+      width: min(640px, 100%);
+      background: rgba(38, 7, 28, 0.82);
+      border: 1px solid rgba(59, 207, 201, 0.25);
+      border-radius: 4px;
+      box-shadow:
+        0 0 40px rgba(59, 207, 201, 0.07),
+        inset 0 0 60px rgba(38, 7, 28, 0.5);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(59, 207, 201, 0.06);
+      border-bottom: 1px solid rgba(59, 207, 201, 0.12);
+    }
+
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .dot-1 { background: rgba(255, 0, 147, 0.7); }
+    .dot-2 { background: rgba(59, 207, 201, 0.35); }
+    .dot-3 { background: rgba(59, 207, 201, 0.2); }
+
+    .titlebar-label {
+      margin-left: auto;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: rgba(59, 207, 201, 0.4);
+      text-transform: uppercase;
+    }
+
+    .body {
+      padding: 2.5rem 2rem 2rem;
+    }
+
+    .logo-wrap {
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.3s forwards;
+    }
+
+    .logo-wrap svg {
+      width: auto;
+      height: clamp(100px, 20vw, 140px);
+      display: block;
+    }
+
+    .terminal {
+      font-size: 13px;
+      line-height: 1.9;
+      min-height: 160px;
+    }
+
+    .terminal-line {
+      display: flex;
+      gap: 0.5ch;
+      color: rgba(59, 207, 201, 0.7);
+    }
+
+    .terminal-line .prompt { color: var(--raspberry); user-select: none; }
+    .terminal-line .text { color: rgba(59, 207, 201, 0.85); }
+    .terminal-line .ok { color: var(--aqua); font-weight: 700; }
+    .terminal-line .dim { color: rgba(59, 207, 201, 0.35); }
+
+    .cursor {
+      display: inline-block;
+      width: 0.5ch; height: 1.1em;
+      background: var(--aqua);
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    .cta {
+      margin-top: 2.5rem;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .cta.visible { opacity: 1; }
+
+    .cta-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: rgba(59, 207, 201, 0.4);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6ch;
+      padding: 0.65rem 1.2rem;
+      border: 1px solid var(--raspberry);
+      border-radius: 2px;
+      color: var(--raspberry);
+      text-decoration: none;
+      font-family: inherit;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cta-link:hover {
+      background: var(--raspberry);
+      color: var(--blackred);
+      box-shadow: 0 0 20px rgba(255, 0, 147, 0.3);
+    }
+
+    .cta-link svg {
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .cta-link:hover svg { transform: translateX(2px); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="stage">
+  <div class="card">
+    <div class="titlebar">
+      <div class="dot dot-1"></div>
+      <div class="dot dot-2"></div>
+      <div class="dot dot-3"></div>
+      <span class="titlebar-label">huvudkontoret.io — shell</span>
+    </div>
+    <div class="body">
+      <div class="logo-wrap">
+        <?xml version="1.0" encoding="utf-8"?>
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 266.2 242.6" xml:space="preserve">
+          <style type="text/css">
+            .st0{fill:#3BCFC9;}
+            .st1{fill:#3BDDC9;}
+            .st2{fill:#FFFFFF;}
+            .st3{font-family:'AktivGrotesk-Black';}
+            .st4{font-size:24.3702px;}
+            .st5{letter-spacing:-1;}
+          </style>
+          <polygon class="st0" points="7,202.9 266.2,202.9 259.2,242.6 0,242.6 "/>
+          <path class="st1" d="M101.1,126.2l12.2-69h27.6l-4.8,27.2h15l4.8-27.2h26.4l-12.2,69H145l3.6-20.6h-15l-3.6,20.6H101.1z M60.4,57.2
+            h20.8l-12.2,69H48.2l-5.7,32.1h20.8l-3.7,20.8h32.1l3.7-20.8h69l-3.7,20.8h32.1l3.7-20.8h20.8l5.7-32.1h-20.8l12.2-69h20.8l5.7-32.1
+            h-20.8l3.7-20.8h-32.1L188,25.1h-69l3.7-20.8H90.5l-3.7,20.8H66.1L60.4,57.2z"/>
+          <path class="st2" d="M96.9,121.9l12.2-69h27.6l-4.8,27.2h15l4.8-27.2H178l-12.2,69h-25.1l3.6-20.6h-15l-3.6,20.6H96.9z M56.1,52.9
+            h20.8l-12.2,69H44L38.3,154h20.8l-3.7,20.8h32.1l3.7-20.8h69l-3.7,20.8h32.1l3.7-20.8h20.8l5.7-32.1H198l12.2-69h20.8l5.7-32.1
+            h-20.8L219.5,0h-32.1l-3.7,20.8h-69L118.4,0H86.2l-3.7,20.8H61.8L56.1,52.9z"/>
+          <text transform="matrix(0.9848 0 -0.1736 0.9848 21.9743 230.8393)"><tspan x="0" y="0" class="st2 st3 st4">HUVU</tspan><tspan x="73.1" y="0" class="st2 st3 st4">D</tspan><tspan x="91.5" y="0" class="st2 st3 st4 st5">K</tspan><tspan x="108.3" y="0" class="st2 st3 st4">O</tspan><tspan x="127.6" y="0" class="st2 st3 st4">N</tspan><tspan x="146" y="0" class="st2 st3 st4">T</tspan><tspan x="161.8" y="0" class="st2 st3 st4">O</tspan><tspan x="181.1" y="0" class="st2 st3 st4">R</tspan><tspan x="198.2" y="0" class="st2 st3 st4">E</tspan><tspan x="214" y="0" class="st2 st3 st4">T</tspan></text>
+        </svg>
+      </div>
+      <div class="terminal" id="terminal"></div>
+      <div class="cta" id="cta">
+        <div class="cta-label">// kontakt</div>
+        <a class="cta-link" href="mailto:hej@huvudkontoret.io">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          hej@huvudkontoret.io
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Neural network canvas ─────────────────────────────────────────── */
+(function () {
+  const canvas = document.getElementById('bg');
+  const ctx = canvas.getContext('2d');
+  const AQUA = '59,207,201';
+  const RASP = '255,0,147';
+  let W, H, nodes;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    init();
+  }
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function init() {
+    const count = Math.floor((W * H) / 18000);
+    nodes = Array.from({ length: count }, () => ({
+      x: rand(0, W), y: rand(0, H),
+      vx: rand(-0.25, 0.25), vy: rand(-0.25, 0.25),
+      r: rand(1.5, 3),
+      pulse: rand(0, Math.PI * 2),
+      col: Math.random() > 0.08 ? AQUA : RASP,
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    const maxDist = 160;
+
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+      for (let j = i + 1; j < nodes.length; j++) {
+        const b = nodes[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < maxDist) {
+          const alpha = (1 - dist / maxDist) * 0.18;
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(${AQUA},${alpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    const t = performance.now() / 1000;
+    nodes.forEach(n => {
+      const glow = 0.35 + 0.25 * Math.sin(t * 1.2 + n.pulse);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${n.col},${glow})`;
+      ctx.fill();
+
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < -20) n.x = W + 20;
+      if (n.x > W + 20) n.x = -20;
+      if (n.y < -20) n.y = H + 20;
+      if (n.y > H + 20) n.y = -20;
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+
+/* ── Terminal typing animation ─────────────────────────────────────── */
+(function () {
+  const el = document.getElementById('terminal');
+  const cta = document.getElementById('cta');
+
+  const lines = [
+    { prompt: '$', text: 'boot --env=production', delay: 600 },
+    { prompt: '>', text: 'Initializing systems…', ok: null, delay: 500 },
+    { prompt: '>', text: 'Assembling team…', ok: null, delay: 500 },
+    { prompt: '>', text: 'Loading capabilities…', ok: null, delay: 500 },
+    { prompt: '>', text: 'Building something great…', ok: null, delay: 500 },
+    { prompt: '>', text: 'Deploying to norra Sverige…', ok: null, delay: 500 },
+    { prompt: '#', text: 'STATUS: Lanseras snart.', ok: true, delay: 800 },
+  ];
+
+  let lineIdx = 0;
+  let charIdx = 0;
+  let cursorEl = null;
+
+  function addCursor() {
+    if (cursorEl) cursorEl.remove();
+    cursorEl = document.createElement('span');
+    cursorEl.className = 'cursor';
+    el.appendChild(cursorEl);
+  }
+
+  function typeLine(lineData, done) {
+    const row = document.createElement('div');
+    row.className = 'terminal-line';
+
+    const promptSpan = document.createElement('span');
+    promptSpan.className = 'prompt';
+    promptSpan.textContent = lineData.prompt;
+    row.appendChild(promptSpan);
+
+    const textSpan = document.createElement('span');
+    textSpan.className = lineData.ok ? 'ok' : lineData.prompt === '#' ? 'ok' : 'text';
+    row.appendChild(textSpan);
+
+    if (cursorEl) cursorEl.remove();
+    row.appendChild((cursorEl = document.createElement('span'), cursorEl.className = 'cursor', cursorEl));
+    el.appendChild(row);
+
+    let i = 0;
+    const full = lineData.text;
+    const speed = lineData.ok ? 28 : 22;
+
+    function type() {
+      if (i < full.length) {
+        textSpan.textContent += full[i++];
+        setTimeout(type, speed + rand(-8, 8));
+      } else {
+        cursorEl.remove();
+        cursorEl = null;
+        setTimeout(done, lineData.delay);
+      }
+    }
+    type();
+  }
+
+  function rand(a, b) { return a + Math.floor(Math.random() * (b - a)); }
+
+  function nextLine() {
+    if (lineIdx >= lines.length) {
+      addCursor();
+      setTimeout(() => { cta.classList.add('visible'); }, 400);
+      return;
+    }
+    typeLine(lines[lineIdx++], nextLine);
+  }
+
+  setTimeout(nextLine, 900);
+})();
+</script>
+</body>
+</html>
