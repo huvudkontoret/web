@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>
-            Huvudkontoret — AI, systemutveckling och tekniskt stöd som fungerar
+            Huvudkontoret - AI, systemutveckling och tekniskt stöd som fungerar
             i vardagen
         </title>
         <meta
@@ -378,7 +378,7 @@
             .statement {
                 background: var(--bk) url("assets/robo_cat.svg") no-repeat right
                     bottom;
-                background-size: 38%;
+                background-size: min(38%, 560px);
                 padding: 6rem var(--pad);
                 position: relative;
                 overflow: hidden;
@@ -765,6 +765,9 @@
                     width: 100px;
                     height: 100px;
                 }
+                .statement {
+                    background-image: none;
+                }
                 .statement-inner {
                     grid-template-columns: 1fr;
                     gap: 3rem;
@@ -838,7 +841,6 @@
                 <a href="#om">Om oss</a>
                 <a href="#tjanster">Tjänster</a>
                 <a href="#contact">Kontakt</a>
-                <a href="#contact" class="nav-cta">Kom igång</a>
             </div>
         </nav>
 
@@ -852,7 +854,7 @@
             <p class="hero-body">
                 Det händer väldigt mycket just nu. Nya möjligheter, nya krav och
                 många beslut som behöver tas. Vi arbetar nära teamet och
-                verksamheten — med fokus på att få saker att fungera, inte bara
+                verksamheten - med fokus på att få saker att fungera, inte bara
                 se bra ut på papper. Nya initiativ, starkare team och bättre
                 teknikstöd. Konkret och utan omvägar.
             </p>
@@ -884,7 +886,7 @@
                     </p>
                     <p>
                         Huvudkontoret startades utifrån övertygelsen att det
-                        finns ett bättre sätt att arbeta — färre omvägar,
+                        finns ett bättre sätt att arbeta - färre omvägar,
                         tydligare ansvar och mer fokus på det som faktiskt ska
                         bli klart.
                     </p>
@@ -912,7 +914,7 @@
             <div class="container">
                 <p class="about-more">
                     Vi täcker både utveckling och hur AI används i
-                    organisationer — från riktlinjer och policys till utbildning
+                    organisationer - från riktlinjer och policys till utbildning
                     och arbetssätt som faktiskt används i praktiken. Det ska
                     vara lätt att förstå, enkelt att följa upp och möjligt att
                     visa vad det ger.<br /><br />
@@ -939,7 +941,7 @@
                     </h2>
                     <p>
                         Nya initiativ, högre tempo, starkare team och bättre
-                        teknikstöd — när det behöver hända på riktigt finns vi
+                        teknikstöd - när det behöver hända på riktigt finns vi
                         nära till hands.
                     </p>
                     <a href="#contact" class="btn btn-aq">Kom igång</a>
@@ -955,7 +957,7 @@
                     <div class="svc-card">
                         <h3>AI-automation</h3>
                         <p>
-                            AI som fungerar i vardagen — från riktlinjer och
+                            AI som fungerar i vardagen - från riktlinjer och
                             policies till automatiserade arbetsflöden.
                         </p>
                     </div>
@@ -1027,7 +1029,7 @@
             <div class="team-photo-wrap">
                 <img
                     src="assets/IMG_0024.webp"
-                    alt="Teamet på Huvudkontoret — Hanna Wikman, Magnus Renholm, Sebastian Berglönn"
+                    alt="Teamet på Huvudkontoret - Hanna Wikman, Magnus Renholm, Sebastian Berglönn"
                     class="team-photo"
                 />
                 <div class="team-overlay"></div>
@@ -1112,14 +1114,14 @@
             </div>
         </footer>
         <script src="assets/lottie.min.js"></script>
-    <script>
-        lottie.loadAnimation({
-            container: document.getElementById('ai-lottie'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: 'assets/ai_animation.json',
-        });
-    </script>
+        <script>
+            lottie.loadAnimation({
+                container: document.getElementById("ai-lottie"),
+                renderer: "svg",
+                loop: true,
+                autoplay: true,
+                path: "assets/ai_animation.json",
+            });
+        </script>
     </body>
 </html>
