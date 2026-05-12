@@ -11,6 +11,14 @@
             name="description"
             content="Huvudkontoret är ett konsultbolag i Luleå med fokus på AI, systemutveckling och teknisk rådgivning. Lokala, snabba och vana att få saker gjorda."
         />
+        <meta property="og:title" content="Huvudkontoret" />
+        <meta property="og:description" content="AI, systemutveckling och tekniskt stöd som fungerar i vardagen. Lokalt förankrat i Luleå, med vana att arbeta nära och få saker att hända." />
+        <meta property="og:image" content="https://huvudkontoret.io/assets/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:url" content="https://huvudkontoret.io" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" type="image/svg+xml" href="assets/icon_pos.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -106,6 +114,28 @@
                 align-items: center;
                 gap: 2rem;
             }
+            .nav-burger {
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                gap: 5px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 4px;
+                width: 36px;
+                height: 36px;
+            }
+            .nav-burger span {
+                display: block;
+                height: 2px;
+                background: var(--bk);
+                border-radius: 1px;
+                transition: transform 0.25s ease, opacity 0.25s ease;
+            }
+            .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+            .nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+            .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
             .nav-links a {
                 font-family: var(--sans);
                 font-size: 14px;
@@ -140,6 +170,7 @@
             }
             .section-label {
                 font-family: var(--mono);
+                font-weight: 400;
                 font-size: 10px;
                 letter-spacing: 0.22em;
                 text-transform: uppercase;
@@ -290,7 +321,7 @@
                 gap: 5rem;
                 align-items: start;
             }
-            .about-left h2 {
+            .about-left h3 {
                 font-family: var(--nok);
                 font-size: clamp(2.5rem, 5vw, 4rem);
                 font-weight: 400;
@@ -390,7 +421,7 @@
                 grid-template-columns: 1fr 1fr;
                 gap: 5rem;
             }
-            .statement-left h2 {
+            .statement-left h3 {
                 font-family: var(--nok);
                 font-size: clamp(2.2rem, 4.5vw, 3.8rem);
                 font-weight: 400;
@@ -439,7 +470,7 @@
                 max-width: var(--max);
                 margin: 0 auto;
             }
-            .services h2 {
+            .services h2:not(.section-label) {
                 font-family: var(--nok);
                 font-size: clamp(1.8rem, 3vw, 2.5rem);
                 font-weight: 400;
@@ -554,7 +585,7 @@
             .ai-illus .illus-placeholder {
                 color: rgba(0, 0, 0, 0.2);
             }
-            .ai-right h2 {
+            .ai-right h3 {
                 font-family: var(--nok);
                 font-size: clamp(1.6rem, 3vw, 2.5rem);
                 font-weight: 400;
@@ -662,7 +693,7 @@
                 font-size: 9px;
                 letter-spacing: 0.18em;
                 text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.3);
+                color: rgba(255, 255, 255, 0.55);
                 display: block;
                 margin-bottom: 0.35rem;
             }
@@ -746,7 +777,7 @@
                 gap: 0.6rem;
                 font-family: var(--mono);
                 font-size: 11px;
-                color: rgba(255, 255, 255, 0.35);
+                color: rgba(255, 255, 255, 0.6);
                 letter-spacing: 0.1em;
                 text-transform: uppercase;
             }
@@ -762,13 +793,13 @@
                 height: 100%;
                 object-fit: contain;
                 filter: brightness(0) invert(1);
-                opacity: 0.35;
+                opacity: 0.6;
             }
             .footer-copy {
                 font-family: var(--mono);
                 font-size: 9px;
                 letter-spacing: 0.1em;
-                color: rgba(255, 255, 255, 0.18);
+                color: rgba(255, 255, 255, 0.45);
                 text-transform: uppercase;
             }
             .footer-links {
@@ -780,7 +811,7 @@
                 font-size: 9px;
                 letter-spacing: 0.1em;
                 text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.25);
+                color: rgba(255, 255, 255, 0.5);
                 text-decoration: none;
                 transition: color 0.2s;
             }
@@ -842,8 +873,34 @@
                 nav {
                     padding: 0 1.25rem;
                 }
+                .nav-burger {
+                    display: flex;
+                }
                 .nav-links {
                     display: none;
+                    position: fixed;
+                    top: 56px;
+                    left: 0;
+                    right: 0;
+                    background: var(--wh);
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 0;
+                    padding: 0.5rem 1.25rem 1rem;
+                    z-index: 199;
+                }
+                .nav-links.open {
+                    display: flex;
+                }
+                .nav-links a {
+                    padding: 0.75rem 0;
+                    width: 100%;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+                    font-size: 15px;
+                }
+                .nav-links a:last-child {
+                    border-bottom: none;
                 }
                 .hero {
                     padding: 5rem 1.25rem 0;
@@ -860,7 +917,7 @@
                 .contact-links {
                     gap: 1.75rem;
                     flex-direction: column;
-                    align-items: center;
+                    align-items: flex-start;
                 }
                 footer {
                     flex-direction: column;
@@ -882,11 +939,16 @@
                 </div>
                 Huvudkontoret
             </a>
-            <div class="nav-links">
+            <div class="nav-links" id="navLinks">
                 <a href="#om">Om oss</a>
                 <a href="#tjanster">Tjänster</a>
                 <a href="#contact">Kontakt</a>
             </div>
+            <button class="nav-burger" id="navBurger" aria-label="Öppna meny">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
 
         <!-- HERO -->
@@ -917,8 +979,9 @@
         <section class="about" id="om">
             <div class="about-inner">
                 <div class="about-left">
-                    <p class="section-label">Om oss</p>
-                    <h2>Vi bygger det som behövs.</h2>
+                    <h2 class="section-label">Om oss</h2>
+                    <h3>Vi bygger det som behövs
+                    </h3>
                     <p>
                         Huvudkontoret är ett konsultbolag i Luleå med fokus på
                         AI, systemutveckling och teknisk rådgivning.
@@ -974,16 +1037,16 @@
         <section class="statement">
             <div class="statement-inner">
                 <div class="statement-left">
-                    <p
+                    <h2
                         class="section-label"
                         style="color: rgba(255, 255, 255, 0.3)"
                     >
                         Vad vi erbjuder
-                    </p>
-                    <h2>
-                        AI, systemutveckling och teknisk kompetens som fungerar
-                        i praktiken.
                     </h2>
+                    <h3>
+                        AI, systemutveckling och teknisk kompetens som fungerar
+                        i praktiken
+                    </h3>
                     <p>
                         Nya initiativ, högre tempo, starkare team och bättre
                         teknikstöd. När det behöver hända på riktigt finns vi
@@ -997,7 +1060,7 @@
         <!-- TJÄNSTER -->
         <section class="services" id="tjanster">
             <div class="services-inner">
-                <p class="section-label">Våra tjänster</p>
+                <h2 class="section-label">Våra tjänster</h2>
                 <div class="services-grid">
                     <div class="svc-card" data-expandable>
                         <div class="svc-card-header">
@@ -1259,8 +1322,9 @@
             <div class="ai-inner">
                 <div class="ai-illus" id="ai-lottie"></div>
                 <div class="ai-right">
-                    <p class="section-label">AI i praktiken</p>
-                    <h2>Alla pratar om AI.<br />Färre använder det rätt.</h2>
+                    <h2 class="section-label">AI i praktiken</h2>
+                    <h3>Alla pratar om AI<br />Färre använder det rätt
+                    </h3>
                     <p>
                         Potentialen finns redan i befintliga system, processer
                         och arbetsätt. Det viktiga är att börja nyttan redan
@@ -1288,12 +1352,12 @@
                 <div class="team-caption container">
                     <div class="team-names">
                         <div class="team-person">
-                            <span class="team-person-role">VD</span>
-                            <div class="team-person-name">Hanna Wikman</div>
-                        </div>
-                        <div class="team-person">
                             <span class="team-person-role">CSO</span>
                             <div class="team-person-name">Magnus Renholm</div>
+                        </div>
+                        <div class="team-person">
+                            <span class="team-person-role">VD</span>
+                            <div class="team-person-name">Hanna Wikman</div>
                         </div>
                         <div class="team-person">
                             <span class="team-person-role">CTO</span>
@@ -1391,5 +1455,23 @@
             data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
         ></script>
         <!-- End Cloudflare Web Analytics -->
+        <script>
+            (function () {
+                var burger = document.getElementById('navBurger');
+                var links = document.getElementById('navLinks');
+                burger.addEventListener('click', function () {
+                    var open = links.classList.toggle('open');
+                    burger.classList.toggle('open', open);
+                    burger.setAttribute('aria-label', open ? 'Stäng meny' : 'Öppna meny');
+                });
+                links.querySelectorAll('a').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        links.classList.remove('open');
+                        burger.classList.remove('open');
+                        burger.setAttribute('aria-label', 'Öppna meny');
+                    });
+                });
+            })();
+        </script>
     </body>
 </html>
