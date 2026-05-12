@@ -463,8 +463,21 @@
                 border-color: var(--aq);
                 box-shadow: 0 4px 24px rgba(59, 207, 201, 0.1);
             }
+            .svc-card[data-expandable] {
+                cursor: pointer;
+            }
+            .svc-card.open {
+                border-color: var(--aq);
+                box-shadow: 0 4px 24px rgba(59, 207, 201, 0.1);
+            }
             .svc-icon {
                 display: none;
+            }
+            .svc-card-header {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 1rem;
             }
             .svc-card h3 {
                 font-family: var(--sans);
@@ -473,11 +486,43 @@
                 color: var(--bk);
                 margin-bottom: 0.6rem;
             }
+            .svc-chevron {
+                flex-shrink: 0;
+                width: 18px;
+                height: 18px;
+                color: var(--aq);
+                transition: transform 0.3s ease;
+                margin-top: 2px;
+            }
+            .svc-card.open .svc-chevron {
+                transform: rotate(180deg);
+            }
             .svc-card p {
                 font-size: 0.85rem;
                 line-height: 1.7;
                 color: var(--mid);
                 font-weight: 300;
+            }
+            .svc-expand {
+                display: grid;
+                grid-template-rows: 0fr;
+                transition: grid-template-rows 0.35s ease;
+            }
+            .svc-card.open .svc-expand {
+                grid-template-rows: 1fr;
+            }
+            .svc-expand-inner {
+                overflow: hidden;
+            }
+            .svc-expand-inner p {
+                padding-top: 1rem;
+                border-top: 1px solid rgba(0, 0, 0, 0.06);
+                margin-top: 1rem;
+            }
+            .svc-expand-inner p + p {
+                padding-top: 0.75rem;
+                border-top: none;
+                margin-top: 0;
             }
 
             /* ===================== AI-SEKTION ===================== */
@@ -954,49 +999,256 @@
             <div class="services-inner">
                 <p class="section-label">Våra tjänster</p>
                 <div class="services-grid">
-                    <div class="svc-card">
-                        <h3>AI-automation</h3>
+                    <div class="svc-card" data-expandable>
+                        <div class="svc-card-header">
+                            <h3>AI och automatisering</h3>
+                            <svg
+                                class="svc-chevron"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
                         <p>
                             AI som fungerar i vardagen - från riktlinjer och
                             policies till automatiserade arbetsflöden.
                         </p>
+                        <div class="svc-expand">
+                            <div class="svc-expand-inner">
+                                <p>
+                                    AI gör nytta först när det används i riktiga
+                                    system och arbetsflöden. Potentialen är
+                                    stor, men effekten kommer först när
+                                    användningen är tydlig och genomförandet
+                                    rätt.
+                                </p>
+                                <p>
+                                    Det kan handla om att automatisera manuella
+                                    processer, bygga AI-stöd i befintliga
+                                    system, skapa interna verktyg eller utveckla
+                                    smartare digitala tjänster. Även
+                                    språkmodeller, AI-assistenter och
+                                    automatiserade flöden ingår i erbjudandet.
+                                </p>
+                                <p>
+                                    För organisationer som vill komma igång
+                                    finns utbildningar, workshops, Responsible
+                                    AI, AI-policyer och stöd kring säker
+                                    användning.
+                                </p>
+                                <p>
+                                    Alla pratar om AI, färre förstår hur det kan
+                                    hjälpa på riktigt.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="svc-card">
-                        <h3>Systemutveckling</h3>
+                    <div class="svc-card" data-expandable>
+                        <div class="svc-card-header">
+                            <h3>Teknisk utveckling</h3>
+                            <svg
+                                class="svc-chevron"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
                         <p>
                             Webbtjänster, appar, API:er, integrationer och
                             moderna system byggda för att hålla.
                         </p>
+                        <div class="svc-expand">
+                            <div class="svc-expand-inner">
+                                <p>
+                                    Digitala lösningar ska fungera i vardagen,
+                                    inte bara se bra ut i en presentation.
+                                    Därför byggs webbtjänster, kundportaler,
+                                    interna system, appar, API:er och
+                                    integrationer med fokus på stabilitet och
+                                    långsiktighet.
+                                </p>
+                                <p>
+                                    Behovet kan vara nyutveckling,
+                                    vidareutveckling eller modernisering av
+                                    äldre system. Oavsett utgångspunkt är målet
+                                    detsamma: hög kvalitet och tydlig leverans.
+                                </p>
+                                <p>
+                                    Bra teknik märks ofta först när den bara
+                                    fungerar.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="svc-card">
-                        <h3>Teknisk rådgivning</h3>
+                    <div class="svc-card" data-expandable>
+                        <div class="svc-card-header">
+                            <h3>Teknisk rådgivning</h3>
+                            <svg
+                                class="svc-chevron"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
                         <p>
                             Arkitektur, teknikval och beslut som genomförs i
                             verklighet och med säkerhet.
                         </p>
+                        <div class="svc-expand">
+                            <div class="svc-expand-inner">
+                                <p>
+                                    Rätt beslut sparar tid, pengar och onödiga
+                                    omtag. Arkitektur, teknikval, integrationer
+                                    och produktutveckling kräver erfarenhet från
+                                    flera miljöer.
+                                </p>
+                                <p>
+                                    I vissa lägen behövs en second opinion. I
+                                    andra behövs någon som snabbt kan reda ut
+                                    nuläget och visa vägen framåt.
+                                    Rekommendationerna är tydliga, praktiska och
+                                    förankrade i verkligheten.
+                                </p>
+                                <p>
+                                    När besluten är viktiga lönar det sig att
+                                    prata med någon som gjort resan tidigare.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="svc-card">
-                        <h3>Teamförstärkning &amp; ledarskap</h3>
+                    <div class="svc-card" data-expandable>
+                        <div class="svc-card-header">
+                            <h3>Teamförstärkning</h3>
+                            <svg
+                                class="svc-chevron"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
                         <p>
-                            Seniors utvecklare, tech leads och teknisk kompetens
+                            Seniora utvecklare, tech leads och teknisk kompetens
                             som träder fram dag ett.
                         </p>
+                        <div class="svc-expand">
+                            <div class="svc-expand-inner">
+                                <p>
+                                    När tempot behöver upp eller rätt kompetens
+                                    saknas går det snabbt att förstärka teamet.
+                                </p>
+                                <p>
+                                    Seniora utvecklare, tech leads,
+                                    systemarkitekter, apputvecklare och teknisk
+                                    projektledning finns tillgängliga för både
+                                    kortare och längre uppdrag. Kort
+                                    startsträcka och hög nivå från dag ett är
+                                    standard.
+                                </p>
+                                <p>
+                                    Rätt person gör ofta skillnad långt utanför
+                                    sin egen roll.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="svc-card">
-                        <h3>Rådgivning vid rekrytering</h3>
+                    <div class="svc-card" data-expandable>
+                        <div class="svc-card-header">
+                            <h3>Rekrytering och kvalitetssäkring</h3>
+                            <svg
+                                class="svc-chevron"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
                         <p>Rätt nivå och tryggare beslut i rekryteringen.</p>
+                        <div class="svc-expand">
+                            <div class="svc-expand-inner">
+                                <p>
+                                    Teknisk rekrytering blir dyr när den blir
+                                    fel. Därför räcker det sällan med ett bra CV
+                                    och en trevlig intervju.
+                                </p>
+                                <p>
+                                    Med oss får ni stöd i hela processen:
+                                    kravprofil, search, urval, teknisk screening
+                                    och slutbedömning. För bolag som redan har
+                                    kandidater i process kan vi kvalitetssäkra
+                                    med kodtester, arbetsprov och tekniska
+                                    intervjuer anpassade efter er miljö.
+                                </p>
+                                <p>Tryggare beslut. Starkare team.</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="svc-card">
-                        <h3>Produkt- och tjänsteutveckling</h3>
+                    <div class="svc-card" data-expandable>
+                        <div class="svc-card-header">
+                            <h3>Produkt- och innovationsstöd</h3>
+                            <svg
+                                class="svc-chevron"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
                         <p>
                             Från idé till MVP: proof of concept och nya digitala
                             tjänster.
                         </p>
+                        <div class="svc-expand">
+                            <div class="svc-expand-inner">
+                                <p>
+                                    Bra idéer fastnar ofta mellan ambition och
+                                    genomförande. Då behövs ett snabbt och
+                                    praktiskt sätt att testa om något håller.
+                                </p>
+                                <p>
+                                    Proof of concept, MVP-utveckling, tekniska
+                                    valideringar och nya digitala tjänster tas
+                                    fram stegvis. Först bevisa det viktigaste,
+                                    sedan bygga vidare.
+                                </p>
+                                <p>
+                                    Kortare väg från idé till verklighet, med
+                                    lägre risk längs vägen.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1123,6 +1375,21 @@
                 path: "assets/ai_animation.json",
             });
         </script>
-        <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'></script><!-- End Cloudflare Web Analytics -->
+        <script>
+            document
+                .querySelectorAll(".svc-card[data-expandable]")
+                .forEach((card) => {
+                    card.addEventListener("click", () => {
+                        card.classList.toggle("open");
+                    });
+                });
+        </script>
+        <!-- Cloudflare Web Analytics -->
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
+        ></script>
+        <!-- End Cloudflare Web Analytics -->
     </body>
 </html>
