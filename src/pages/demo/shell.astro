@@ -1,0 +1,105 @@
+---
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="sv">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Layer demo — Shell</title>
+    </head>
+    <body class="bg-white">
+        <!-- Shell chrome — same as production -->
+        <header class="border-b border-gray-100 bg-white sticky top-0 z-10">
+            <div class="max-w-4xl mx-auto px-4 h-12 flex items-center gap-3">
+                <a href="/" class="flex items-center gap-1.5 shrink-0">
+                    <span class="font-bold text-sm tracking-tight text-hk"
+                        >HK</span
+                    >
+                    <span
+                        class="text-xs text-muted"
+                        style="font-family: var(--font-mono);">#024</span
+                    >
+                </a>
+
+                <div class="w-px h-4 bg-gray-200 shrink-0"></div>
+
+                <div class="flex-1 min-w-0">
+                    <div
+                        class="bg-gray-50 border border-gray-200 rounded-md px-3 py-1 text-xs text-muted truncate"
+                        style="font-family: var(--font-mono);"
+                    >
+                        huvudkontoret.<span class="text-gray-300">tld</span
+                        >/<span class="text-gray-300">slug</span>
+                    </div>
+                </div>
+
+                <div class="w-px h-4 bg-gray-200 shrink-0"></div>
+
+                <nav class="flex items-center gap-1.5 shrink-0">
+                    <span
+                        class="text-xs font-medium px-2.5 py-1 rounded-full border border-dashed border-gray-300 text-gray-300"
+                        >.tld</span
+                    >
+                </nav>
+            </div>
+        </header>
+
+        <!-- Wireframe content area -->
+        <main class="max-w-4xl mx-auto px-4 py-10 space-y-4">
+            <div
+                class="rounded-xl border-2 border-dashed border-gray-200 p-8 flex items-center justify-center"
+            >
+                <span
+                    class="text-sm text-muted"
+                    style="font-family: var(--font-mono);"
+                    >TLD styles go here</span
+                >
+            </div>
+            <div
+                class="rounded-xl border-2 border-dashed border-gray-200 p-16 flex items-center justify-center"
+            >
+                <span
+                    class="text-sm text-muted"
+                    style="font-family: var(--font-mono);"
+                    >Slug content goes here</span
+                >
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+                {
+                    [1, 2, 3].map(() => (
+                        <div class="rounded-lg border-2 border-dashed border-gray-200 p-8">
+                            ...
+                        </div>
+                    ))
+                }
+            </div>
+        </main>
+
+        <!-- Demo nav -->
+        <div class="fixed bottom-4 left-1/2 -translate-x-1/2">
+            <div
+                class="flex items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1.5 shadow-sm text-xs"
+                style="font-family: var(--font-mono);"
+            >
+                <span class="font-semibold text-hk">shell</span>
+                <span class="text-gray-300 mx-1">·</span>
+                <a
+                    href="/demo/tld/name"
+                    class="text-muted hover:text-hk transition-colors">tld</a
+                >
+                <span class="text-gray-300 mx-1">·</span>
+                <a
+                    href="/demo/slug/magnusrenholm"
+                    class="text-muted hover:text-hk transition-colors">slug</a
+                >
+                <span class="text-gray-300 mx-1">·</span>
+                <a
+                    href="/name/magnusrenholm"
+                    class="text-muted hover:text-hk transition-colors">full</a
+                >
+            </div>
+        </div>
+    </body>
+</html>

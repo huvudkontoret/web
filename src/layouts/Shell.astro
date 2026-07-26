@@ -1,0 +1,80 @@
+---
+import '../styles/global.css';
+import { tldTokens } from '../lib/tokens';
+import type { TldKey } from '../lib/tokens';
+
+interface Props {
+  tld: TldKey;
+  slug: string;
+  title: string;
+}
+
+const { tld, slug, title } = Astro.props;
+const current = tldTokens[tld];
+const other = tld === 'name' ? tldTokens.cv : tldTokens.name;
+const otherKey: TldKey = tld === 'name' ? 'cv' : 'name';
+
+const url = `huvudkontoret.${tld}/${slug}`;
+---
+
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} — {current.label}</title>
+  </head>
+  <body>
+    <!-- Top bar -->
+    <header class="border-b border-gray-100 bg-white sticky top-0 z-10">
+      <div class="max-w-4xl mx-auto px-4 h-12 flex items-center gap-3">
+        <!-- Left: HK logo + nodeId -->
+        <a href="/" class="flex items-center gap-1.5 shrink-0">
+          <span class="font-bold text-sm tracking-tight text-hk">HK</span>
+          <span
+            class="font-meta text-xs text-muted"
+            style="font-family: var(--font-mono);"
+          >#024</span>
+        </a>
+
+        <div class="w-px h-4 bg-gray-200 shrink-0"></div>
+
+        <!-- Center: URL bar -->
+        <div class="flex-1 min-w-0">
+          <div
+            class="bg-gray-50 border border-gray-200 rounded-md px-3 py-1 text-xs truncate"
+            style="font-family: var(--font-mono);"
+          >
+            {url}
+          </div>
+        </div>
+
+        <div class="w-px h-4 bg-gray-200 shrink-0"></div>
+
+        <!-- Right: TLD pills -->
+        <nav class="flex items-center gap-1.5 shrink-0">
+          <span
+            class="text-xs font-semibold px-2.5 py-1 rounded-full"
+            style={`background-color: ${current.accentHex}; color: white;`}
+          >
+            {current.label}
+          </span>
+          <a
+            href={`/${otherKey}/${slug}`}
+            class="text-xs font-medium px-2.5 py-1 rounded-full border border-gray-200 text-muted hover:border-gray-300 transition-colors"
+          >
+            {other.label}
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="max-w-4xl mx-auto px-4 py-10">
+      <slot />
+    </main>
+  </body>
+</html>

@@ -1,0 +1,126 @@
+---
+import '../../../styles/global.css';
+import { getCollection, getEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const nodes = await getCollection('nodes');
+  return nodes.map((n) => ({ params: { slug: n.id } }));
+}
+
+const { slug } = Astro.params;
+const entry = await getEntry('nodes', slug!);
+if (!entry) return Astro.redirect('/');
+const d = entry.data;
+---
+
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Layer demo — Slug /{slug}</title>
+  </head>
+  <body class="bg-white min-h-screen">
+
+    <main class="max-w-2xl mx-auto px-6 py-16 text-sm" style="font-family: var(--font-mono);">
+
+      <div class="mb-10">
+        <div class="text-xs text-muted mb-1">slug</div>
+        <div class="text-2xl font-bold text-hk">/{slug}</div>
+        <div class="text-xs text-muted mt-1">type: {d.type} · node #{d.nodeId}</div>
+      </div>
+
+      <div class="space-y-1">
+
+        <!-- Scalar fields -->
+        <div class="flex gap-4"><span class="text-muted w-40 shrink-0">displayName</span><span class="text-hk">{d.displayName}</span></div>
+        <div class="flex gap-4"><span class="text-muted w-40 shrink-0">title</span><span class="text-hk">{d.title}</span></div>
+
+        <!-- location -->
+        <div class="pt-2 pb-1 text-muted">location:</div>
+        <div class="pl-4 flex gap-4"><span class="text-muted w-36 shrink-0">city</span><span class="text-hk">{d.location.city}</span></div>
+        <div class="pl-4 flex gap-4"><span class="text-muted w-36 shrink-0">country</span><span class="text-hk">{d.location.country}</span></div>
+        <div class="pl-4 flex gap-4"><span class="text-muted w-36 shrink-0">timezone</span><span class="text-hk">{d.location.timezone}</span></div>
+
+        <div class="pt-2 flex gap-4"><span class="text-muted w-40 shrink-0">summary</span><span class="text-hk">{d.summary.trim()}</span></div>
+        <div class="flex gap-4"><span class="text-muted w-40 shrink-0">bio</span><span class="text-hk">{d.bio.trim()}</span></div>
+
+        <!-- currentFocus -->
+        <div class="pt-2 pb-1 text-muted">currentFocus:</div>
+        {d.currentFocus.map((f, i) => (
+          <div class="pl-4 flex gap-4">
+            <span class="text-muted w-36 shrink-0">[{i}]</span>
+            <span class="text-hk">{f}</span>
+          </div>
+        ))}
+
+        <!-- principles -->
+        <div class="pt-2 pb-1 text-muted">principles:</div>
+        {d.principles.map((p, i) => (
+          <div class="pl-4 flex gap-4">
+            <span class="text-muted w-36 shrink-0">[{i}]</span>
+            <span class="text-hk">{p}</span>
+          </div>
+        ))}
+
+        <!-- skills -->
+        <div class="pt-2 pb-1 text-muted">skills:</div>
+        {d.skills.map((s) => (
+          <div class="pl-4 flex gap-4 py-px">
+            <span class="text-muted w-36 shrink-0">{s.name}</span>
+            <span class="text-hk w-8">{s.level}</span>
+            <span class="text-gray-400">{s.category}</span>
+          </div>
+        ))}
+
+        <!-- experience -->
+        <div class="pt-2 pb-1 text-muted">experience:</div>
+        {d.experience.map((e) => (
+          <div class="pl-4 pb-2">
+            <div class="text-hk">{e.company}</div>
+            <div class="text-muted">{e.role} · {e.period}</div>
+            <div class="text-gray-400">{e.description}</div>
+          </div>
+        ))}
+
+        <!-- links -->
+        <div class="pt-2 pb-1 text-muted">links:</div>
+        {d.links.email && <div class="pl-4 flex gap-4"><span class="text-muted w-36 shrink-0">email</span><span class="text-hk">{d.links.email}</span></div>}
+        {d.links.linkedin && <div class="pl-4 flex gap-4"><span class="text-muted w-36 shrink-0">linkedin</span><span class="text-hk">{d.links.linkedin}</span></div>}
+
+        <!-- availability -->
+        <div class="pt-2 pb-1 text-muted">availability:</div>
+        <div class="pl-4 flex gap-4"><span class="text-muted w-36 shrink-0">status</span><span class="text-hk">{d.availability.status}</span></div>
+        <div class="pl-4 flex gap-4"><span class="text-muted w-36 shrink-0">from</span><span class="text-hk">{d.availability.from}</span></div>
+
+        <!-- standardCv -->
+        <div class="pt-2 pb-1 text-muted">standardCv:</div>
+        <div class="pl-4 flex gap-4"><span class="text-muted w-36 shrink-0">headline</span><span class="text-hk">{d.standardCv.headline}</span></div>
+        <div class="pl-4 flex gap-4"><span class="text-muted w-36 shrink-0">yearsExperience</span><span class="text-hk">{d.standardCv.yearsExperience}</span></div>
+        <div class="pl-4 flex gap-4"><span class="text-muted w-36 shrink-0">deliveries</span><span class="text-hk">{d.standardCv.deliveries}</span></div>
+        <div class="pl-4 pb-1 text-muted">coreCompetencies:</div>
+        {d.standardCv.coreCompetencies.map((c, i) => (
+          <div class="pl-8 flex gap-4">
+            <span class="text-muted w-32 shrink-0">[{i}]</span>
+            <span class="text-hk">{c}</span>
+          </div>
+        ))}
+
+      </div>
+    </main>
+
+    <!-- Demo nav -->
+    <div class="fixed bottom-4 left-1/2 -translate-x-1/2">
+      <div class="flex items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1.5 shadow-sm text-xs" style="font-family: var(--font-mono);">
+        <a href="/demo/shell" class="text-muted hover:text-hk transition-colors">shell</a>
+        <span class="text-gray-300 mx-1">·</span>
+        <a href="/demo/tld/name" class="text-muted hover:text-hk transition-colors">tld</a>
+        <span class="text-gray-300 mx-1">·</span>
+        <span class="font-semibold text-hk">slug</span>
+        <span class="text-gray-300 mx-1">·</span>
+        <a href={`/name/${slug}`} class="text-muted hover:text-hk transition-colors">full</a>
+      </div>
+    </div>
+
+  </body>
+</html>

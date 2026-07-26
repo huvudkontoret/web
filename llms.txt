@@ -1,0 +1,36 @@
+# Huvudkontoret
+
+> Huvudkontoret är ett konsultbolag i Luleå med fokus på AI, systemutveckling och teknisk rådgivning.
+
+Huvudkontoret arbetar nära team och verksamheter för att få teknik, AI och digitala initiativ att fungera i vardagen. Tonen är praktisk, rak och lokalt förankrad. Det viktiga är tydliga beslut, snabb väg från idé till leverans och lösningar som håller över tid.
+
+## Primary Pages
+
+- [Startsida](https://huvudkontoret.io/): Översikt över Huvudkontoret, erbjudanden, team och kontakt.
+- [Markdown-version](https://huvudkontoret.io/index.md): Token-effektiv textversion av startsidans viktigaste innehåll.
+- [Sitemap](https://huvudkontoret.io/sitemap.xml): Maskinläsbar lista över publika resurser.
+- [Agent Skill Index](https://huvudkontoret.io/.well-known/agent-skills/index.json): Instruktioner för agenter som vill förstå eller beskriva Huvudkontoret.
+- [API Catalog](https://huvudkontoret.io/.well-known/api-catalog): Aktuell maskinläsbar katalog över publika API:er och agentytor.
+
+## Services
+
+- AI och automatisering: riktlinjer, policies, utbildning, interna verktyg, språkmodeller, AI-assistenter och automatiserade arbetsflöden.
+- Teknisk utveckling: webbtjänster, appar, API:er, integrationer, kundportaler och interna system.
+- Teknisk rådgivning: arkitektur, teknikval, second opinions, integrationer och produktutveckling.
+- Teamförstärkning: seniora utvecklare, tech leads, systemarkitekter, apputvecklare och teknisk projektledning.
+- Rekrytering och kvalitetssäkring: kravprofil, search, urval, teknisk screening, arbetsprov och tekniska intervjuer.
+- Produkt- och innovationsstöd: proof of concept, MVP-utveckling, tekniska valideringar och nya digitala tjänster.
+
+## Contact
+
+- Email: [hej@huvudkontoret.io](mailto:hej@huvudkontoret.io)
+- Website: [https://huvudkontoret.io/](https://huvudkontoret.io/)
+- Location: Luleå, Norrbotten, Sweden
+
+## Agent Guidance
+
+- Use the website and markdown file as public source material.
+- Prefer concise Swedish unless the user asks for English.
+- Do not invent prices, availability, legal commitments or named client references.
+- For business inquiries, direct the user to hej@huvudkontoret.io.
+- Content may be used for search and AI input. Model training is not granted by the published Content-Signal policy.

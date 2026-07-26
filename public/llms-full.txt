@@ -1,0 +1,45 @@
+# Huvudkontoret
+
+Huvudkontoret är ett konsultbolag i Luleå med fokus på AI, systemutveckling och teknisk rådgivning. Vi arbetar nära verksamhet och teknik, med ansvar från beslut till leverans.
+
+## Positionering
+
+Huvudkontoret hjälper organisationer med nya initiativ, starkare team och bättre teknikstöd. Arbetet ska vara konkret, begripligt och möjligt att följa upp.
+
+## Erbjudanden
+
+### AI och automatisering
+
+AI som fungerar i vardagen, från riktlinjer och policies till automatiserade arbetsflöden. Det kan handla om att automatisera manuella processer, bygga AI-stöd i befintliga system, skapa interna verktyg eller utveckla smartare digitala tjänster.
+
+### Teknisk utveckling
+
+Webbtjänster, appar, API:er, integrationer och moderna system byggda för att hålla. Behovet kan vara nyutveckling, vidareutveckling eller modernisering av äldre system.
+
+### Teknisk rådgivning
+
+Arkitektur, teknikval och beslut som genomförs i verklighet och med säkerhet. Rådgivningen kan vara second opinions, nulägesanalys eller vägledning inför viktiga tekniska beslut.
+
+### Teamförstärkning
+
+Seniora utvecklare, tech leads, systemarkitekter, apputvecklare och teknisk projektledning för både kortare och längre uppdrag.
+
+### Rekrytering och kvalitetssäkring
+
+Stöd i kravprofil, search, urval, teknisk screening och slutbedömning. För bolag som redan har kandidater i process kan Huvudkontoret kvalitetssäkra med kodtester, arbetsprov och tekniska intervjuer.
+
+### Produkt- och innovationsstöd
+
+Proof of concept, MVP-utveckling, tekniska valideringar och nya digitala tjänster. Fokus är att testa det viktigaste först och bygga vidare med lägre risk.
+
+## Team
+
+- Hanna Wikman, VD
+- Magnus Renholm, CSO
+- Sebastian Berglönn, CTO
+
+## Kontakt
+
+- Email: hej@huvudkontoret.io
+- Webb: https://huvudkontoret.io/
+- Ort: Luleå, Norrbotten

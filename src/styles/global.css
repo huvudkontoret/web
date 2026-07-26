@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-coral: #ff5c7a;
+  --color-coral-soft: #fff1f4;
+  --color-mint: #12b981;
+  --color-mint-soft: #ecfdf5;
+  --color-hk: #111111;
+  --color-muted: #6b7280;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-hk antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  .font-meta {
+    font-family: var(--font-mono);
+  }
+}

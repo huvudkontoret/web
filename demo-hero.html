@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero-varianter</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+    --aq: #3bcfc9;
+    --rb: #ff0093;
+    --bk: #111110;
+    --off: #f4f4f0;
+}
+body {
+    background: #e8e8e4;
+    font-family: 'DM Sans', sans-serif;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+.variant {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 2rem;
+}
+.variant h2 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+.demo {
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+.demo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── 1. Glow ── */
+.glow-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.glow-wrap img {
+    position: relative;
+    z-index: 1;
+}
+.glow-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 55% 50% at 35% 60%, rgba(59,207,201,0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 35% at 70% 40%, rgba(255,0,147,0.15) 0%, transparent 70%);
+    animation: glow-pulse 4s ease-in-out infinite;
+    z-index: 0;
+}
+@keyframes glow-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ── 2. Float ── */
+.float-img {
+    animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+/* ── 3. Grid-dekor ── */
+.grid-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(59,207,201,0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,207,201,0.12) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+.grid-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0.75rem; right: 0.75rem;
+    width: 10px; height: 10px;
+    border-top: 2px solid var(--aq);
+    border-right: 2px solid var(--aq);
+}
+.grid-wrap::before {
+    content: '';
+    position: absolute;
+    bottom: 0.75rem; left: 0.75rem;
+    width: 10px; height: 10px;
+    border-bottom: 2px solid var(--rb);
+    border-left: 2px solid var(--rb);
+    z-index: 2;
+}
+.grid-wrap img {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── 4. Partiklar ── */
+#canvas-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.particles-wrap img {
+    position: relative;
+    z-index: 1;
+}
+</style>
+</head>
+<body>
+
+<!-- 1. Glow -->
+<div class="variant">
+    <h2>1 — Animerad glow</h2>
+    <div class="demo">
+        <div class="glow-wrap">
+            <img src="assets/ai_hero.svg" alt="">
+        </div>
+    </div>
+</div>
+
+<!-- 2. Float -->
+<div class="variant">
+    <h2>2 — Float-animation</h2>
+    <div class="demo">
+        <img class="float-img" src="assets/ai_hero.svg" alt="">
+    </div>
+</div>
+
+<!-- 3. Grid -->
+<div class="variant">
+    <h2>3 — Dekorativt grid</h2>
+    <div class="demo">
+        <div class="grid-wrap">
+            <img src="assets/ai_hero.svg" alt="">
+        </div>
+    </div>
+</div>
+
+<!-- 4. Partiklar -->
+<div class="variant">
+    <h2>4 — Canvas-partiklar</h2>
+    <div class="demo" style="position:relative;">
+        <canvas id="canvas-particles"></canvas>
+        <div class="particles-wrap" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+            <img src="assets/ai_hero.svg" alt="">
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    const canvas = document.getElementById('canvas-particles');
+    const ctx = canvas.getContext('2d');
+    const AQUA = '59,207,201';
+    const RASP = '255,0,147';
+    let W, H, nodes;
+
+    function resize() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        W = canvas.width = rect.width;
+        H = canvas.height = rect.height;
+        init();
+    }
+
+    function rand(a, b) { return a + Math.random() * (b - a); }
+
+    function init() {
+        const count = Math.floor((W * H) / 8000);
+        nodes = Array.from({ length: count }, () => ({
+            x: rand(0, W), y: rand(0, H),
+            vx: rand(-0.3, 0.3), vy: rand(-0.3, 0.3),
+            r: rand(1.5, 2.5),
+            pulse: rand(0, Math.PI * 2),
+            col: Math.random() > 0.1 ? AQUA : RASP,
+        }));
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        const maxDist = 80;
+        const t = performance.now() / 1000;
+
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < maxDist) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(${AQUA},${(1 - dist/maxDist) * 0.2})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        nodes.forEach(n => {
+            const glow = 0.4 + 0.3 * Math.sin(t * 1.5 + n.pulse);
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${n.col},${glow})`;
+            ctx.fill();
+            n.x += n.vx; n.y += n.vy;
+            if (n.x < 0) n.x = W; if (n.x > W) n.x = 0;
+            if (n.y < 0) n.y = H; if (n.y > H) n.y = 0;
+        });
+
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+})();
+</script>
+</body>
+</html>
