@@ -8,8 +8,10 @@
 > people can. **The identity runtime** is the Astro app under `src/`: an MVP
 > of `render(node, perspective)`, where the URL `huvudkontoret.<tld>/<slug>`
 > means "render this node through that perspective". The runtime is built and
-> committed but not yet deployed — Cloudflare serves the repo root, not
-> Astro's build output.
+> committed but not yet deployed — GitHub Pages serves the repo root, not
+> Astro's build output. The runtime is v1 of the TLD concept and is still in
+> the experiment and decision phase: nothing about it is settled, and it is
+> not waiting on a deploy step.
 
 ## Domain language
 
@@ -24,7 +26,7 @@
 | tokens | A perspective's design contract in `src/lib/tokens.ts`: label, role, POW, accent color and the Tailwind classes derived from it. Adding a perspective starts here — `.name` (coral, Identity) and `.cv` (mint, Capability) are implemented; `.dev`, `.ai`, `.club`, `.blog`, `.link` are named but unbuilt |
 | agent surface | A file published for machines rather than browsers: `llms.txt` (curated entry point), `index.md` (token-efficient homepage), `sitemap.xml`, `robots.txt`, `.well-known/api-catalog` and `.well-known/agent-skills/` (an installable skill describing how to talk about Huvudkontoret). They are content, maintained by hand, and they drift from the site unless updated with it |
 | Content-Signal policy | The published stance the agent surfaces state: content may be used for search and AI input; model training is not granted |
-| static site | The deployed artifact: `index.html` and its siblings at the repo root, served by Cloudflare Workers with `assets.directory: "."` and the `huvudkontoret.io` CNAME |
+| static site | The deployed artifact: `index.html` and its siblings at the repo root, served by GitHub Pages from `main` with the `huvudkontoret.io` CNAME. `wrangler.jsonc` is committed but is **not** what serves the apex — verified 2026-07-29: the apex answers `server: GitHub.com`, no Cloudflare headers |
 
 ## Rules that hold everywhere
 
@@ -38,9 +40,11 @@
 - **Swedish for content, English for code and artifacts.** The published tone
   is practical, plain, locally grounded — no hype, no invented prices,
   availability, client names or commitments.
-- **The deploy is the repo root.** `wrangler.jsonc` serves `.`, and `dist/`
-  is gitignored — so an Astro page is not live merely because it builds.
-  Wiring the runtime to the domain is a deliberate, still-pending step.
+- **The deploy is the repo root, and a push to `main` is a publish.** GitHub
+  Pages rebuilds the apex from `main` on every push, and the repo is public —
+  so committing here is publishing, both the served page and the source. `dist/`
+  is gitignored, so an Astro page is not live merely because it builds; wiring
+  the runtime to the domain is a deliberate, still-pending step.
 
 ## Pointers
 
@@ -51,8 +55,7 @@
   data) · `src/content.config.ts` + `src/content/nodes/` (node schema and
   data) · `src/pages/demo/` (layer demos)
 - Live site: `index.html` · `index.md` · `llms.txt` · `sitemap.xml` ·
-  `.well-known/` · `assets/` — deploy config in `wrangler.jsonc`, domain in
-  `CNAME`
+  `.well-known/` · `assets/` — served by GitHub Pages, domain in `CNAME`
 - Run: `npm run dev` (localhost:4321) · `npm run build` · `npm run lint`
 - No decisions are recorded yet: the workspace standard is docs/adr/ +
   docs/specs/, and this repo has neither. README.md is still the untouched
