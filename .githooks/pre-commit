@@ -1,0 +1,45 @@
+#!/bin/sh
+# Refuse a commit authored under an identity this workspace does not allow.
+#
+# The case this exists for: a workspace repo cloned onto a client machine whose
+# global git config carries that client's address. Nothing about the checkout
+# looks wrong, and the mistake only surfaces once it is pushed.
+#
+# The real fix is a conditional include that routes identity by remote URL:
+#
+#   [includeIf "hasconfig:remote.*.url:*<org>/*"]
+#     path = ~/.config/git/config.<org>
+#
+# This hook is the net under it, for a fresh repo with no remote yet or a
+# machine whose config has not been set up.
+#
+# Allowed addresses come from hk's user config (identityAllow); with none set
+# the hook stays out of the way rather than guessing.
+
+email=$(git config user.email)
+
+if [ -z "$email" ]; then
+  echo "pre-commit: no git user.email is set — refusing to guess an author." >&2
+  exit 1
+fi
+
+config="${XDG_CONFIG_HOME:-$HOME/.config}/hk/config.json"
+[ -f "$config" ] || exit 0
+
+# One entry per line, quotes and commas stripped; no jq dependency.
+allow=$(sed -n '/"identityAllow"[[:space:]]*:[[:space:]]*\[/,/]/p' "$config" \
+        | grep -o '"[^"]*"' | sed 's/"//g' | grep -v '^identityAllow$')
+[ -n "$allow" ] || exit 0
+
+for entry in $allow; do
+  case "$entry" in
+    *@*) [ "$email" = "$entry" ] && exit 0 ;;
+    *)   case "$email" in *"@$entry") exit 0 ;; esac ;;
+  esac
+done
+
+echo "pre-commit: '$email' is not an allowed author for this workspace." >&2
+echo "  allowed: $(echo "$allow" | tr '\n' ' ')" >&2
+echo "  fix:     git config user.email <address>" >&2
+echo "  or:      route it by remote URL, see 'hk doctor'" >&2
+exit 1
