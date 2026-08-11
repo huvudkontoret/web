@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="sv">
+    <head>
+        <meta charset="utf-8" />
+        <title>OG-mall · huvudkontoret.io</title>
+        <!--
+          OG-regeln: bilden genereras, den designas aldrig. Mallen tar adress,
+          lins och statusrad; Papper som grund, all text i MonoLisa, aldrig
+          foto, och -> renderas som två tecken.
+
+          Rendera om:
+            python3 -m http.server 8788 --directory .
+            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+              --headless --disable-gpu --hide-scrollbars \
+              --window-size=1200,630 --screenshot=og.png \
+              http://127.0.0.1:8788/tools/og-io.html
+            sips -s format jpeg -s formatOptions 82 og.png --out assets/og-io.jpg
+        -->
+        <style>
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("../assets/fonts/MonoLisa-Light.woff2") format("woff2");
+                font-weight: 300;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("../assets/fonts/MonoLisa-Medium.woff2")
+                    format("woff2");
+                font-weight: 500;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("../assets/fonts/MonoLisa-SemiBold.woff2")
+                    format("woff2");
+                font-weight: 600;
+            }
+            html,
+            body {
+                margin: 0;
+                background: #f4f2ec;
+            }
+            .og {
+                container-type: inline-size;
+                width: 1200px;
+                height: 630px;
+                box-sizing: border-box;
+                background: #f4f2ec;
+                color: #16150f;
+                font-family: "MonoLisa", monospace;
+                font-feature-settings: "calt" 0, "liga" 0, "dlig" 0;
+                border-left: 14px solid #d9481c;
+                padding: 5% 6%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            .top,
+            .bottom {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 24px;
+            }
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            }
+            .sigill {
+                width: 2.9cqw;
+                aspect-ratio: 100.1 / 98.2;
+                background: #16150f;
+                -webkit-mask: url("../assets/hk-sigill.svg") center / contain
+                    no-repeat;
+                mask: url("../assets/hk-sigill.svg") center / contain no-repeat;
+            }
+            .brand span {
+                font-size: 2.6cqw;
+                font-weight: 600;
+            }
+            .lens {
+                font-size: 1.9cqw;
+                font-weight: 600;
+                letter-spacing: 0.14em;
+                white-space: nowrap;
+                color: #c34119;
+            }
+            .mid {
+                display: flex;
+                flex-direction: column;
+                gap: 0.8cqw;
+            }
+            .addr {
+                font-size: 5.2cqw;
+                font-weight: 600;
+                line-height: 1.1;
+                letter-spacing: -0.02em;
+                white-space: nowrap;
+            }
+            .addr i {
+                font-style: normal;
+                color: #c34119;
+            }
+            .sub {
+                font-size: 2.3cqw;
+                font-weight: 300;
+                color: #5a574e;
+            }
+            .bottom {
+                font-size: 1.9cqw;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                white-space: nowrap;
+                color: #8a877d;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="og">
+            <div class="top">
+                <div class="brand">
+                    <div class="sigill"></div>
+                    <span>huvudkontoret</span>
+                </div>
+                <span class="lens">[ SYSTEMLINSEN ]</span>
+            </div>
+            <div class="mid">
+                <span class="addr">huvudkontoret<i>.io</i></span>
+                <span class="sub"
+                    >ai, systemutveckling och tekniskt stöd som fungerar i
+                    vardagen</span
+                >
+            </div>
+            <div class="bottom">
+                <span>[ LULEÅ · 65.5848° N ]</span>
+                <span>-&gt; hej@huvudkontoret.io</span>
+            </div>
+        </div>
+    </body>
+</html>

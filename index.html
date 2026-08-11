@@ -9,15 +9,18 @@
         </title>
         <meta
             name="description"
-            content="Huvudkontoret är ett konsultbolag i Luleå med fokus på AI, systemutveckling och teknisk rådgivning. Lokala, snabba och vana att få saker gjorda."
+            content="Huvudkontoret är ett techbolag i Luleå med fokus på AI, systemutveckling och teknisk rådgivning. Lokalt förankrat, globalt relevant, kända för vad som händer."
         />
+        <meta name="theme-color" content="#F4F2EC" />
         <meta property="og:title" content="Huvudkontoret" />
-        <meta property="og:description" content="AI, systemutveckling och tekniskt stöd som fungerar i vardagen. Lokalt förankrat i Luleå, med vana att arbeta nära och få saker att hända." />
-        <meta property="og:image" content="https://huvudkontoret.io/assets/og-image.jpg" />
+        <meta property="og:description" content="Nästa steg. På riktigt. AI, systemutveckling och tekniskt stöd som fungerar i vardagen, inte bara ser bra ut på papper." />
+        <meta property="og:image" content="https://huvudkontoret.io/assets/og-io.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="huvudkontoret.io — systemlinsen" />
         <meta property="og:url" content="https://huvudkontoret.io" />
         <meta property="og:type" content="website" />
+        <meta property="og:locale" content="sv_SE" />
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="canonical" href="https://huvudkontoret.io/" />
         <link rel="alternate" type="text/markdown" href="https://huvudkontoret.io/index.md" title="Markdown version" />
@@ -25,6 +28,7 @@
         <link rel="help" type="text/plain" href="https://huvudkontoret.io/llms.txt" title="LLM entry point" />
         <link rel="service-desc" type="application/json" href="https://huvudkontoret.io/.well-known/api-catalog" title="API catalog" />
         <link rel="agent-skill" type="application/json" href="https://huvudkontoret.io/.well-known/agent-skills/index.json" title="Agent skills" />
+        <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
         <script type="application/ld+json">
             {
                 "@context": "https://schema.org",
@@ -33,7 +37,7 @@
                 "name": "Huvudkontoret",
                 "url": "https://huvudkontoret.io/",
                 "email": "hej@huvudkontoret.io",
-                "description": "Huvudkontoret är ett konsultbolag i Luleå med fokus på AI, systemutveckling och teknisk rådgivning.",
+                "description": "Huvudkontoret är ett techbolag i Luleå med fokus på AI, systemutveckling och teknisk rådgivning.",
                 "address": {
                     "@type": "PostalAddress",
                     "addressLocality": "Luleå",
@@ -46,10 +50,10 @@
                 },
                 "knowsAbout": [
                     "AI och automatisering",
-                    "Systemutveckling",
+                    "Teknisk utveckling",
                     "Teknisk rådgivning",
                     "Teamförstärkning",
-                    "Teknisk rekrytering",
+                    "Rekrytering och kvalitetssäkring",
                     "Produkt- och innovationsstöd"
                 ],
                 "contactPoint": {
@@ -57,1460 +61,1730 @@
                     "email": "hej@huvudkontoret.io",
                     "contactType": "business inquiries",
                     "availableLanguage": ["sv", "en"]
-                }
+                },
+                "employee": [
+                    { "@type": "Person", "name": "Hanna Wikman", "jobTitle": "VD" },
+                    { "@type": "Person", "name": "Magnus Renholm", "jobTitle": "CSO" },
+                    { "@type": "Person", "name": "Sebastian Berglönn", "jobTitle": "CTO" }
+                ]
             }
         </script>
-        <link rel="icon" type="image/svg+xml" href="assets/icon_pos.svg" />
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Space+Mono:wght@400;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
             rel="stylesheet"
         />
 
         <style>
+            /* ===================== TYPOGRAFI ===================== */
+            /* MonoLisa på all typografi. Effektsnittet Permanent Marker
+               används enbart i hero, aldrig i UI eller brödtext. */
             @font-face {
-                font-family: "Nok";
-                src:
-                    url("assets/Nok.otf") format("opentype"),
-                    url("assets/Nok.ttf") format("truetype");
-                font-weight: normal;
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-Light.woff2") format("woff2");
+                font-weight: 300;
                 font-style: normal;
                 font-display: swap;
             }
-            * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-LightItalic.woff2") format("woff2");
+                font-weight: 300;
+                font-style: italic;
+                font-display: swap;
             }
-            :root {
-                --aq: #3bcfc9;
-                --lime: #b8ff57;
-                --bk: #111110;
-                --wh: #ffffff;
-                --off: #f4f4f0;
-                --mid: #6b6b6b;
-                --rb: #ff0093;
-                --nok: "Nok", "DM Sans", sans-serif;
-                --sans: "DM Sans", sans-serif;
-                --mono: "Space Mono", monospace;
-                --max: 1160px;
-                --pad: 2rem;
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-Regular.woff2") format("woff2");
+                font-weight: 400;
+                font-style: normal;
+                font-display: swap;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-RegularItalic.woff2") format("woff2");
+                font-weight: 400;
+                font-style: italic;
+                font-display: swap;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-Medium.woff2") format("woff2");
+                font-weight: 500;
+                font-style: normal;
+                font-display: swap;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-SemiBold.woff2") format("woff2");
+                font-weight: 600;
+                font-style: normal;
+                font-display: swap;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-Bold.woff2") format("woff2");
+                font-weight: 700;
+                font-style: normal;
+                font-display: swap;
             }
 
+            /* ===================== KONSTANTER ===================== */
+            :root {
+                /* Tonskalan på ljusa ytor */
+                --black: #16150f; /* Bläck */
+                --paper: #f4f2ec; /* Papper */
+                --frame: #3a382f; /* Ram */
+                --stone: #5a574e; /* Sten */
+                --graphite: #8a877d; /* Grafit */
+                --light-graphite: #b5b1a6; /* Ljusgrafit */
+
+                /* Koncernfärgen. 2 %-regeln: den pekar, den dekorerar inte. */
+                --signal: #d9481c;
+
+                /* POW per lins, i papperston när den står som text på ljus yta */
+                --pow-ai: #2a7888;
+                --pow-dev: #3e7a4a;
+                --pow-app: #9a6219;
+                --pow-io: #c34119;
+                --pow-cv: #3c7b57;
+                --pow-name: #af5149;
+                --pow-xyz: #a35b20;
+                --pow-vote: #6d5bc7;
+
+                --shell: 1060px;
+                --gut: 48px;
+                --ease: cubic-bezier(0.2, 0, 0, 1);
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
             html {
                 scroll-behavior: smooth;
+                /* Chrome är sticky: ankarmål ska inte hamna under den. */
+                scroll-padding-top: 72px;
             }
             body {
-                background: var(--wh);
-                color: var(--bk);
-                font-family: var(--sans);
-                overflow-x: hidden;
+                margin: 0;
+                background: var(--paper);
+                color: var(--black);
+                font-family: "MonoLisa", ui-monospace, SFMono-Regular, "SF Mono",
+                    Menlo, Consolas, monospace;
+                font-weight: 400;
+                /* Kodligaturerna hör hemma i editorn, inte i löptext. */
+                font-feature-settings: "calt" 0, "liga" 0, "dlig" 0;
                 -webkit-font-smoothing: antialiased;
-                font-synthesis: none;
+                text-rendering: optimizeLegibility;
             }
-
-            /* ===================== NAV ===================== */
-            nav {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                z-index: 200;
-                background: var(--wh);
-                border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-                padding: 0 var(--pad);
-                height: 56px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
+            h1,
+            h2,
+            h3,
+            p,
+            figure {
+                margin: 0;
             }
-            .nav-logo {
-                display: flex;
-                align-items: center;
-                gap: 0.6rem;
-                font-family: var(--mono);
-                font-size: 12px;
-                font-weight: 700;
-                letter-spacing: 0.1em;
-                text-transform: uppercase;
-                color: var(--bk);
+            a {
+                color: inherit;
                 text-decoration: none;
             }
-            .nav-logo-mark {
-                width: 28px;
-                height: 28px;
-                flex-shrink: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+            a:hover {
+                color: var(--signal);
+                text-decoration: underline;
             }
-            .nav-logo-mark img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
+            :focus-visible {
+                outline: 2px solid var(--signal);
+                outline-offset: 3px;
             }
-            .nav-links {
-                display: flex;
-                align-items: center;
-                gap: 2rem;
-            }
-            .nav-burger {
-                display: none;
-                flex-direction: column;
-                justify-content: center;
-                gap: 5px;
-                background: none;
-                border: none;
-                cursor: pointer;
-                padding: 4px;
-                width: 36px;
-                height: 36px;
-            }
-            .nav-burger span {
+            svg {
                 display: block;
-                height: 2px;
-                background: var(--bk);
-                border-radius: 1px;
-                transition: transform 0.25s ease, opacity 0.25s ease;
-            }
-            .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-            .nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-            .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-            .nav-links a {
-                font-family: var(--sans);
-                font-size: 14px;
-                font-weight: 400;
-                color: var(--bk);
-                text-decoration: none;
-                opacity: 0.6;
-                transition: opacity 0.2s;
-            }
-            .nav-links a:hover {
-                opacity: 1;
-            }
-            .nav-cta {
-                background: var(--aq) !important;
-                color: var(--bk) !important;
-                opacity: 1 !important;
-                padding: 0.45rem 1.1rem;
-                font-weight: 700 !important;
-                font-size: 13px !important;
-                letter-spacing: 0.03em;
-            }
-            .nav-cta:hover {
-                background: var(--bk) !important;
-                color: var(--wh) !important;
             }
 
-            /* ===================== HELPERS ===================== */
-            .container {
-                max-width: var(--max);
-                margin: 0 auto;
-                padding: 0 var(--pad);
+            /* Grammatiken bryter aldrig rad: -> <- [ STATUS ] */
+            .g {
+                white-space: nowrap;
             }
-            .section-label {
-                font-family: var(--mono);
-                font-weight: 400;
+
+            .shell {
+                max-width: var(--shell);
+                margin: 0 auto;
+            }
+            .band {
+                padding: 88px var(--gut);
+                border-bottom: 1px solid var(--black);
+            }
+            .stack {
+                display: flex;
+                flex-direction: column;
+                gap: 44px;
+            }
+
+            /* Sektionsetikett: // SEKTION */
+            .label {
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--graphite);
+            }
+            .h2 {
+                font-size: clamp(24px, 3.2vw, 34px);
+                font-weight: 600;
+                line-height: 1.25;
+            }
+            .aside {
+                font-size: 13px;
+                font-weight: 300;
+                font-style: italic;
+                line-height: 1.6;
+                max-width: 40ch;
+            }
+            .head {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+            .head > div {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .status {
                 font-size: 10px;
-                letter-spacing: 0.22em;
-                text-transform: uppercase;
-                color: var(--mid);
-                margin-bottom: 1.5rem;
+                font-weight: 500;
+                letter-spacing: 0.1em;
+            }
+
+            .skip {
+                position: absolute;
+                left: -9999px;
+                top: 0;
+                z-index: 100;
+                background: var(--black);
+                color: var(--paper);
+                padding: 12px 20px;
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .skip:focus {
+                left: 0;
+            }
+
+            /* ===================== CHROME ===================== */
+            .chrome {
+                position: sticky;
+                top: 0;
+                z-index: 40;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                padding: 16px var(--gut);
+                border-bottom: 1px solid var(--black);
+                background: var(--paper);
+                font-size: 12px;
+                font-weight: 500;
+            }
+            .lockup {
                 display: flex;
                 align-items: center;
-                gap: 0.6rem;
+                gap: 12px;
+                min-height: 44px;
             }
-            .section-label::before {
-                content: "";
-                display: inline-block;
-                width: 20px;
-                height: 1px;
-                background: var(--mid);
+            .lockup:hover {
+                color: inherit;
+                text-decoration: none;
+            }
+            /* Sigillet färgas via mask, originalfilen ritas aldrig om. */
+            .sigill {
+                width: 22px;
+                aspect-ratio: 100.1 / 98.2;
+                background: currentColor;
+                -webkit-mask: url("assets/hk-sigill.svg") center / contain
+                    no-repeat;
+                mask: url("assets/hk-sigill.svg") center / contain no-repeat;
+                flex-shrink: 0;
+            }
+            .wordmark {
+                font-size: 14px;
+                font-weight: 600;
+            }
+            /* Punkten ägs av adressen och tar linsens färg tillsammans med
+               bokstäverna: papperston som text på ljus yta. */
+            .tld {
+                color: var(--pow-io);
+            }
+            .tld-name {
+                color: var(--pow-name);
+            }
+            .chrome nav {
+                display: flex;
+                gap: 24px;
+                letter-spacing: 0.1em;
+            }
+            .chrome nav a[aria-current="page"],
+            .chrome nav .now {
+                color: var(--signal);
+            }
+            .coords {
+                color: var(--graphite);
+                letter-spacing: 0.1em;
+            }
+            .menu-button {
+                display: none;
+                border: 1px solid var(--black);
+                background: transparent;
+                color: inherit;
+                font: inherit;
+                font-size: 12px;
+                font-weight: 600;
+                letter-spacing: 0.1em;
+                padding: 0 14px;
+                min-height: 44px;
+                cursor: pointer;
+            }
+
+            /* ===================== MENY (mobil) ===================== */
+            .menu {
+                position: fixed;
+                inset: 0;
+                z-index: 30;
+                background: var(--black);
+                color: var(--paper);
+                display: flex;
+                flex-direction: column;
+                padding: 96px 20px 32px 20px;
+            }
+            .menu[hidden] {
+                display: none;
+            }
+            .menu nav {
+                display: flex;
+                flex-direction: column;
+                font-size: 20px;
+                font-weight: 600;
+            }
+            .menu nav a {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                padding: 16px 0;
+                border-top: 1px solid var(--stone);
+                min-height: 44px;
+            }
+            .menu nav a:last-child {
+                border-bottom: 1px solid var(--stone);
+                color: var(--signal);
+            }
+            .menu nav a:hover {
+                color: var(--signal);
+                text-decoration: none;
+            }
+            .menu nav a span {
+                font-size: 14px;
+                color: var(--graphite);
+            }
+            .menu .coords {
+                margin-top: auto;
+                font-size: 11px;
+                font-weight: 500;
             }
 
             /* ===================== HERO ===================== */
+            /* Inverterad bläckpanel enligt profilen. */
             .hero {
-                padding: 7rem var(--pad) 0;
-                text-align: center;
-                background: var(--wh);
-                position: relative;
-                overflow: hidden;
+                padding: 104px var(--gut) 88px var(--gut);
+                border-bottom: 1px solid var(--black);
+                background: var(--black);
+                color: var(--paper);
+            }
+            .hero .meta {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 12px;
             }
             .hero h1 {
-                font-family: var(--nok);
-                font-size: clamp(3.5rem, 8vw, 7rem);
+                font-family: "Permanent Marker", cursive;
+                font-size: clamp(44px, 9.5vw, 120px);
                 font-weight: 400;
-                line-height: 0.95;
-                letter-spacing: -0.01em;
-                color: var(--bk);
-                margin-bottom: 1.5rem;
-                max-width: 800px;
-                margin-left: auto;
-                margin-right: auto;
+                line-height: 0.92;
             }
-            .hero-sub {
-                font-size: clamp(1.1rem, 2vw, 1.35rem);
-                font-weight: 400;
-                color: var(--bk);
-                max-width: 580px;
-                margin: 0 auto 1.5rem;
-                line-height: 1.5;
+            .hero .prompt {
+                font-size: clamp(17px, 2.2vw, 22px);
+                font-weight: 500;
+                line-height: 1.55;
             }
-            .hero-body {
-                font-size: 0.95rem;
-                color: var(--mid);
-                max-width: 620px;
-                margin: 0 auto 2.5rem;
-                line-height: 1.75;
-                font-weight: 300;
+            /* Blinkmarkören betyder att ytan svarar. Utan adress: Signal. */
+            .caret {
+                color: var(--signal);
+                animation: blink 1.1s step-end infinite;
             }
-            .hero-illus {
-                margin: 0 auto;
-                max-width: 780px;
-                width: 100%;
-                aspect-ratio: 16 / 9;
+            @keyframes blink {
+                0%,
+                49% {
+                    opacity: 1;
+                }
+                50%,
+                100% {
+                    opacity: 0;
+                }
+            }
+            .hero .row {
                 display: flex;
+                flex-wrap: wrap;
+                gap: 40px;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
+            .hero .ingress {
+                font-size: 14px;
+                font-weight: 300;
+                font-style: italic;
+                line-height: 1.8;
+                max-width: 56ch;
+                color: var(--light-graphite);
+            }
+            .actions {
+                display: flex;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
+            .btn {
+                display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                overflow: hidden;
-                position: relative;
+                padding: 14px 26px;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.08em;
+                min-height: 44px;
+                background: var(--black);
+                color: var(--paper);
+                transition: background-color 200ms var(--ease);
             }
-            .hero-illus img {
-                animation: float 4s ease-in-out infinite;
+            .btn:hover {
+                background: var(--frame);
+                color: var(--paper);
+                text-decoration: none;
             }
-            @keyframes float {
-                0%,
-                100% {
-                    transform: translateY(0);
-                }
-                50% {
-                    transform: translateY(-14px);
-                }
-            }
-            .hero-illus img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
-            }
-            .illus-placeholder {
-                font-family: var(--mono);
-                font-size: 10px;
-                letter-spacing: 0.15em;
-                color: rgba(0, 0, 0, 0.2);
-                text-transform: uppercase;
-                text-align: center;
-                padding: 1rem;
-            }
-
-            /* ===================== TRUSTED BY ===================== */
-            .trusted {
-                padding: 2rem var(--pad);
-                border-top: 1px solid rgba(0, 0, 0, 0.07);
-                border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-                margin-top: 3rem;
-            }
-            .trusted-inner {
-                max-width: var(--max);
-                margin: 0 auto;
-                display: flex;
-                align-items: center;
-                gap: 3rem;
-                flex-wrap: wrap;
-            }
-            .trusted-label {
-                font-family: var(--mono);
-                font-size: 9px;
-                letter-spacing: 0.18em;
-                text-transform: uppercase;
-                color: rgba(0, 0, 0, 0.3);
-                white-space: nowrap;
-                flex-shrink: 0;
-            }
-            .trusted-logos {
-                display: flex;
-                align-items: center;
-                gap: 2.5rem;
-                flex-wrap: wrap;
-            }
-            .logo-pill {
-                /* Replace each .logo-pill with your actual client logo img */
-                height: 24px;
-                background: rgba(0, 0, 0, 0.08);
-                border-radius: 3px;
-                display: flex;
-                align-items: center;
-                padding: 0 1rem;
-            }
-            .logo-pill span {
-                font-family: var(--mono);
-                font-size: 9px;
-                letter-spacing: 0.1em;
-                text-transform: uppercase;
-                color: rgba(0, 0, 0, 0.3);
-            }
-
-            /* ===================== OM OSS ===================== */
-            .about {
-                padding: 6rem var(--pad);
-            }
-            .about-inner {
-                max-width: var(--max);
-                margin: 0 auto;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 5rem;
-                align-items: start;
-            }
-            .about-left h3 {
-                font-family: var(--nok);
-                font-size: clamp(2.5rem, 5vw, 4rem);
-                font-weight: 400;
-                line-height: 1;
-                color: var(--bk);
-                margin-bottom: 1.5rem;
-            }
-            .about-left p {
-                font-size: 0.95rem;
-                line-height: 1.8;
-                color: var(--mid);
-                font-weight: 300;
-                margin-bottom: 1rem;
-            }
-            .about-pillars {
-                margin-top: 1.75rem;
-                list-style: none;
-            }
-            .about-pillars li {
-                display: flex;
-                align-items: baseline;
-                gap: 1rem;
-                padding: 0.6rem 0;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-                font-size: 0.9rem;
-                color: var(--bk);
+            .btn.ghost {
+                background: transparent;
+                color: var(--black);
+                border: 1px solid var(--black);
                 font-weight: 500;
             }
-            .about-pillars li:last-child {
-                border-bottom: none;
+            .btn.ghost:hover {
+                background: #ffffff;
+                color: var(--black);
             }
-            .pillar-num {
-                font-family: var(--mono);
-                font-size: 10px;
-                color: var(--aq);
-                min-width: 1.5rem;
-                font-weight: 700;
+            .hero .btn {
+                background: var(--paper);
+                color: var(--black);
             }
-            .about-right {
-                position: relative;
+            .hero .btn:hover {
+                background: #ffffff;
+                color: var(--black);
             }
-            .about-photo {
-                width: 100%;
-                aspect-ratio: 4 / 5;
-                object-fit: cover;
-                object-position: center top;
-                filter: grayscale(100%) contrast(1.05);
+            .hero .btn.ghost {
+                background: transparent;
+                color: var(--paper);
+                border-color: var(--paper);
+            }
+            .hero .btn.ghost:hover {
+                background: var(--frame);
+                color: var(--paper);
+            }
+
+            /* ===================== ERBJUDANDE ===================== */
+            /* Radlista över hela bredden. En öppen rad blir en bläckpanel,
+               en rad åt gången. Geometrin är identisk i båda lägena. */
+            .offer {
+                display: flex;
+                flex-direction: column;
+                border-bottom: 1px solid var(--black);
+                /* Radlistan går utanför textspalten: bläckytan ska nå kanten. */
+                margin: 0 -32px;
+            }
+            .offer-row {
+                --dim: 0.66;
+                --dim-num: 0.64;
                 display: block;
-                border-radius: 16px;
-            }
-            .about-photo-tag {
-                position: absolute;
-                bottom: -1.5rem;
-                right: -1.5rem;
-                width: 130px;
-                height: 130px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                overflow: hidden;
-            }
-            .about-photo-tag img {
                 width: 100%;
-                height: 100%;
-                object-fit: contain;
-            }
-            .about-photo-tag .illus-placeholder {
-                font-size: 8px;
-                color: rgba(0, 0, 0, 0.4);
-            }
-            .about-more {
-                font-size: 0.9rem;
-                line-height: 1.75;
-                color: var(--mid);
-                font-weight: 300;
-                margin-top: 2rem;
-                padding-top: 2rem;
-                border-top: 1px solid rgba(0, 0, 0, 0.07);
-                max-width: var(--max);
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            /* ===================== STATEMENT ===================== */
-            .statement {
-                background: var(--bk) url("assets/robo_cat.svg") no-repeat right
-                    bottom;
-                background-size: min(38%, 560px);
-                padding: 6rem var(--pad);
-                position: relative;
-                overflow: hidden;
-            }
-            .statement-inner {
-                max-width: var(--max);
-                margin: 0 auto;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 5rem;
-            }
-            .statement-left h3 {
-                font-family: var(--nok);
-                font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-                font-weight: 400;
-                line-height: 1;
-                color: var(--wh);
-                margin-bottom: 1.5rem;
-            }
-            .statement-left p {
-                font-size: 0.95rem;
-                line-height: 1.8;
-                color: rgba(255, 255, 255, 0.55);
-                font-weight: 300;
-                margin-bottom: 1.5rem;
-            }
-            .statement-right {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .statement-illus {
-                width: 100%;
-                max-width: 380px;
-                aspect-ratio: 1;
-                background: rgba(255, 255, 255, 0.04);
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                border-radius: 4px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .statement-illus img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
-            }
-            .statement-illus .illus-placeholder {
-                color: rgba(255, 255, 255, 0.2);
-            }
-
-            /* ===================== TJÄNSTER ===================== */
-            .services {
-                padding: 6rem var(--pad);
-                background: var(--off);
-            }
-            .services-inner {
-                max-width: var(--max);
-                margin: 0 auto;
-            }
-            .services h2:not(.section-label) {
-                font-family: var(--nok);
-                font-size: clamp(1.8rem, 3vw, 2.5rem);
-                font-weight: 400;
-                color: var(--bk);
-                margin-bottom: 3rem;
-            }
-            .services-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1.5rem;
-            }
-            .svc-card {
-                background: var(--wh);
-                padding: 1.75rem;
-                border: 1px solid rgba(0, 0, 0, 0.06);
-                transition:
-                    border-color 0.2s,
-                    box-shadow 0.2s;
-            }
-            .svc-card:hover {
-                border-color: var(--aq);
-                box-shadow: 0 4px 24px rgba(59, 207, 201, 0.1);
-            }
-            .svc-card[data-expandable] {
+                margin: 0;
+                padding: 26px 32px;
+                border: 0;
+                border-top: 1px solid var(--black);
+                background: transparent;
+                color: var(--black);
+                font: inherit;
+                text-align: left;
                 cursor: pointer;
+                transition:
+                    background-color 200ms var(--ease),
+                    color 200ms var(--ease),
+                    border-top-color 200ms var(--ease);
             }
-            .svc-card.open {
-                border-color: var(--aq);
-                box-shadow: 0 4px 24px rgba(59, 207, 201, 0.1);
+            .offer-row[aria-expanded="true"] {
+                --dim: 0.74;
+                --dim-num: 0.62;
+                background: var(--black);
+                color: var(--paper);
+                border-top-color: transparent;
             }
-            .svc-icon {
-                display: none;
+            .offer-grid {
+                display: grid;
+                grid-template-columns: 44px 1fr 28px;
+                gap: 18px;
+                align-items: baseline;
             }
-            .svc-card-header {
-                display: flex;
-                align-items: flex-start;
-                justify-content: space-between;
-                gap: 1rem;
-            }
-            .svc-card h3 {
-                font-family: var(--sans);
-                font-size: 0.95rem;
+            .offer-num {
+                font-size: 13px;
                 font-weight: 700;
-                color: var(--bk);
-                margin-bottom: 0.6rem;
+                opacity: var(--dim-num);
+                transition: opacity 200ms var(--ease);
             }
-            .svc-chevron {
-                flex-shrink: 0;
-                width: 18px;
-                height: 18px;
-                color: var(--aq);
-                transition: transform 0.3s ease;
-                margin-top: 2px;
+            .offer-body {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
             }
-            .svc-card.open .svc-chevron {
-                transform: rotate(180deg);
+            .offer-title {
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 1.35;
             }
-            .svc-card p {
-                font-size: 0.85rem;
-                line-height: 1.7;
-                color: var(--mid);
+            .offer-lead {
+                font-size: 13px;
                 font-weight: 300;
+                line-height: 1.7;
+                max-width: 62ch;
+                opacity: var(--dim);
+                transition: opacity 200ms var(--ease);
             }
-            .svc-expand {
+            .offer-sign {
+                font-size: 19px;
+                font-weight: 500;
+                color: var(--signal);
+                text-align: right;
+                line-height: 1;
+            }
+            .offer-row[aria-expanded="true"] .offer-sign {
+                color: var(--signal);
+            }
+            /* Öppningen animerar höjden med grid, inte med max-height. */
+            .offer-panel {
                 display: grid;
                 grid-template-rows: 0fr;
-                transition: grid-template-rows 0.35s ease;
+                transition: grid-template-rows 200ms var(--ease);
             }
-            .svc-card.open .svc-expand {
+            .offer-panel.open {
                 grid-template-rows: 1fr;
             }
-            .svc-expand-inner {
+            .offer-clip {
                 overflow: hidden;
+                min-height: 0;
             }
-            .svc-expand-inner p {
-                padding-top: 1rem;
-                border-top: 1px solid rgba(0, 0, 0, 0.06);
-                margin-top: 1rem;
-            }
-            .svc-expand-inner p + p {
-                padding-top: 0.75rem;
-                border-top: none;
-                margin-top: 0;
-            }
-
-            /* ===================== AI-SEKTION ===================== */
-            .ai-section {
-                padding: 6rem var(--pad);
-                background: var(--wh);
-            }
-            .ai-inner {
-                max-width: var(--max);
-                margin: 0 auto;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 5rem;
-                align-items: center;
-            }
-            .ai-illus {
-                aspect-ratio: 1;
-                max-width: 420px;
-                width: 100%;
+            .offer-inner {
+                opacity: 0;
+                transform: translateY(6px);
+                transition:
+                    opacity 120ms var(--ease),
+                    transform 0ms 120ms;
                 display: flex;
-                align-items: center;
-                justify-content: center;
+                flex-direction: column;
+                gap: 14px;
+                max-width: 68ch;
+                padding-top: 18px;
             }
-            .ai-illus img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
+            .offer-panel.open .offer-inner {
+                opacity: 1;
+                transform: translateY(0);
+                transition:
+                    opacity 200ms var(--ease) 40ms,
+                    transform 200ms var(--ease) 40ms;
             }
-            .ai-illus .illus-placeholder {
-                color: rgba(0, 0, 0, 0.2);
+            .offer-rule {
+                height: 1px;
+                background: currentColor;
+                opacity: 0.32;
             }
-            .ai-right h3 {
-                font-family: var(--nok);
-                font-size: clamp(1.6rem, 3vw, 2.5rem);
-                font-weight: 400;
-                color: var(--bk);
-                margin-bottom: 1.5rem;
-                line-height: 1.05;
-            }
-            .ai-right p {
-                font-size: 0.95rem;
-                line-height: 1.8;
-                color: var(--mid);
+            .offer-inner p {
+                font-size: 13px;
                 font-weight: 300;
-                margin-bottom: 1rem;
+                line-height: 1.85;
             }
-            .ai-right p:last-of-type {
-                margin-bottom: 0;
+            .offer-inner p.dim {
+                opacity: var(--dim);
+                transition: opacity 200ms var(--ease);
+            }
+            .offer-inner .point {
+                font-size: 13px;
+                font-weight: 600;
+                line-height: 1.7;
+            }
+            /* Panelen bor inuti raden, så den ärver radens färger. */
+            .offer-slot {
+                padding: 0 32px;
+                background: transparent;
+                color: var(--black);
+                transition:
+                    background-color 200ms var(--ease),
+                    color 200ms var(--ease);
+            }
+            .offer-slot.open {
+                background: var(--black);
+                color: var(--paper);
+                --dim: 0.74;
+            }
+            .offer-slot .offer-inner {
+                margin-left: 62px;
+            }
+            .callout {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 16px;
+                flex-wrap: wrap;
+                border: 1px solid var(--black);
+                padding: 20px 26px;
+                font-size: 13px;
             }
 
-            /* ===================== TEAM ===================== */
-            .team {
-                padding: 0;
-                position: relative;
-                overflow: hidden;
+            /* ===================== ARBETSSÄTT ===================== */
+            .split {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 56px;
+                align-items: start;
             }
-            .team-photo-wrap {
-                position: relative;
-                width: 100%;
-                height: clamp(400px, 55vw, 700px);
-                overflow: hidden;
-            }
-            .team-photo {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center 25%;
-                display: block;
-                filter: grayscale(100%) contrast(1.05);
-            }
-            .team-overlay {
-                position: absolute;
-                inset: 0;
-                background: linear-gradient(
-                    to bottom,
-                    rgba(17, 17, 16, 0) 30%,
-                    rgba(17, 17, 16, 0.85) 100%
-                );
-            }
-            .team-caption {
-                position: absolute;
-                bottom: 2.5rem;
-                left: var(--pad);
-                right: var(--pad);
-                max-width: var(--max);
-                margin: 0 auto;
-            }
-            .team-names {
+            .steps {
                 display: flex;
-                gap: 2.5rem;
-                flex-wrap: wrap;
+                flex-direction: column;
+                font-size: 14px;
             }
-            .team-person {
+            .steps > span {
+                display: flex;
+                gap: 16px;
+                padding: 20px 0;
+                border-top: 1px solid var(--black);
             }
-            .team-person-role {
-                font-family: var(--mono);
-                font-size: 9px;
-                letter-spacing: 0.18em;
-                text-transform: uppercase;
-                color: var(--aq);
-                display: block;
-                margin-bottom: 0.2rem;
+            .steps > span:last-child {
+                border-bottom: 1px solid var(--black);
             }
-            .team-person-name {
-                font-family: var(--sans);
-                font-size: 1rem;
+            .steps b {
                 font-weight: 700;
-                color: var(--wh);
+                flex-shrink: 0;
+            }
+            .steps strong {
+                font-weight: 600;
+            }
+            .steps em {
+                font-weight: 300;
+                font-style: normal;
+            }
+
+            /* ===================== SÅ MÄRKS DET ===================== */
+            .ink {
+                background: var(--black);
+                color: var(--paper);
+                border-bottom: 0;
+            }
+            .ink .label {
+                color: var(--graphite);
+            }
+            .cards {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+                gap: 24px;
+            }
+            .card {
+                border: 1px solid var(--stone);
+                padding: 30px 28px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .card b {
+                font-size: 15px;
+                font-weight: 600;
+                line-height: 1.5;
+            }
+            .card span {
+                font-size: 13px;
+                font-weight: 300;
+                line-height: 1.7;
+                color: var(--light-graphite);
+            }
+
+            /* ===================== TEAMET ===================== */
+            .team {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 32px;
+            }
+            .person {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                border-top: 1px solid var(--black);
+                padding-top: 16px;
+            }
+            .person .top {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 10px;
+            }
+            .person .name {
+                font-size: 16px;
+                font-weight: 600;
+            }
+            .person .role {
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.1em;
+                color: var(--stone);
+            }
+            .person .line {
+                font-size: 13px;
+                font-weight: 300;
+                font-style: italic;
+                line-height: 1.7;
+                color: var(--stone);
+            }
+            .person .addr {
+                font-size: 12.5px;
+                font-weight: 500;
+                padding-top: 6px;
+            }
+            .note {
+                font-size: 13px;
+                font-weight: 300;
+                font-style: italic;
+                color: var(--stone);
+            }
+
+            /* ===================== SYSTEMET ===================== */
+            .lenses {
+                display: flex;
+                flex-direction: column;
+                font-size: 14px;
+            }
+            .lens {
+                display: grid;
+                grid-template-columns: minmax(80px, 120px) 1fr;
+                gap: 20px;
+                padding: 13px 4px;
+                border-top: 1px solid var(--black);
+                align-items: baseline;
+            }
+            .lens:last-of-type {
+                border-bottom: 1px solid var(--black);
+            }
+            .lens .addr {
+                font-weight: 700;
+            }
+            .lens .what {
+                font-weight: 300;
+                line-height: 1.6;
+            }
+            .lens.soon .what {
+                color: var(--stone);
+            }
+            .lens.here .what {
+                font-weight: 400;
             }
 
             /* ===================== KONTAKT ===================== */
             .contact {
-                background: var(--bk);
-                padding: 6rem var(--pad) 5rem;
-                text-align: center;
+                padding: 88px var(--gut) 56px var(--gut);
+            }
+            .contact .split {
+                align-items: center;
             }
             .contact h2 {
-                font-family: var(--nok);
-                font-size: clamp(3rem, 7vw, 6rem);
-                font-weight: 400;
-                line-height: 0.95;
-                color: var(--wh);
-                margin-bottom: 2rem;
+                font-size: clamp(26px, 3.6vw, 40px);
+                font-weight: 600;
+                line-height: 1.2;
             }
-            .contact-links {
+            .contact p {
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 1.8;
+                max-width: 44ch;
+            }
+            .contact p.quiet {
+                font-size: 13px;
+                font-style: italic;
+                line-height: 1.7;
+                color: var(--stone);
+            }
+            .mark {
                 display: flex;
                 justify-content: center;
-                gap: 3rem;
-                flex-wrap: wrap;
-                margin-bottom: 3rem;
             }
-            .contact-link-item {
-                text-align: left;
+            .mark .sigill {
+                width: 200px;
             }
-            .contact-link-label {
-                font-family: var(--mono);
-                font-size: 9px;
-                letter-spacing: 0.18em;
-                text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.55);
-                display: block;
-                margin-bottom: 0.35rem;
-            }
-            .contact-link-value {
-                font-family: var(--sans);
-                font-size: 1rem;
-                font-weight: 500;
-                color: var(--wh);
-                text-decoration: none;
-                border-bottom: 1px solid transparent;
-                transition:
-                    border-color 0.2s,
-                    color 0.2s;
-            }
-            .contact-link-value:hover {
-                border-color: var(--aq);
-                color: var(--aq);
-            }
-            .contact-cta-row {
-                display: flex;
-                justify-content: center;
-                gap: 1rem;
-                flex-wrap: wrap;
-            }
-
-            /* ===================== BUTTONS ===================== */
-            .btn {
-                display: inline-block;
-                padding: 0.75rem 1.75rem;
-                font-family: var(--sans);
-                font-size: 0.9rem;
-                font-weight: 700;
-                letter-spacing: 0.02em;
-                text-decoration: none;
-                cursor: pointer;
-                border: none;
-                transition:
-                    background 0.2s,
-                    color 0.2s,
-                    transform 0.15s;
-            }
-            .btn-aq {
-                background: var(--aq);
-                color: var(--bk);
-            }
-            .btn-aq:hover {
-                background: var(--lime);
-                transform: translate(-2px, -2px);
-            }
-            .btn-outline-dark {
-                background: transparent;
-                border: 1.5px solid rgba(0, 0, 0, 0.25);
-                color: var(--bk);
-            }
-            .btn-outline-dark:hover {
-                border-color: var(--bk);
-            }
-            .btn-outline-light {
-                background: transparent;
-                border: 1.5px solid rgba(255, 255, 255, 0.25);
-                color: var(--wh);
-            }
-            .btn-outline-light:hover {
-                border-color: var(--wh);
-            }
-
-            /* ===================== FOOTER ===================== */
-            footer {
-                background: var(--bk);
-                border-top: 1px solid rgba(255, 255, 255, 0.07);
-                padding: 1.5rem var(--pad);
+            .foot {
                 display: flex;
                 justify-content: space-between;
-                align-items: center;
+                align-items: baseline;
                 flex-wrap: wrap;
-                gap: 0.75rem;
+                gap: 14px;
+                border-top: 1px solid var(--black);
+                padding-top: 22px;
+                font-size: 12px;
             }
-            .footer-logo {
-                display: flex;
-                align-items: center;
-                gap: 0.6rem;
-                font-family: var(--mono);
-                font-size: 11px;
-                color: rgba(255, 255, 255, 0.6);
+            .foot .claim {
+                font-weight: 500;
                 letter-spacing: 0.1em;
-                text-transform: uppercase;
             }
-            .footer-logo-mark {
-                width: 22px;
-                height: 22px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .footer-logo-mark img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
-                filter: brightness(0) invert(1);
-                opacity: 0.6;
-            }
-            .footer-copy {
-                font-family: var(--mono);
-                font-size: 9px;
-                letter-spacing: 0.1em;
-                color: rgba(255, 255, 255, 0.45);
-                text-transform: uppercase;
-            }
-            .footer-links {
-                display: flex;
-                gap: 1.5rem;
-            }
-            .footer-links a {
-                font-family: var(--mono);
-                font-size: 9px;
-                letter-spacing: 0.1em;
-                text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.5);
-                text-decoration: none;
-                transition: color 0.2s;
-            }
-            .footer-links a:hover {
-                color: var(--aq);
+            .foot .where {
+                font-weight: 300;
+                font-style: italic;
+                color: var(--stone);
             }
 
-            /* ===================== RESPONSIVE ===================== */
+            /* ===================== SMALARE ===================== */
+            /* Sex nav-poster plus koordinaterna slutar rymmas långt före
+               mobilbredd, så chrome byter till meny redan här. */
+            @media (max-width: 1080px) {
+                .chrome nav,
+                .chrome .coords {
+                    display: none;
+                }
+                .menu-button {
+                    display: inline-flex;
+                    align-items: center;
+                }
+            }
+
+            /* ===================== MOBIL ===================== */
             @media (max-width: 900px) {
                 :root {
-                    --pad: 1.5rem;
+                    --gut: 20px;
                 }
-                .about-inner {
+                html {
+                    scroll-padding-top: 64px;
+                }
+                .band,
+                .contact {
+                    padding-top: 56px;
+                    padding-bottom: 56px;
+                }
+                .stack {
+                    gap: 28px;
+                }
+                .chrome {
+                    padding: 14px var(--gut);
+                }
+                .hero {
+                    padding: 56px var(--gut) 48px var(--gut);
+                    display: flex;
+                    flex-direction: column;
+                    gap: 28px;
+                }
+                .hero .shell {
+                    gap: 28px;
+                }
+                .hero .meta span + span {
+                    display: none;
+                }
+                .hero .row {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 28px;
+                }
+                .actions {
+                    flex-direction: column;
+                }
+                .h2 {
+                    font-size: 26px;
+                }
+                .offer {
+                    margin: 0 calc(var(--gut) * -1);
+                }
+                .offer-row {
+                    padding: 22px var(--gut);
+                }
+                .offer-slot {
+                    padding: 0 var(--gut);
+                }
+                .offer-slot .offer-inner {
+                    margin-left: 42px;
+                }
+                .offer-grid {
+                    grid-template-columns: 30px 1fr 22px;
+                    gap: 12px;
+                }
+                .offer-title {
+                    font-size: 16px;
+                }
+                .offer-sign {
+                    font-size: 18px;
+                }
+                .callout {
+                    flex-direction: column;
+                    padding: 18px 20px;
+                    gap: 12px;
+                }
+                .split {
                     grid-template-columns: 1fr;
-                    gap: 3rem;
+                    gap: 28px;
                 }
-                .about-right {
-                    order: -1;
-                }
-                .about-photo {
-                    aspect-ratio: 3/2;
-                    object-position: center 20%;
-                }
-                .about-photo-tag {
-                    bottom: -1rem;
-                    right: -0.5rem;
-                    width: 100px;
-                    height: 100px;
-                }
-                .statement {
-                    background-image: none;
-                }
-                .statement-inner {
+                .cards {
                     grid-template-columns: 1fr;
-                    gap: 3rem;
+                    gap: 16px;
                 }
-                .statement-right {
-                    order: -1;
+                .card {
+                    padding: 22px 20px;
                 }
-                .statement-illus {
-                    max-width: 280px;
-                }
-                .services-grid {
-                    grid-template-columns: 1fr 1fr;
-                }
-                .ai-inner {
+                .team {
                     grid-template-columns: 1fr;
-                    gap: 3rem;
+                    gap: 0;
                 }
-                .ai-illus {
-                    max-width: 320px;
+                .lens {
+                    grid-template-columns: 64px 1fr;
+                    gap: 14px;
+                    font-size: 13px;
+                }
+                .lenses {
+                    font-size: 13px;
+                }
+                .mark .sigill {
+                    width: 120px;
+                }
+                .foot {
+                    flex-direction: column;
+                    gap: 8px;
                 }
             }
 
-            @media (max-width: 600px) {
-                :root {
-                    --pad: 1.25rem;
+            @media (prefers-reduced-motion: reduce) {
+                html {
+                    scroll-behavior: auto;
                 }
-                nav {
-                    padding: 0 1.25rem;
+                *,
+                *::before,
+                *::after {
+                    animation-duration: 1ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 1ms !important;
+                    transition-delay: 0ms !important;
                 }
-                .nav-burger {
-                    display: flex;
-                }
-                .nav-links {
-                    display: none;
-                    position: fixed;
-                    top: 56px;
-                    left: 0;
-                    right: 0;
-                    background: var(--wh);
-                    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-                    flex-direction: column;
-                    align-items: flex-start;
-                    gap: 0;
-                    padding: 0.5rem 1.25rem 1rem;
-                    z-index: 199;
-                }
-                .nav-links.open {
-                    display: flex;
-                }
-                .nav-links a {
-                    padding: 0.75rem 0;
-                    width: 100%;
-                    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-                    font-size: 15px;
-                }
-                .nav-links a:last-child {
-                    border-bottom: none;
-                }
-                .hero {
-                    padding: 5rem 1.25rem 0;
-                }
-                .hero h1 {
-                    font-size: clamp(2.8rem, 12vw, 4rem);
-                }
-                .services-grid {
-                    grid-template-columns: 1fr;
-                }
-                .team-names {
-                    gap: 1.5rem;
-                }
-                .contact-links {
-                    gap: 1.75rem;
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-                footer {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    gap: 1rem;
-                }
-                .footer-links {
-                    display: none;
-                }
+            }
+
+            /* Utan JS finns ingen dragspelslogik: visa allt i stället. */
+            .no-js .offer-panel {
+                grid-template-rows: 1fr;
+            }
+            .no-js .offer-inner {
+                opacity: 1;
+                transform: none;
+            }
+            .no-js .offer-sign,
+            .no-js .menu-button {
+                display: none;
             }
         </style>
     </head>
-    <body>
-        <!-- NAV -->
-        <nav>
-            <a href="#" class="nav-logo">
-                <div class="nav-logo-mark">
-                    <img src="assets/icon_pos.svg" alt="" />
-                </div>
-                Huvudkontoret
+
+    <body class="no-js">
+        <a class="skip" href="#erbjudande">Hoppa till innehållet</a>
+
+        <!-- CHROME -->
+        <div class="chrome">
+            <a class="lockup" href="#top">
+                <span class="sigill" aria-hidden="true"></span>
+                <span class="wordmark"
+                    >huvudkontoret<span class="tld">.io</span></span
+                >
             </a>
-            <div class="nav-links" id="navLinks">
-                <a href="#om">Om oss</a>
-                <a href="#tjanster">Tjänster</a>
-                <a href="#contact">Kontakt</a>
-            </div>
-            <button class="nav-burger" id="navBurger" aria-label="Öppna meny">
-                <span></span>
-                <span></span>
-                <span></span>
+            <nav aria-label="Sidsektioner">
+                <a href="#erbjudande">ERBJUDANDE</a>
+                <a href="#arbetssatt">ARBETSSÄTT</a>
+                <a href="#vardeord">SÅ MÄRKS DET</a>
+                <a href="#teamet">TEAMET</a>
+                <a href="#systemet">SYSTEMET</a>
+                <a class="now" href="#kontakt">KONTAKT</a>
+            </nav>
+            <span class="coords">LULEÅ · 65.5848° N</span>
+            <button
+                class="menu-button"
+                type="button"
+                aria-expanded="false"
+                aria-controls="meny"
+            >
+                [ MENY ]
             </button>
-        </nav>
+        </div>
+
+        <!-- MENY (mobil) -->
+        <div class="menu" id="meny" hidden>
+            <span class="label" style="padding-bottom: 14px">// MENY</span>
+            <nav aria-label="Sidsektioner, mobil">
+                <a href="#erbjudande">Erbjudande <span class="g">-&gt;</span></a>
+                <a href="#arbetssatt">Arbetssätt <span class="g">-&gt;</span></a>
+                <a href="#vardeord">Så märks det <span class="g">-&gt;</span></a>
+                <a href="#teamet">Teamet <span class="g">-&gt;</span></a>
+                <a href="#systemet">Systemet <span class="g">-&gt;</span></a>
+                <a href="#kontakt">Kontakt <span class="g">-&gt;</span></a>
+            </nav>
+            <span class="coords">LULEÅ · 65.5848° N / 22.1547° E</span>
+        </div>
 
         <!-- HERO -->
-        <section class="hero">
-            <h1>Nästa steg,<br />på riktigt.</h1>
-            <p class="hero-sub">
-                AI, systemutveckling och tekniskt stöd<br />
-                som fungerar i vardagen.
-            </p>
-            <p class="hero-body">
-                Det händer väldigt mycket just nu. Nya möjligheter, nya krav och
-                många beslut som behöver tas. Vi arbetar nära teamet och
-                verksamheten, med fokus på att få saker att fungera, inte bara
-                se bra ut på papper. Nya initiativ, starkare team och bättre
-                teknikstöd. Konkret och utan omvägar.
-            </p>
-
-            <!-- HERO ILLUSTRATION -->
-            <div class="hero-illus">
-                <img
-                    src="assets/ai_hero.svg"
-                    alt="AI och systemutveckling illustration"
-                />
-            </div>
-        </section>
-
-        <!-- OM OSS -->
-        <section class="about" id="om">
-            <div class="about-inner">
-                <div class="about-left">
-                    <h2 class="section-label">Om oss</h2>
-                    <h3>Vi bygger det som behövs
-                    </h3>
-                    <p>
-                        Huvudkontoret är ett konsultbolag i Luleå med fokus på
-                        AI, systemutveckling och teknisk rådgivning.
-                    </p>
-                    <p>
-                        Vi är tre grundare med erfarenhet från både stora
-                        organisationer och mindre bolag. Vi arbetar nära
-                        verksamhet och teknik, med ansvar hela vägen från beslut
-                        till leverans.
-                    </p>
-                    <p>
-                        Huvudkontoret startades utifrån övertygelsen att det
-                        finns ett bättre sätt att arbeta. Färre omvägar,
-                        tydligare ansvar och mer fokus på det som faktiskt ska
-                        bli klart.
-                    </p>
-                    <ul class="about-pillars">
-                        <li><span class="pillar-num">01</span> Lokala</li>
-                        <li><span class="pillar-num">02</span> Snabba</li>
-                        <li>
-                            <span class="pillar-num">03</span> Vana att få saker
-                            gjorda
-                        </li>
-                    </ul>
+        <header class="hero" id="top">
+            <div class="shell stack">
+                <div class="meta label">
+                    <span>// TECHBOLAG, LULEÅ</span>
+                    <span>KÄNDA FÖR VAD SOM HÄNDER, INTE FÖR SLIDES</span>
                 </div>
-                <div class="about-right">
-                    <img
-                        src="assets/IMG_0026.webp"
-                        alt="Teamet på Huvudkontoret"
-                        class="about-photo"
-                    />
-                    <!-- Sticker overlay on photo -->
-                    <div class="about-photo-tag">
-                        <img src="assets/brainiacs_alert.svg" alt="" />
+                <h1>Nästa steg.<br />På riktigt.</h1>
+                <div class="row">
+                    <p class="prompt">
+                        huvudkontoret<span class="caret" aria-hidden="true"
+                            >▮</span
+                        >
+                    </p>
+                    <div class="actions">
+                        <a class="btn" href="#erbjudande"
+                            ><span class="g">VAD VI GÖR -&gt;</span></a
+                        >
+                        <a class="btn ghost" href="#kontakt">KONTAKT</a>
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                <p class="about-more">
-                    Vi täcker både utveckling och hur AI används i
-                    organisationer, från riktlinjer och policys till utbildning
-                    och arbetssätt som faktiskt används i praktiken. Det ska
-                    vara lätt att förstå, enkelt att följa upp och möjligt att
-                    visa vad det ger.<br /><br />
-                    Inget överdrivet. Inget som låter bättre än det är.<br /><br />
-                    Lokalt förankrat i Luleå, med vana att arbeta nära och få
-                    saker att hända.
+                <p class="ingress">
+                    AI, systemutveckling och tekniskt stöd som fungerar i
+                    vardagen, inte bara ser bra ut på papper. Framkant. Lokalt
+                    förankrat. Globalt relevant.
                 </p>
             </div>
-        </section>
+        </header>
 
-        <!-- STATEMENT / RABBIT -->
-        <section class="statement">
-            <div class="statement-inner">
-                <div class="statement-left">
-                    <h2
-                        class="section-label"
-                        style="color: rgba(255, 255, 255, 0.3)"
+        <!-- ERBJUDANDE -->
+        <section class="band" id="erbjudande">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// ERBJUDANDE</span>
+                        <h2 class="h2">Vad vi gör</h2>
+                    </div>
+                    <span class="aside"
+                        >Vi förstår vad ni faktiskt behöver, inte bara vad ni
+                        ber om.</span
                     >
-                        Vad vi erbjuder
+                </div>
+
+                <div class="offer">
+                    <button
+                        class="offer-row"
+                        type="button"
+                        id="erb-1"
+                        aria-expanded="false"
+                        aria-controls="erb-1-panel"
+                    >
+                        <span class="offer-grid">
+                            <span class="offer-num">01</span>
+                            <span class="offer-body">
+                                <span class="offer-title"
+                                    >AI &amp; automatisering</span
+                                >
+                                <span class="offer-lead"
+                                    >AI där det gör verklig nytta. Vi
+                                    automatiserar det som tar tid och bygger in
+                                    AI i era faktiska flöden, inte i demos.</span
+                                >
+                            </span>
+                            <span class="offer-sign" aria-hidden="true">+</span>
+                        </span>
+                    </button>
+                    <div class="offer-slot">
+                        <div
+                            class="offer-panel"
+                            id="erb-1-panel"
+                            role="region"
+                            aria-labelledby="erb-1"
+                        >
+                            <div class="offer-clip">
+                                <div class="offer-inner">
+                                    <span class="offer-rule"></span>
+                                    <p>
+                                        AI gör nytta först när det används i
+                                        riktiga system och arbetsflöden.
+                                        Potentialen är stor, men effekten kommer
+                                        när användningen är tydlig och
+                                        genomförandet rätt.
+                                    </p>
+                                    <p class="dim">
+                                        Automatisera manuella processer, bygga
+                                        AI-stöd i befintliga system, skapa
+                                        interna verktyg. Även språkmodeller,
+                                        AI-assistenter och automatiserade flöden
+                                        ingår.
+                                    </p>
+                                    <span class="point"
+                                        >Alla pratar om AI, färre förstår hur
+                                        det kan hjälpa på riktigt.</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="offer-row"
+                        type="button"
+                        id="erb-2"
+                        aria-expanded="false"
+                        aria-controls="erb-2-panel"
+                    >
+                        <span class="offer-grid">
+                            <span class="offer-num">02</span>
+                            <span class="offer-body">
+                                <span class="offer-title"
+                                    >Teknisk utveckling</span
+                                >
+                                <span class="offer-lead"
+                                    >Robusta system byggda för att hålla. Från
+                                    idé till produktion, återanvändbart och
+                                    förvaltningsbart.</span
+                                >
+                            </span>
+                            <span class="offer-sign" aria-hidden="true">+</span>
+                        </span>
+                    </button>
+                    <div class="offer-slot">
+                        <div
+                            class="offer-panel"
+                            id="erb-2-panel"
+                            role="region"
+                            aria-labelledby="erb-2"
+                        >
+                            <div class="offer-clip">
+                                <div class="offer-inner">
+                                    <span class="offer-rule"></span>
+                                    <p>
+                                        Digitala lösningar ska fungera i
+                                        vardagen, inte bara se bra ut i en
+                                        presentation. Därför byggs kundportaler,
+                                        interna system, appar och integrationer
+                                        med fokus på stabilitet.
+                                    </p>
+                                    <p class="dim">
+                                        Nyutveckling, vidareutveckling eller
+                                        modernisering av äldre system. Oavsett
+                                        utgångspunkt är målet detsamma: hög
+                                        kvalitet och tydlig leverans.
+                                    </p>
+                                    <span class="point"
+                                        >Bra teknik märks ofta först när den
+                                        bara fungerar.</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="offer-row"
+                        type="button"
+                        id="erb-3"
+                        aria-expanded="false"
+                        aria-controls="erb-3-panel"
+                    >
+                        <span class="offer-grid">
+                            <span class="offer-num">03</span>
+                            <span class="offer-body">
+                                <span class="offer-title"
+                                    >Teknisk rådgivning</span
+                                >
+                                <span class="offer-lead"
+                                    >Second opinion, arkitektur och vägval. Vi
+                                    säger ifrån när vi ser en bättre väg.</span
+                                >
+                            </span>
+                            <span class="offer-sign" aria-hidden="true">+</span>
+                        </span>
+                    </button>
+                    <div class="offer-slot">
+                        <div
+                            class="offer-panel"
+                            id="erb-3-panel"
+                            role="region"
+                            aria-labelledby="erb-3"
+                        >
+                            <div class="offer-clip">
+                                <div class="offer-inner">
+                                    <span class="offer-rule"></span>
+                                    <p>
+                                        Rätt beslut sparar tid, pengar och
+                                        onödiga omtag. Arkitektur, teknikval,
+                                        integrationer och produktutveckling
+                                        kräver erfarenhet från flera miljöer.
+                                    </p>
+                                    <p class="dim">
+                                        I vissa lägen behövs en second opinion.
+                                        I andra någon som snabbt reder ut
+                                        nuläget och visar vägen framåt.
+                                        Rekommendationerna är tydliga och
+                                        förankrade i verkligheten.
+                                    </p>
+                                    <span class="point"
+                                        >När besluten är viktiga lönar det sig
+                                        att prata med någon som gjort resan
+                                        tidigare.</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="offer-row"
+                        type="button"
+                        id="erb-4"
+                        aria-expanded="false"
+                        aria-controls="erb-4-panel"
+                    >
+                        <span class="offer-grid">
+                            <span class="offer-num">04</span>
+                            <span class="offer-body">
+                                <span class="offer-title">Teamförstärkning</span>
+                                <span class="offer-lead"
+                                    >Rätt kompetens in i ert team, snabbt.
+                                    Bedömd på hur den arbetar, inte vad som står
+                                    i CV:t.</span
+                                >
+                            </span>
+                            <span class="offer-sign" aria-hidden="true">+</span>
+                        </span>
+                    </button>
+                    <div class="offer-slot">
+                        <div
+                            class="offer-panel"
+                            id="erb-4-panel"
+                            role="region"
+                            aria-labelledby="erb-4"
+                        >
+                            <div class="offer-clip">
+                                <div class="offer-inner">
+                                    <span class="offer-rule"></span>
+                                    <p>
+                                        När tempot behöver upp eller rätt
+                                        kompetens saknas går det snabbt att
+                                        förstärka teamet.
+                                    </p>
+                                    <p class="dim">
+                                        Seniora utvecklare, tech leads,
+                                        systemarkitekter, apputvecklare och
+                                        teknisk projektledning för både kortare
+                                        och längre uppdrag. Kort startsträcka är
+                                        standard.
+                                    </p>
+                                    <span class="point"
+                                        >Rätt person gör ofta skillnad långt
+                                        utanför sin egen roll.</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="offer-row"
+                        type="button"
+                        id="erb-5"
+                        aria-expanded="false"
+                        aria-controls="erb-5-panel"
+                    >
+                        <span class="offer-grid">
+                            <span class="offer-num">05</span>
+                            <span class="offer-body">
+                                <span class="offer-title"
+                                    >Rekrytering &amp; kvalitetssäkring</span
+                                >
+                                <span class="offer-lead"
+                                    >Vi hittar och kvalitetssäkrar människorna.
+                                    Vem vi tar in är vår viktigaste
+                                    kvalitetssäkring.</span
+                                >
+                            </span>
+                            <span class="offer-sign" aria-hidden="true">+</span>
+                        </span>
+                    </button>
+                    <div class="offer-slot">
+                        <div
+                            class="offer-panel"
+                            id="erb-5-panel"
+                            role="region"
+                            aria-labelledby="erb-5"
+                        >
+                            <div class="offer-clip">
+                                <div class="offer-inner">
+                                    <span class="offer-rule"></span>
+                                    <p>
+                                        Teknisk rekrytering blir dyr när den
+                                        blir fel. Därför räcker det sällan med
+                                        ett bra CV och en trevlig intervju.
+                                    </p>
+                                    <p class="dim">
+                                        Vi stöttar hela processen: kravprofil,
+                                        search, urval, teknisk screening och
+                                        slutbedömning. Har ni redan kandidater i
+                                        process kvalitetssäkrar vi med kodtester
+                                        och tekniska intervjuer.
+                                    </p>
+                                    <span class="point"
+                                        >Tryggare beslut. Starkare team.</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="offer-row"
+                        type="button"
+                        id="erb-6"
+                        aria-expanded="false"
+                        aria-controls="erb-6-panel"
+                    >
+                        <span class="offer-grid">
+                            <span class="offer-num">06</span>
+                            <span class="offer-body">
+                                <span class="offer-title"
+                                    >Produkt- &amp; innovationsstöd</span
+                                >
+                                <span class="offer-lead"
+                                    >Från koncept till PoC och MVP. Snabbt och
+                                    utan onödigt krångel.</span
+                                >
+                            </span>
+                            <span class="offer-sign" aria-hidden="true">+</span>
+                        </span>
+                    </button>
+                    <div class="offer-slot">
+                        <div
+                            class="offer-panel"
+                            id="erb-6-panel"
+                            role="region"
+                            aria-labelledby="erb-6"
+                        >
+                            <div class="offer-clip">
+                                <div class="offer-inner">
+                                    <span class="offer-rule"></span>
+                                    <p>
+                                        Bra idéer fastnar ofta mellan ambition
+                                        och genomförande. Då behövs ett snabbt
+                                        och praktiskt sätt att testa om något
+                                        håller.
+                                    </p>
+                                    <p class="dim">
+                                        Proof of concept, MVP-utveckling och
+                                        tekniska valideringar tas fram stegvis.
+                                        Först bevisa det viktigaste, sedan bygga
+                                        vidare.
+                                    </p>
+                                    <span class="point"
+                                        >Kortare väg från idé till verklighet,
+                                        med lägre risk längs vägen.</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout">
+                    <span
+                        ><b>// AI i praktiken</b>
+                        <span style="font-weight: 300"
+                            >utbildningar och workshops som gör ert team
+                            självgående på AI i vardagen.</span
+                        ></span
+                    >
+                    <a href="#kontakt" style="font-weight: 600"
+                        ><span class="g">-&gt;</span> boka ett pass</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ARBETSSÄTT -->
+        <section class="band" id="arbetssatt">
+            <div class="shell split">
+                <div style="display: flex; flex-direction: column; gap: 16px">
+                    <span class="label">// ARBETSSÄTT</span>
+                    <h2 class="h2">Rakt på sak,<br />hela vägen</h2>
+                    <p
+                        style="
+                            font-size: 14px;
+                            font-weight: 300;
+                            line-height: 1.8;
+                            max-width: 44ch;
+                        "
+                    >
+                        Vi säger ifrån när vi ser en bättre väg. Det är därför
+                        ni anlitar oss. Inga fasader, inga halvmesyrer.
+                    </p>
+                </div>
+                <div class="steps">
+                    <span
+                        ><b class="g">-&gt;</b>
+                        <span
+                            ><strong>Förstå.</strong>
+                            <em
+                                >Vad som faktiskt behövs, inte bara vad som
+                                beställs.</em
+                            ></span
+                        ></span
+                    >
+                    <span
+                        ><b class="g">-&gt;</b>
+                        <span
+                            ><strong>Ifrågasätt.</strong>
+                            <em
+                                >Vi utmanar och säger ifrån när vi ser en bättre
+                                väg.</em
+                            ></span
+                        ></span
+                    >
+                    <span
+                        ><b class="g">-&gt;</b>
+                        <span
+                            ><strong>Bygg.</strong>
+                            <em
+                                >Smart från start. Lösningar som håller och kan
+                                förvaltas.</em
+                            ></span
+                        ></span
+                    >
+                    <span
+                        ><b class="g">-&gt;</b>
+                        <span
+                            ><strong>Leverera.</strong>
+                            <em
+                                >Det vi lovar håller vi. Sen levererar vi
+                                igen.</em
+                            ></span
+                        ></span
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- SÅ MÄRKS DET -->
+        <section class="band ink" id="vardeord">
+            <div class="shell stack">
+                <div style="display: flex; flex-direction: column; gap: 10px">
+                    <span class="label">// SÅ MÄRKS DET</span>
+                    <h2 class="h2">
+                        Vi säger inte vilka vi är.<br /><span
+                            style="color: var(--signal)"
+                            >Det märks i vad vi gör.</span
+                        >
                     </h2>
-                    <h3>
-                        AI, systemutveckling och teknisk kompetens som fungerar
-                        i praktiken
-                    </h3>
-                    <p>
-                        Nya initiativ, högre tempo, starkare team och bättre
-                        teknikstöd. När det behöver hända på riktigt finns vi
-                        nära till hands.
-                    </p>
-                    <a href="#contact" class="btn btn-aq">Kom igång</a>
                 </div>
-            </div>
-        </section>
-
-        <!-- TJÄNSTER -->
-        <section class="services" id="tjanster">
-            <div class="services-inner">
-                <h2 class="section-label">Våra tjänster</h2>
-                <div class="services-grid">
-                    <div class="svc-card" data-expandable>
-                        <div class="svc-card-header">
-                            <h3>AI och automatisering</h3>
-                            <svg
-                                class="svc-chevron"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M6 9l6 6 6-6" />
-                            </svg>
-                        </div>
-                        <p>
-                            AI som fungerar i vardagen, från riktlinjer och
-                            policies till automatiserade arbetsflöden.
-                        </p>
-                        <div class="svc-expand">
-                            <div class="svc-expand-inner">
-                                <p>
-                                    AI gör nytta först när det används i riktiga
-                                    system och arbetsflöden. Potentialen är
-                                    stor, men effekten kommer först när
-                                    användningen är tydlig och genomförandet
-                                    rätt.
-                                </p>
-                                <p>
-                                    Det kan handla om att automatisera manuella
-                                    processer, bygga AI-stöd i befintliga
-                                    system, skapa interna verktyg eller utveckla
-                                    smartare digitala tjänster. Även
-                                    språkmodeller, AI-assistenter och
-                                    automatiserade flöden ingår i erbjudandet.
-                                </p>
-                                <p>
-                                    För organisationer som vill komma igång
-                                    finns utbildningar, workshops, Responsible
-                                    AI, AI-policyer och stöd kring säker
-                                    användning.
-                                </p>
-                                <p>
-                                    Alla pratar om AI, färre förstår hur det kan
-                                    hjälpa på riktigt.
-                                </p>
-                            </div>
-                        </div>
+                <div class="cards">
+                    <div class="card">
+                        <b>Vi provar det nya innan det är tryggt.</b>
+                        <span
+                            >Och säger ärligt vad som var nytta och vad som bara
+                            var kul.</span
+                        >
                     </div>
-
-                    <div class="svc-card" data-expandable>
-                        <div class="svc-card-header">
-                            <h3>Teknisk utveckling</h3>
-                            <svg
-                                class="svc-chevron"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M6 9l6 6 6-6" />
-                            </svg>
-                        </div>
-                        <p>
-                            Webbtjänster, appar, API:er, integrationer och
-                            moderna system byggda för att hålla.
-                        </p>
-                        <div class="svc-expand">
-                            <div class="svc-expand-inner">
-                                <p>
-                                    Digitala lösningar ska fungera i vardagen,
-                                    inte bara se bra ut i en presentation.
-                                    Därför byggs webbtjänster, kundportaler,
-                                    interna system, appar, API:er och
-                                    integrationer med fokus på stabilitet och
-                                    långsiktighet.
-                                </p>
-                                <p>
-                                    Behovet kan vara nyutveckling,
-                                    vidareutveckling eller modernisering av
-                                    äldre system. Oavsett utgångspunkt är målet
-                                    detsamma: hög kvalitet och tydlig leverans.
-                                </p>
-                                <p>
-                                    Bra teknik märks ofta först när den bara
-                                    fungerar.
-                                </p>
-                            </div>
-                        </div>
+                    <div class="card">
+                        <b>Vi dokumenterar för nästa person.</b>
+                        <span
+                            >Varje leverans går att ta över, förvalta och bygga
+                            vidare på.</span
+                        >
                     </div>
-
-                    <div class="svc-card" data-expandable>
-                        <div class="svc-card-header">
-                            <h3>Teknisk rådgivning</h3>
-                            <svg
-                                class="svc-chevron"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M6 9l6 6 6-6" />
-                            </svg>
-                        </div>
-                        <p>
-                            Arkitektur, teknikval och beslut som genomförs i
-                            verklighet och med säkerhet.
-                        </p>
-                        <div class="svc-expand">
-                            <div class="svc-expand-inner">
-                                <p>
-                                    Rätt beslut sparar tid, pengar och onödiga
-                                    omtag. Arkitektur, teknikval, integrationer
-                                    och produktutveckling kräver erfarenhet från
-                                    flera miljöer.
-                                </p>
-                                <p>
-                                    I vissa lägen behövs en second opinion. I
-                                    andra behövs någon som snabbt kan reda ut
-                                    nuläget och visa vägen framåt.
-                                    Rekommendationerna är tydliga, praktiska och
-                                    förankrade i verkligheten.
-                                </p>
-                                <p>
-                                    När besluten är viktiga lönar det sig att
-                                    prata med någon som gjort resan tidigare.
-                                </p>
-                            </div>
-                        </div>
+                    <div class="card">
+                        <b>Vi säger nej när nej är rätt svar.</b>
+                        <span
+                            >Även när ja hade varit lättare att fakturera.</span
+                        >
                     </div>
-
-                    <div class="svc-card" data-expandable>
-                        <div class="svc-card-header">
-                            <h3>Teamförstärkning</h3>
-                            <svg
-                                class="svc-chevron"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M6 9l6 6 6-6" />
-                            </svg>
-                        </div>
-                        <p>
-                            Seniora utvecklare, tech leads och teknisk kompetens
-                            som träder fram dag ett.
-                        </p>
-                        <div class="svc-expand">
-                            <div class="svc-expand-inner">
-                                <p>
-                                    När tempot behöver upp eller rätt kompetens
-                                    saknas går det snabbt att förstärka teamet.
-                                </p>
-                                <p>
-                                    Seniora utvecklare, tech leads,
-                                    systemarkitekter, apputvecklare och teknisk
-                                    projektledning finns tillgängliga för både
-                                    kortare och längre uppdrag. Kort
-                                    startsträcka och hög nivå från dag ett är
-                                    standard.
-                                </p>
-                                <p>
-                                    Rätt person gör ofta skillnad långt utanför
-                                    sin egen roll.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="svc-card" data-expandable>
-                        <div class="svc-card-header">
-                            <h3>Rekrytering och kvalitetssäkring</h3>
-                            <svg
-                                class="svc-chevron"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M6 9l6 6 6-6" />
-                            </svg>
-                        </div>
-                        <p>Rätt nivå och tryggare beslut i rekryteringen.</p>
-                        <div class="svc-expand">
-                            <div class="svc-expand-inner">
-                                <p>
-                                    Teknisk rekrytering blir dyr när den blir
-                                    fel. Därför räcker det sällan med ett bra CV
-                                    och en trevlig intervju.
-                                </p>
-                                <p>
-                                    Med oss får ni stöd i hela processen:
-                                    kravprofil, search, urval, teknisk screening
-                                    och slutbedömning. För bolag som redan har
-                                    kandidater i process kan vi kvalitetssäkra
-                                    med kodtester, arbetsprov och tekniska
-                                    intervjuer anpassade efter er miljö.
-                                </p>
-                                <p>Tryggare beslut. Starkare team.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="svc-card" data-expandable>
-                        <div class="svc-card-header">
-                            <h3>Produkt- och innovationsstöd</h3>
-                            <svg
-                                class="svc-chevron"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M6 9l6 6 6-6" />
-                            </svg>
-                        </div>
-                        <p>
-                            Från idé till MVP: proof of concept och nya digitala
-                            tjänster.
-                        </p>
-                        <div class="svc-expand">
-                            <div class="svc-expand-inner">
-                                <p>
-                                    Bra idéer fastnar ofta mellan ambition och
-                                    genomförande. Då behövs ett snabbt och
-                                    praktiskt sätt att testa om något håller.
-                                </p>
-                                <p>
-                                    Proof of concept, MVP-utveckling, tekniska
-                                    valideringar och nya digitala tjänster tas
-                                    fram stegvis. Först bevisa det viktigaste,
-                                    sedan bygga vidare.
-                                </p>
-                                <p>
-                                    Kortare väg från idé till verklighet, med
-                                    lägre risk längs vägen.
-                                </p>
-                            </div>
-                        </div>
+                    <div class="card">
+                        <b>Vi visar arbetet, inte sliderna.</b>
+                        <span
+                            >Kod, dokumentation och roadmap ligger öppet bakom
+                            adresserna nedan.</span
+                        >
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- AI I PRAKTIKEN -->
-        <section class="ai-section">
-            <div class="ai-inner">
-                <div class="ai-illus" id="ai-lottie"></div>
-                <div class="ai-right">
-                    <h2 class="section-label">AI i praktiken</h2>
-                    <h3>Alla pratar om AI<br />Färre använder det rätt
-                    </h3>
-                    <p>
-                        Potentialen finns redan i befintliga system, processer
-                        och arbetsätt. Det viktiga är att börja nyttan redan
-                        idag.
-                    </p>
-                    <p>
-                        Automatisering, beslutsstöd, intern effektivisering och
-                        smartare kundresor är vanliga första steg. Vi erbjuder
-                        också utbildningar och workshops för verksamheter som
-                        vill komma igång på rätt sätt.
-                    </p>
+        <!-- TEAMET -->
+        <section class="band" id="teamet">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// TEAMET</span>
+                        <h2 class="h2">Människorna bakom</h2>
+                    </div>
+                    <span class="aside"
+                        >Grundat i Luleå. Vana att få saker gjorda.</span
+                    >
                 </div>
+                <div class="team">
+                    <div class="person">
+                        <span class="top"
+                            ><span class="name">Magnus Renholm</span
+                            ><span class="role">CSO</span></span
+                        >
+                        <span class="line"
+                            >Har suttit på er sida av bordet. Vet hur det låter
+                            när konsulter säljer.</span
+                        >
+                        <a class="addr g" href="#systemet"
+                            >-&gt; huvudkontoret<span class="tld-name">.name</span
+                            >/magnus</a
+                        >
+                    </div>
+                    <div class="person">
+                        <span class="top"
+                            ><span class="name">Hanna Wikman</span
+                            ><span class="role">VD</span></span
+                        >
+                        <span class="line"
+                            >Säger det ni behöver höra, inte det ni vill. Svarar
+                            själv i telefon.</span
+                        >
+                        <a class="addr g" href="#systemet"
+                            >-&gt; huvudkontoret<span class="tld-name">.name</span
+                            >/hanna</a
+                        >
+                    </div>
+                    <div class="person">
+                        <span class="top"
+                            ><span class="name">Sebastian Berglönn</span
+                            ><span class="role">CTO</span></span
+                        >
+                        <span class="line"
+                            >Bygger hellre en fungerande halvfärdig än en
+                            perfekt plan. Visar koden.</span
+                        >
+                        <a class="addr g" href="#systemet"
+                            >-&gt; huvudkontoret<span class="tld-name">.name</span
+                            >/sebastian</a
+                        >
+                    </div>
+                </div>
+                <span class="note"
+                    ><span class="g">-&gt;</span> hela nätverket bor bakom
+                    <a href="#systemet">.name</a>, en adress per person.</span
+                >
             </div>
         </section>
 
-        <!-- TEAM -->
-        <section class="team" id="team">
-            <div class="team-photo-wrap">
-                <img
-                    src="assets/IMG_0024.webp"
-                    alt="Teamet på Huvudkontoret - Hanna Wikman, Magnus Renholm, Sebastian Berglönn"
-                    class="team-photo"
-                />
-                <div class="team-overlay"></div>
-                <div class="team-caption container">
-                    <div class="team-names">
-                        <div class="team-person">
-                            <span class="team-person-role">CSO</span>
-                            <div class="team-person-name">Magnus Renholm</div>
-                        </div>
-                        <div class="team-person">
-                            <span class="team-person-role">VD</span>
-                            <div class="team-person-name">Hanna Wikman</div>
-                        </div>
-                        <div class="team-person">
-                            <span class="team-person-role">CTO</span>
-                            <div class="team-person-name">
-                                Sebastian Berglönn
-                            </div>
-                        </div>
+        <!-- SYSTEMET -->
+        <section class="band" id="systemet">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// SYSTEMET</span>
+                        <h2 class="h2">Ett huvudkontor. Många dörrar.</h2>
                     </div>
+                    <span class="aside"
+                        >Vi har inte en webbplats. Vi har ett system av
+                        adresser. Du står i
+                        <span style="font-weight: 600">.io</span>,
+                        systemlinsen.</span
+                    >
                 </div>
+                <div class="lenses">
+                    <span class="lens soon"
+                        ><span class="addr"
+                            ><span style="color: var(--pow-ai)">.</span>ai</span
+                        ><span class="what"
+                            >visar intelligensen: agenter och arbetsflöden i
+                            drift <span class="status g">[ SNART ]</span></span
+                        ></span
+                    >
+                    <span class="lens"
+                        ><span class="addr"
+                            ><span style="color: var(--pow-dev)">.</span
+                            >dev</span
+                        ><span class="what"
+                            >visar bygget: dokumentation, arkitektur,
+                            projekt</span
+                        ></span
+                    >
+                    <span class="lens soon"
+                        ><span class="addr"
+                            ><span style="color: var(--pow-app)">.</span
+                            >app</span
+                        ><span class="what"
+                            >visar produkterna: testa själv innan du frågar
+                            <span class="status g">[ SNART ]</span></span
+                        ></span
+                    >
+                    <span class="lens here"
+                        ><span class="addr"
+                            ><span style="color: var(--pow-io)">.</span>io</span
+                        ><span class="what"
+                            >visar systemet: du är här
+                            <span class="g" style="color: var(--stone)"
+                                >&lt;-</span
+                            ></span
+                        ></span
+                    >
+                    <span class="lens"
+                        ><span class="addr"
+                            ><span style="color: var(--pow-cv)">.</span>cv</span
+                        ><span class="what"
+                            >visar kompetensen: bevis, inte pitch</span
+                        ></span
+                    >
+                    <span class="lens"
+                        ><span class="addr"
+                            ><span style="color: var(--pow-name)">.</span
+                            >name</span
+                        ><span class="what"
+                            >visar människorna: en adress per person</span
+                        ></span
+                    >
+                    <span class="lens"
+                        ><span class="addr"
+                            ><span style="color: var(--pow-xyz)">.</span
+                            >xyz</span
+                        ><span class="what"
+                            >visar experimenten: vår whiteboard. hk, kl och kull
+                            bor här tills de bär</span
+                        ></span
+                    >
+                    <span class="lens soon"
+                        ><span class="addr"
+                            ><span style="color: var(--pow-vote)">.</span
+                            >vote</span
+                        ><span class="what"
+                            >visar riktningen: rösta på vad vi bygger härnäst
+                            <span class="status g">[ SNART ]</span></span
+                        ></span
+                    >
+                </div>
+                <span
+                    class="note"
+                    style="font-size: 12px; font-style: italic"
+                    >Punkten bär linsens färg, bokstäverna står i Bläck: samma
+                    regel som i ordbilden. Inne i linsen lyser färgen fullt
+                    ut.</span
+                >
             </div>
         </section>
 
         <!-- KONTAKT -->
-        <section class="contact" id="contact">
-            <h2>Kontakta oss</h2>
-            <div class="contact-links">
-                <div class="contact-link-item">
-                    <span class="contact-link-label">E-post</span>
-                    <a
-                        href="mailto:hej@huvudkontoret.io"
-                        class="contact-link-value"
+        <section class="contact" id="kontakt">
+            <div class="shell" style="display: flex; flex-direction: column; gap: 56px">
+                <div class="split">
+                    <div
+                        style="display: flex; flex-direction: column; gap: 20px"
                     >
-                        hej@huvudkontoret.io
-                    </a>
+                        <span class="label">// KONTAKT</span>
+                        <h2>Har ni ett problem<br />värt att lösa?</h2>
+                        <p>
+                            Hör av er. Vi säger vad vi tycker, även om svaret är
+                            att ni inte behöver oss.
+                        </p>
+                        <p class="quiet">
+                            Vi är inte det största bolaget ni kan anlita. Men
+                            förmodligen det ärligaste.
+                        </p>
+                        <a
+                            class="btn"
+                            style="align-self: flex-start"
+                            href="mailto:hej@huvudkontoret.io"
+                            >hej@huvudkontoret.io</a
+                        >
+                    </div>
+                    <div class="mark">
+                        <span class="sigill" aria-hidden="true"></span>
+                    </div>
                 </div>
-                <div class="contact-link-item">
-                    <span class="contact-link-label">Webb</span>
-                    <a
-                        href="https://huvudkontoret.io"
-                        class="contact-link-value"
+                <footer class="foot">
+                    <span style="font-weight: 600"
+                        >huvudkontoret<span class="tld">.io</span></span
                     >
-                        huvudkontoret.io
-                    </a>
-                </div>
-                <div class="contact-link-item">
-                    <span class="contact-link-label">Ort</span>
-                    <span class="contact-link-value" style="cursor: default">
-                        Luleå, Norrbotten
-                    </span>
-                </div>
-            </div>
-            <div class="contact-cta-row">
-                <a href="mailto:hej@huvudkontoret.io" class="btn btn-aq">
-                    Skicka ett mail
-                </a>
-                <a
-                    href="https://huvudkontoret.io"
-                    class="btn btn-outline-light"
-                >
-                    Läs mer →
-                </a>
+                    <span class="where"
+                        >huvudkontoret · Luleå · 65.5848° N / 22.1547° E</span
+                    >
+                    <span class="claim">VI LEVERERAR DET VI LOVAR</span>
+                </footer>
             </div>
         </section>
 
-        <!-- FOOTER -->
-        <footer>
-            <div class="footer-logo">
-                <div class="footer-logo-mark">
-                    <img src="assets/icon_pos.svg" alt="" />
-                </div>
-                Huvudkontoret
-            </div>
-            <div class="footer-links">
-                <a href="#om">Om oss</a>
-                <a href="#tjanster">Tjänster</a>
-                <a href="#contact">Kontakt</a>
-            </div>
-            <div class="footer-copy">
-                © 2026 Huvudkontoret Norr AB · Luleå · Sverige
-            </div>
-        </footer>
-        <script src="assets/lottie.min.js"></script>
         <script>
-            lottie.loadAnimation({
-                container: document.getElementById("ai-lottie"),
-                renderer: "svg",
-                loop: true,
-                autoplay: true,
-                path: "assets/ai_animation.json",
-            });
-        </script>
-        <script>
-            document
-                .querySelectorAll(".svc-card[data-expandable]")
-                .forEach((card) => {
-                    card.addEventListener("click", () => {
-                        card.classList.toggle("open");
+            document.body.classList.remove("no-js");
+
+            /* Erbjudandet: en rad åt gången. Panelen ligger i en egen slot
+               efter knappen så att bläckytan täcker hela raden. */
+            (function offer() {
+                const rows = Array.from(
+                    document.querySelectorAll(".offer-row"),
+                );
+
+                function setOpen(row, open) {
+                    const slot = row.nextElementSibling;
+                    const panel = slot.querySelector(".offer-panel");
+                    row.setAttribute("aria-expanded", String(open));
+                    row.querySelector(".offer-sign").textContent = open
+                        ? "−"
+                        : "+";
+                    slot.classList.toggle("open", open);
+                    panel.classList.toggle("open", open);
+                }
+
+                rows.forEach((row) => {
+                    setOpen(row, false);
+                    row.addEventListener("click", () => {
+                        const open =
+                            row.getAttribute("aria-expanded") === "true";
+                        rows.forEach((other) => setOpen(other, false));
+                        setOpen(row, !open);
                     });
                 });
-        </script>
-        <!-- Cloudflare Web Analytics -->
-        <script
-            defer
-            src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
-        ></script>
-        <!-- End Cloudflare Web Analytics -->
-        <script>
-            (function () {
-                var burger = document.getElementById('navBurger');
-                var links = document.getElementById('navLinks');
-                burger.addEventListener('click', function () {
-                    var open = links.classList.toggle('open');
-                    burger.classList.toggle('open', open);
-                    burger.setAttribute('aria-label', open ? 'Stäng meny' : 'Öppna meny');
+
+                /* Första raden står öppen så att ytan visar vad den kan. */
+                if (rows.length) setOpen(rows[0], true);
+            })();
+
+            /* Menyn på smala skärmar. */
+            (function menu() {
+                const button = document.querySelector(".menu-button");
+                const panel = document.getElementById("meny");
+                if (!button || !panel) return;
+
+                function setOpen(open) {
+                    panel.hidden = !open;
+                    button.setAttribute("aria-expanded", String(open));
+                    button.textContent = open ? "[ STÄNG ]" : "[ MENY ]";
+                    document.body.style.overflow = open ? "hidden" : "";
+                }
+
+                button.addEventListener("click", () =>
+                    setOpen(panel.hidden),
+                );
+                panel.addEventListener("click", (event) => {
+                    if (event.target.closest("a")) setOpen(false);
                 });
-                links.querySelectorAll('a').forEach(function (a) {
-                    a.addEventListener('click', function () {
-                        links.classList.remove('open');
-                        burger.classList.remove('open');
-                        burger.setAttribute('aria-label', 'Öppna meny');
-                    });
+                document.addEventListener("keydown", (event) => {
+                    if (event.key === "Escape" && !panel.hidden) {
+                        setOpen(false);
+                        button.focus();
+                    }
                 });
             })();
         </script>
