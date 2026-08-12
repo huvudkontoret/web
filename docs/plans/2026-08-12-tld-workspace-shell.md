@@ -283,6 +283,18 @@ In `hk.json`, change the `test` command so `hk verify web` and CI stay the same 
   "test": "node --test tools/check/test.mjs src/lib/tld.test.mjs && node tools/check/run.mjs",
 ```
 
+- [ ] **Step 6b: Keep the new source out of the site**
+
+Publishing is still opt-out until Task 5, so a new directory at the repo root is one merge away from being served. The `workers` check catches it — `src/lib/tld.ts would be served from the site but is not part of it` — and the fix is one entry in `.assetsignore`, beside `hk.json`:
+
+```
+# Source, not site. Both go away with this file once the asset directory
+# becomes dist/, where only the built site exists in the first place.
+src/
+```
+
+Task 2 needs the same for `worker/`, and Task 3 for `package.json` and `astro.config.mjs`. This is the opt-out model doing its one job badly enough to be worth replacing, which is what Task 5 is for.
+
 - [ ] **Step 7: Verify the whole gate is still green**
 
 Run: `node --test tools/check/test.mjs src/lib/tld.test.mjs && node tools/check/run.mjs && node tools/check/run.mjs --format`
