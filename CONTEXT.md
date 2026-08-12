@@ -56,7 +56,9 @@
   data) · `src/pages/demo/` (layer demos)
 - Live site: `index.html` · `index.md` · `llms.txt` · `sitemap.xml` ·
   `.well-known/` · `assets/` — served by GitHub Pages, domain in `CNAME`
-- Run: `npm run dev` (localhost:4321) · `npm run build` · `npm run lint`
+- Run: `hk dev web` serves the repo root at <http://127.0.0.1:8787> — exactly
+  the files GitHub Pages publishes, so the static site needs no build step.
+  The identity runtime keeps its own `npm run dev` in its worktree.
 - Gate for the static site: `hk verify web`, or `node tools/check/run.mjs`
   directly — the same commands `.github/workflows/pr.yml` runs on every pull
   request. What it asserts lives in `tools/check/facts.json`; why it asserts it
