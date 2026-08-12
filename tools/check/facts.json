@@ -14,7 +14,24 @@
   "licensedFontPattern": "^assets/fonts/.+\\.woff2$",
 
   "requiredFiles": ["CNAME", ".nojekyll", "index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
+
+  "publishedPaths": [
+    "index.html",
+    "index.md",
+    "llms.txt",
+    "llms-full.txt",
+    "robots.txt",
+    "sitemap.xml",
+    ".well-known/",
+    "assets/"
+  ],
+  "requiredPublished": ["index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
+
   "expectedCname": "huvudkontoret.io",
+
+  "//expectCustomDomain": "false until the cutover. Flipping this and adding the route to wrangler.jsonc are the same decision, and the gate fails on one without the other. See docs/runbooks/2026-08-12-pages-to-workers-cutover.md.",
+  "expectCustomDomain": false,
+
   "contentSignal": "ai-train=no",
   "neverPublished": ["^dist/", "^node_modules/", "^\\.astro/", "\\.env$", "^\\.wrangler/"],
 

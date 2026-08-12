@@ -23,6 +23,7 @@ import * as markup from "./checks/markup.mjs";
 import * as publishing from "./checks/publishing.mjs";
 import * as references from "./checks/references.mjs";
 import * as surfaces from "./checks/surfaces.mjs";
+import * as workers from "./checks/workers.mjs";
 import { loadSite } from "./lib/site.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -55,6 +56,16 @@ function baseline() {
     "robots.txt": "User-agent: *\nAllow: /\n\nContent-Signal: search=yes, ai-input=yes, ai-train=no\nSitemap: https://huvudkontoret.io/sitemap.xml\n",
     "sitemap.xml": '<?xml version="1.0" encoding="UTF-8"?>\n<urlset><url><loc>https://huvudkontoret.io/</loc></url></urlset>\n',
     "assets/logo.svg": '<svg xmlns="http://www.w3.org/2000/svg"></svg>\n',
+    "wrangler.jsonc": [
+      "{",
+      '  // The site is the repo root; https://example.com/ in a comment must not confuse the parser.',
+      '  "name": "web",',
+      '  "assets": { "directory": "." },',
+      '  "preview_urls": true,',
+      "}",
+      "",
+    ].join("\n"),
+    ".assetsignore": ".assetsignore\n.gitignore\nCNAME\n.nojekyll\nwrangler.jsonc\nassets/fonts/*.woff2\n",
   };
 }
 
@@ -63,8 +74,8 @@ after(() => {
   for (const dir of fixtures) rmSync(dir, { recursive: true, force: true });
 });
 
-/** Findings from one check against a site built from `files`. */
-function findings(check, files) {
+/** A throwaway git repo holding `files`. */
+function fixtureRoot(files) {
   const root = mkdtempSync(join(tmpdir(), "web-gate-"));
   fixtures.push(root);
   execFileSync("git", ["init", "-q"], { cwd: root });
@@ -76,9 +87,13 @@ function findings(check, files) {
   }
   // -f so fixtures can stage a file the fixture's own .gitignore excludes.
   execFileSync("git", ["add", "-A", "-f", "."], { cwd: root });
+  return root;
+}
 
+/** Findings from one check against a site built from `files`. */
+function findings(check, files, facts = FACTS) {
   const collected = [];
-  check.run(loadSite(root), FACTS, {
+  check.run(loadSite(fixtureRoot(files)), facts, {
     fail: (where, message) => collected.push({ where, message }),
   });
   return collected;
@@ -103,9 +118,88 @@ function assertClean(check, edits = {}) {
 }
 
 test("baseline site passes every check", () => {
-  for (const check of [publishing, references, markup, surfaces, fonts, formatting]) {
+  for (const check of [publishing, workers, references, markup, surfaces, fonts, formatting]) {
     assertClean(check);
   }
+});
+
+test("workers: a file that is neither ignored nor part of the site is a finding", () => {
+  assertFires(workers, { "NOTES.md": "internal\n" }, "would be served from the site but is not part of it");
+});
+
+test("workers: excluding a surface the agents depend on is a finding", () => {
+  assertFires(workers, { ".assetsignore": `${baseline()[".assetsignore"]}llms.txt\n` }, "agent surfaces depend on");
+});
+
+test("workers: a missing .assetsignore is a finding", () => {
+  assertFires(workers, { ".assetsignore": null }, "entire repo root would be served");
+});
+
+test("workers: a pattern the gate cannot read is a finding, not a guess", () => {
+  // Silently treating an unreadable pattern as "matches nothing" would wave
+  // through a file everyone believed was excluded.
+  assertFires(workers, { ".assetsignore": `${baseline()[".assetsignore"]}!docs/**\n` }, "syntax this gate does not read");
+});
+
+/** wrangler.jsonc with the apex route added — the cutover, as a diff. */
+function withCutoverRoute() {
+  return baseline()["wrangler.jsonc"].replace(
+    '"preview_urls": true,',
+    '"preview_urls": true,\n  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],',
+  );
+}
+
+test("workers: the custom domain arriving before the decision is a finding", () => {
+  // `wrangler deploy` creates the domain it finds in config, so this route
+  // moves the apex off GitHub Pages. It must never arrive as a side effect.
+  assertFires(
+    workers,
+    { "wrangler.jsonc": withCutoverRoute() },
+    "performs the cutover on the next production deploy",
+  );
+});
+
+test("workers: once the decision is recorded, the route is required and accepted", () => {
+  const decided = { ...FACTS, expectCustomDomain: true };
+
+  const missing = findings(workers, withEdits({}), decided);
+  assert.ok(
+    missing.some((finding) => finding.message.includes("no custom_domain route for huvudkontoret.io")),
+    `expected a missing-domain finding, got: ${JSON.stringify(missing, null, 2)}`,
+  );
+
+  const present = findings(workers, withEdits({ "wrangler.jsonc": withCutoverRoute() }), decided);
+  assert.deepEqual(present, [], `expected the cutover config to pass, got: ${JSON.stringify(present, null, 2)}`);
+});
+
+test("workers: preview_urls off is a finding", () => {
+  assertFires(
+    workers,
+    { "wrangler.jsonc": baseline()["wrangler.jsonc"].replace('"preview_urls": true', '"preview_urls": false') },
+    "preview_urls is not true",
+  );
+});
+
+test("workers: a wrangler config that does not parse is a finding", () => {
+  assertFires(workers, { "wrangler.jsonc": "{ oops\n" }, "does not parse");
+});
+
+test("workers: the licensed fonts must be excluded from upload while they are gitignored", () => {
+  // wrangler uploads the working directory, so .gitignore alone does not stop
+  // a local deploy from publishing MonoLisa. Dropping only the .assetsignore
+  // half quietly reopens that path.
+  assertFires(
+    workers,
+    { ".assetsignore": baseline()[".assetsignore"].replace("assets/fonts/*.woff2\n", "") },
+    "a local deploy would publish the licensed fonts",
+  );
+});
+
+test("workers: once the licence lands, dropping both rules together is fine", () => {
+  assertClean(workers, {
+    ".gitignore": "node_modules/\n",
+    ".assetsignore": baseline()[".assetsignore"].replace("assets/fonts/*.woff2\n", ""),
+  });
 });
 
 test("references: an asset that is not tracked is a finding", () => {
@@ -169,6 +263,22 @@ test("surfaces: a fact stated nowhere is editorial, not drift", () => {
     "index.html": baseline()["index.html"].replace(`  <p>${TEAM}</p>\n`, ""),
     "index.md": withoutTeam(baseline()["index.md"]),
     "llms.txt": withoutTeam(baseline()["llms.txt"]),
+  });
+});
+
+test("surfaces: a section heading repeated in one surface is a finding", () => {
+  // Exactly what a clean merge produces when two branches each add "## Team".
+  assertFires(
+    surfaces,
+    { "llms.txt": `${baseline()["llms.txt"]}\n## Team\n\n${TEAM}\n\n## Team\n\n${TEAM}\n` },
+    "is already a section at line",
+  );
+});
+
+test("surfaces: the same heading in two different surfaces is fine", () => {
+  assertClean(surfaces, {
+    "index.md": `${baseline()["index.md"]}\n## Kontakt\n\n${CONTACT}\n`,
+    "llms.txt": `${baseline()["llms.txt"]}\n## Kontakt\n\n${CONTACT}\n`,
   });
 });
 
