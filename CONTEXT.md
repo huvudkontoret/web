@@ -54,7 +54,7 @@
 ## Pointers
 
 - Original brief for the identity runtime — layers, perspectives, MVP scope:
-  PROMPT.md
+  PROMPT.md, on the `identity-runtime` branch together with `src/`
 - Code: `src/pages/{name,cv}/[slug].astro` (the two perspectives) ·
   `src/layouts/Shell.astro` (chrome) · `src/lib/tokens.ts` (perspectives as
   data) · `src/content.config.ts` + `src/content/nodes/` (node schema and
@@ -71,6 +71,8 @@
 - Decisions: `docs/adr/0001-serve-the-site-from-cloudflare-workers.md` ·
   designs in docs/specs/ (`2026-08-12-pr-gate-design.md`) · operations in
   docs/runbooks/ (`2026-08-12-pages-to-workers-cutover.md`, which carries the
-  rollback). README.md is still the untouched Astro starter template — trust
-  this file and PROMPT.md over it.
+  rollback).
+- Orientation: README.md is the way in — what the repo is, how to run and
+  verify it, what gets published, and where the work that is not on `main`
+  lives. This file stays the deeper one: domain language and the rules.
 - Workspace brief: `hk context web`
