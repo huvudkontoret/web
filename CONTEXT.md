@@ -59,7 +59,12 @@
 - Run: `hk dev web` serves the repo root at <http://127.0.0.1:8787> — exactly
   the files GitHub Pages publishes, so the static site needs no build step.
   The identity runtime keeps its own `npm run dev` in its worktree.
-- No decisions are recorded yet: the workspace standard is docs/adr/ +
-  docs/specs/, and this repo has neither. README.md is still the untouched
-  Astro starter template — trust this file and PROMPT.md over it.
+- Gate for the static site: `hk verify web`, or `node tools/check/run.mjs`
+  directly — the same commands `.github/workflows/pr.yml` runs on every pull
+  request. What it asserts lives in `tools/check/facts.json`; why it asserts it
+  is in `tools/check/README.md`. The Astro runtime is not gated.
+- Decisions: designs go in docs/specs/ (the gate is
+  `docs/specs/2026-08-12-pr-gate-design.md`); docs/adr/ is still empty.
+  README.md is still the untouched Astro starter template — trust this file and
+  PROMPT.md over it.
 - Workspace brief: `hk context web`
