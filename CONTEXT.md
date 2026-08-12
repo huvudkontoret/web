@@ -1,19 +1,23 @@
 # web — context
 
-> This repo is huvudkontoret.io. It holds two things at once, and knowing
-> which one you are touching is the whole point of this file. **The live
-> site** is a hand-written static page — `index.html` plus a set of
-> machine-readable surfaces (`index.md`, `llms.txt`, `sitemap.xml`,
-> `.well-known/`) that exist so agents can read the company as easily as
-> people can. **The identity runtime** is the Astro app under `src/`: an MVP
-> of `render(node, perspective)`, where the URL `huvudkontoret.<tld>/<slug>`
-> means "render this node through that perspective". The runtime is built and
-> committed but not yet deployed — GitHub Pages serves the repo root, not
-> Astro's build output. The runtime is v1 of the TLD concept and is still in
-> the experiment and decision phase: nothing about it is settled, and it is
-> not waiting on a deploy step.
+> This repo is huvudkontoret.io, and the two things it holds live on
+> different branches. **`main` is the live site**: a hand-written static page
+> — `index.html` plus a set of machine-readable surfaces (`index.md`,
+> `llms.txt`, `llms-full.txt`, `sitemap.xml`, `.well-known/`) that exist so
+> agents can read the company as easily as people can. No build step, no
+> dependencies, no `package.json`. **The identity runtime** is an Astro app
+> that lives on the `identity-runtime` branch: an MVP of
+> `render(node, perspective)`, where the URL `huvudkontoret.<tld>/<slug>`
+> means "render this node through that perspective". It was moved off `main`
+> in `bf21a0b` and is not deployed — GitHub Pages serves the repo root of
+> `main`, not an Astro build. The runtime is v1 of the TLD concept and is
+> still in the experiment and decision phase: nothing about it is settled,
+> and it is not waiting on a deploy step.
 
 ## Domain language
+
+The runtime terms below are the shared vocabulary for the TLD concept. The
+files they name are on the `identity-runtime` branch, not on `main`.
 
 | Term | Meaning |
 |---|---|
@@ -35,17 +39,20 @@
   color, emphasis, layout and tone. It may not change the facts, and a node
   must never carry presentation.
 - **Agents are a first-class audience.** Anything that changes what
-  Huvudkontoret *is* — services, contact, positioning — changes `index.html`,
-  `index.md` and `llms.txt` together. A stale `llms.txt` is a wrong answer
-  given confidently by someone else's agent.
+  huvudkontoret *is* — services, contact, positioning — changes `index.html`,
+  `index.md`, `llms.txt`, `llms-full.txt` and
+  `.well-known/agent-skills/understand-huvudkontoret/SKILL.md` **together**.
+  A stale surface is a wrong answer given confidently by someone else's
+  agent, and the one most easily forgotten is `llms-full.txt`, because
+  nothing links to it.
 - **Swedish for content, English for code and artifacts.** The published tone
   is practical, plain, locally grounded — no hype, no invented prices,
   availability, client names or commitments.
 - **The deploy is the repo root, and a push to `main` is a publish.** The apex
   rebuilds from `main` on every push, and the repo is public — so committing
-  here is publishing, both the served page and the source. `dist/` is
-  gitignored, so an Astro page is not live merely because it builds; wiring the
-  runtime to the domain is a deliberate, still-pending step.
+  here is publishing, both the served page and the source. The MonoLisa files
+  are gitignored, which is why the deployed page falls back to system
+  monospace.
 - **A pull request can be looked at before it is published.** Every PR gets a
   preview URL from the Worker, restricted with Cloudflare Access. It is built
   from the repo, so it renders with fallback monospace rather than MonoLisa —
@@ -64,21 +71,21 @@
   between this page and the profile as designed.
 - The OG image is generated, never designed: `tools/og-io.html` is the
   template and `assets/og-io.jpg` its current render.
-- Original brief for the identity runtime — layers, perspectives, MVP scope:
-  PROMPT.md, on the `identity-runtime` branch together with `src/`
-- Code: `src/pages/{name,cv}/[slug].astro` (the two perspectives) ·
-  `src/layouts/Shell.astro` (chrome) · `src/lib/tokens.ts` (perspectives as
-  data) · `src/content.config.ts` + `src/content/nodes/` (node schema and
-  data) · `src/pages/demo/` (layer demos)
-- Live site: `index.html` · `index.md` · `llms.txt` · `sitemap.xml` ·
-  `.well-known/` · `assets/` — served by GitHub Pages, domain in `CNAME`
+- The identity runtime is not here. It and its original brief (`PROMPT.md`)
+  left `main` in `bf21a0b`, and the `identity-runtime` branch that was meant
+  to carry them has since been deleted — so history is the only copy. Recover
+  what is needed from the commit before the removal, e.g. `git show
+  bf21a0b^:src/lib/tokens.ts` for the per-perspective token table.
+- Live site: `index.html` · `index.md` · `llms.txt` · `llms-full.txt` ·
+  `sitemap.xml` · `robots.txt` · `.well-known/` · `assets/` — domain in
+  `CNAME`. GitHub Pages still serves the apex; ADR 0001 decided to move it to
+  the Worker, and the runbook below is the step that actually does it.
 - Run: `hk dev web` serves the repo root at <http://127.0.0.1:8787> — exactly
-  the files GitHub Pages publishes, so the static site needs no build step.
-  The identity runtime keeps its own `npm run dev` in its worktree.
-- Gate for the static site: `hk verify web`, or `node tools/check/run.mjs`
-  directly — the same commands `.github/workflows/pr.yml` runs on every pull
-  request. What it asserts lives in `tools/check/facts.json`; why it asserts it
-  is in `tools/check/README.md`. The Astro runtime is not gated.
+  the files that get published, so the site needs no build step.
+- Gate: `hk verify web`, or `node tools/check/run.mjs` directly — the same
+  commands `.github/workflows/pr.yml` runs on every pull request. What it
+  asserts lives in `tools/check/facts.json`; why it asserts it is in
+  `tools/check/README.md`.
 - Decisions: `docs/adr/0001-serve-the-site-from-cloudflare-workers.md` ·
   designs in docs/specs/ (`2026-08-12-pr-gate-design.md`) · operations in
   docs/runbooks/ (`2026-08-12-pages-to-workers-cutover.md`, which carries the
