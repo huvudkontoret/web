@@ -21,6 +21,36 @@ export function run(site, facts, report) {
 
   checkSharedFacts(surfaces, facts, report);
   checkAddressesNotInService(surfaces, facts, report);
+  checkDuplicateSections(surfaces, report);
+}
+
+/**
+ * A section heading appearing twice in the same surface.
+ *
+ * This is what a clean git merge looks like when two branches each add the
+ * same section: no conflict, both kept. It reads as an ordinary file and
+ * states the same thing twice to every agent that parses it.
+ */
+function checkDuplicateSections(surfaces, report) {
+  for (const surface of surfaces) {
+    if (surface.file.endsWith(".html")) continue;
+    const seen = new Map();
+
+    surface.text.split(/\r?\n/).forEach((line, index) => {
+      const heading = /^(#{1,6})\s+(.*?)\s*$/.exec(line);
+      if (!heading) return;
+      const key = `${heading[1]} ${heading[2].toLowerCase()}`;
+      if (seen.has(key)) {
+        report.fail(
+          `${surface.file}:${index + 1}`,
+          `"${heading[2]}" is already a section at line ${seen.get(key)} — ` +
+            "duplicated headings are what a merge that kept both sides looks like",
+        );
+        return;
+      }
+      seen.set(key, index + 1);
+    });
+  }
 }
 
 /**

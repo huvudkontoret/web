@@ -240,6 +240,22 @@ test("surfaces: a fact stated nowhere is editorial, not drift", () => {
   });
 });
 
+test("surfaces: a section heading repeated in one surface is a finding", () => {
+  // Exactly what a clean merge produces when two branches each add "## Team".
+  assertFires(
+    surfaces,
+    { "llms.txt": `${baseline()["llms.txt"]}\n## Team\n\n${TEAM}\n\n## Team\n\n${TEAM}\n` },
+    "is already a section at line",
+  );
+});
+
+test("surfaces: the same heading in two different surfaces is fine", () => {
+  assertClean(surfaces, {
+    "index.md": `${baseline()["index.md"]}\n## Kontakt\n\n${CONTACT}\n`,
+    "llms.txt": `${baseline()["llms.txt"]}\n## Kontakt\n\n${CONTACT}\n`,
+  });
+});
+
 test("surfaces: an announced address presented as live is a finding", () => {
   assertFires(surfaces, { "llms.txt": `${TEAM}\n${CONTACT}\n.vote visar riktningen. I drift.\n` }, '".vote"');
 });
