@@ -57,7 +57,12 @@
 - Live site: `index.html` · `index.md` · `llms.txt` · `sitemap.xml` ·
   `.well-known/` · `assets/` — served by GitHub Pages, domain in `CNAME`
 - Run: `npm run dev` (localhost:4321) · `npm run build` · `npm run lint`
-- No decisions are recorded yet: the workspace standard is docs/adr/ +
-  docs/specs/, and this repo has neither. README.md is still the untouched
-  Astro starter template — trust this file and PROMPT.md over it.
+- Gate for the static site: `hk verify web`, or `node tools/check/run.mjs`
+  directly — the same commands `.github/workflows/pr.yml` runs on every pull
+  request. What it asserts lives in `tools/check/facts.json`; why it asserts it
+  is in `tools/check/README.md`. The Astro runtime is not gated.
+- Decisions: designs go in docs/specs/ (the gate is
+  `docs/specs/2026-08-12-pr-gate-design.md`); docs/adr/ is still empty.
+  README.md is still the untouched Astro starter template — trust this file and
+  PROMPT.md over it.
 - Workspace brief: `hk context web`
