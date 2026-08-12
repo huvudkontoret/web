@@ -147,6 +147,12 @@ the rollback failed.
 
 - Update the `static site` row in `CONTEXT.md` — it describes Pages as what
   serves the apex.
+- Point the dev loop at the Worker: `hk dev web` runs
+  `python3 -m http.server` from `hk.json`, which hands out the whole checkout.
+  That matches Pages exactly and is precisely what the Worker stops doing —
+  `.assetsignore` decides what the site is, so `/CLAUDE.md` answers 200
+  locally and 404 on the apex from step 5 onward. Switch the command to
+  `npx wrangler dev` and update the `Run:` pointer in `CONTEXT.md` with it.
 - Open the follow-up PR that drops `CNAME`, `.nojekyll` and the
   `publishing` check's Pages-specific assertions.
 - If the MonoLisa web licence is later confirmed, remove the `.gitignore` and
