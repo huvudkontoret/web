@@ -66,6 +66,14 @@ render with fallback monospace rather than MonoLisa. Preview URLs can settle
 layout, content and behaviour; the typeface stays a local-only judgement until
 the web licence is resolved.
 
+**The cutover is a diff, not a click.** `wrangler deploy` creates the custom
+domains it finds in `wrangler.jsonc`, so writing the apex route into that file
+performs the cutover on the next production build. The route is therefore held
+back and lands in its own pull request together with `expectCustomDomain` in
+the gate's facts — the gate fails on one without the other. This keeps a change
+that moves a live domain from arriving as a side effect of an unrelated commit,
+and makes it a thing that can be reviewed and reverted like any other.
+
 **The cutover touches the live apex.** It is sequenced so the Worker is proven
 before DNS moves, and `CNAME` and `.nojekyll` stay in the repo until it is
 verified — removing them early would strip Pages of its custom domain while it

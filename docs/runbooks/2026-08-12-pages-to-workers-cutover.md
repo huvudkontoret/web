@@ -65,12 +65,33 @@ domain does not exist yet. Verify the deploy succeeded before continuing.
 
 ## 5. Move the apex (the irreversible-feeling step)
 
-Workers & Pages → **web** → Settings → Domains & Routes → **Add** → Custom
-domain → `huvudkontoret.io`.
+**This step is a pull request, not a dashboard click.** `wrangler deploy`
+creates the custom domains it finds in `wrangler.jsonc`, so putting the apex
+route in that file *is* the cutover — it happens the moment the production
+build runs after the merge. That is why the route is not there yet, and why
+this is deliberately its own reviewable change:
 
-Cloudflare replaces the four GitHub Pages A records with its own routing and
-issues a certificate. Propagation is usually seconds because the zone is
-already on Cloudflare.
+```jsonc
+// wrangler.jsonc
+"routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }]
+```
+
+```json
+// tools/check/facts.json
+"expectCustomDomain": true
+```
+
+Both, in one PR. The gate fails on either without the other, so the cutover
+cannot arrive as a side effect of an unrelated change, and it cannot silently
+disappear afterwards.
+
+Merging it hands the apex to the Worker: Cloudflare replaces the four GitHub
+Pages A records with its own routing and issues a certificate. Propagation is
+usually seconds because the zone is already on Cloudflare.
+
+(Adding the custom domain by hand in Workers & Pages → **web** → Settings →
+Domains & Routes achieves the same thing, but the next deploy from `main`
+would reconcile it against the config file — so change the file.)
 
 Verify:
 

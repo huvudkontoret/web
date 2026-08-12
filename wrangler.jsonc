@@ -14,16 +14,20 @@
     // 404, which is what GitHub Pages does here today (custom_404: false).
     // Setting "404-page" would need a 404.html this site does not have.
   },
-  // Serves huvudkontoret.io. www keeps its 301 to the apex through a zone
-  // redirect rule rather than a second custom domain — this Worker has no
-  // script and cannot redirect on its own. See
-  // docs/runbooks/2026-08-12-pages-to-workers-cutover.md.
-  "routes": [
-    {
-      "pattern": "huvudkontoret.io",
-      "custom_domain": true
-    }
-  ],
+  // No routes yet, deliberately. `wrangler deploy` creates the custom domains
+  // it finds here, so adding the apex to this file *is* the cutover — merging
+  // it would move huvudkontoret.io off GitHub Pages the moment the production
+  // build runs, rather than at the considered moment the runbook describes.
+  //
+  // The cutover is therefore its own pull request: add the route below and
+  // flip expectCustomDomain in tools/check/facts.json, which is the whole
+  // diff. The gate fails if either appears without the other.
+  //
+  //   "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }]
+  //
+  // www keeps its 301 to the apex through a zone redirect rule rather than a
+  // second custom domain — this Worker has no script and cannot redirect on
+  // its own. See docs/runbooks/2026-08-12-pages-to-workers-cutover.md.
   // Every pull request gets a preview at <branch>-web.<subdomain>.workers.dev.
   // Restricted with Cloudflare Access — the previews show unreleased work.
   "preview_urls": true

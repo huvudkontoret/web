@@ -61,7 +61,6 @@ function baseline() {
       '  // The site is the repo root; https://example.com/ in a comment must not confuse the parser.',
       '  "name": "web",',
       '  "assets": { "directory": "." },',
-      '  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],',
       '  "preview_urls": true,',
       "}",
       "",
@@ -75,8 +74,8 @@ after(() => {
   for (const dir of fixtures) rmSync(dir, { recursive: true, force: true });
 });
 
-/** Findings from one check against a site built from `files`. */
-function findings(check, files) {
+/** A throwaway git repo holding `files`. */
+function fixtureRoot(files) {
   const root = mkdtempSync(join(tmpdir(), "web-gate-"));
   fixtures.push(root);
   execFileSync("git", ["init", "-q"], { cwd: root });
@@ -88,9 +87,13 @@ function findings(check, files) {
   }
   // -f so fixtures can stage a file the fixture's own .gitignore excludes.
   execFileSync("git", ["add", "-A", "-f", "."], { cwd: root });
+  return root;
+}
 
+/** Findings from one check against a site built from `files`. */
+function findings(check, files, facts = FACTS) {
   const collected = [];
-  check.run(loadSite(root), FACTS, {
+  check.run(loadSite(fixtureRoot(files)), facts, {
     fail: (where, message) => collected.push({ where, message }),
   });
   return collected;
@@ -138,12 +141,35 @@ test("workers: a pattern the gate cannot read is a finding, not a guess", () => 
   assertFires(workers, { ".assetsignore": `${baseline()[".assetsignore"]}!docs/**\n` }, "syntax this gate does not read");
 });
 
-test("workers: losing the custom domain is a finding", () => {
+/** wrangler.jsonc with the apex route added — the cutover, as a diff. */
+function withCutoverRoute() {
+  return baseline()["wrangler.jsonc"].replace(
+    '"preview_urls": true,',
+    '"preview_urls": true,\n  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],',
+  );
+}
+
+test("workers: the custom domain arriving before the decision is a finding", () => {
+  // `wrangler deploy` creates the domain it finds in config, so this route
+  // moves the apex off GitHub Pages. It must never arrive as a side effect.
   assertFires(
     workers,
-    { "wrangler.jsonc": baseline()["wrangler.jsonc"].replace('"custom_domain": true', '"custom_domain": false') },
-    "no custom_domain route for huvudkontoret.io",
+    { "wrangler.jsonc": withCutoverRoute() },
+    "performs the cutover on the next production deploy",
   );
+});
+
+test("workers: once the decision is recorded, the route is required and accepted", () => {
+  const decided = { ...FACTS, expectCustomDomain: true };
+
+  const missing = findings(workers, withEdits({}), decided);
+  assert.ok(
+    missing.some((finding) => finding.message.includes("no custom_domain route for huvudkontoret.io")),
+    `expected a missing-domain finding, got: ${JSON.stringify(missing, null, 2)}`,
+  );
+
+  const present = findings(workers, withEdits({ "wrangler.jsonc": withCutoverRoute() }), decided);
+  assert.deepEqual(present, [], `expected the cutover config to pass, got: ${JSON.stringify(present, null, 2)}`);
 });
 
 test("workers: preview_urls off is a finding", () => {
