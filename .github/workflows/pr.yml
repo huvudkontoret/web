@@ -1,0 +1,45 @@
+# Gate for pull requests against main.
+#
+# A push to `main` is a publish: GitHub Pages serves the repo root behind the
+# huvudkontoret.io CNAME with no build step in between, so the pull request is
+# the last place anything can be caught.
+#
+# The steps are the same commands `hk verify web` runs locally — deliberately,
+# so a green tick here means what a developer saw before pushing. The site has
+# no build step and this workflow does not give it one: no dependencies, no
+# install, no lockfile.
+
+name: PR
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # The gate before what the gate checks: if these fail, the findings
+      # below cannot be trusted either way.
+      - name: Self-tests
+        run: node --test tools/check/test.mjs
+
+      - name: Content
+        run: node tools/check/run.mjs
+
+      - name: Formatting
+        run: node tools/check/run.mjs --format

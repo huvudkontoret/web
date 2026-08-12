@@ -21,6 +21,12 @@ Huvudkontoret arbetar nära team och verksamheter för att få teknik, AI och di
 - Rekrytering och kvalitetssäkring: kravprofil, search, urval, teknisk screening, arbetsprov och tekniska intervjuer.
 - Produkt- och innovationsstöd: proof of concept, MVP-utveckling, tekniska valideringar och nya digitala tjänster.
 
+## Team
+
+- Hanna Wikman, VD
+- Magnus Renholm, CSO
+- Sebastian Berglönn, CTO
+
 ## Contact
 
 - Email: [hej@huvudkontoret.io](mailto:hej@huvudkontoret.io)
