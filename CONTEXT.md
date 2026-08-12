@@ -26,7 +26,8 @@
 | tokens | A perspective's design contract in `src/lib/tokens.ts`: label, role, POW, accent color and the Tailwind classes derived from it. Adding a perspective starts here — `.name` (coral, Identity) and `.cv` (mint, Capability) are implemented; `.dev`, `.ai`, `.club`, `.blog`, `.link` are named but unbuilt |
 | agent surface | A file published for machines rather than browsers: `llms.txt` (curated entry point), `index.md` (token-efficient homepage), `sitemap.xml`, `robots.txt`, `.well-known/api-catalog` and `.well-known/agent-skills/` (an installable skill describing how to talk about Huvudkontoret). They are content, maintained by hand, and they drift from the site unless updated with it |
 | Content-Signal policy | The published stance the agent surfaces state: content may be used for search and AI input; model training is not granted |
-| static site | The deployed artifact: `index.html` and its siblings at the repo root, served by GitHub Pages from `main` with the `huvudkontoret.io` CNAME. `wrangler.jsonc` is committed but is **not** what serves the apex — verified 2026-07-29: the apex answers `server: GitHub.com`, no Cloudflare headers |
+| static site | The deployed artifact: `index.html` and its siblings at the repo root. **Mid-migration as of 2026-08-12**: GitHub Pages still serves the apex from `main` with the `huvudkontoret.io` CNAME, and the decision is to move to the Cloudflare Worker in `wrangler.jsonc` (ADR 0001). Until the cutover runbook has been run, `server: GitHub.com` on the apex is the correct answer, not a bug |
+| published set | What `.assetsignore` lets the Worker serve: `index.html`, `index.md`, `llms.txt`, `llms-full.txt`, `robots.txt`, `sitemap.xml`, `.well-known/`, `assets/`. The asset directory is the repo root, so everything else — agent instructions, docs, the gate's own source — is excluded by name. The gate asserts this set exactly |
 
 ## Rules that hold everywhere
 
@@ -40,11 +41,15 @@
 - **Swedish for content, English for code and artifacts.** The published tone
   is practical, plain, locally grounded — no hype, no invented prices,
   availability, client names or commitments.
-- **The deploy is the repo root, and a push to `main` is a publish.** GitHub
-  Pages rebuilds the apex from `main` on every push, and the repo is public —
-  so committing here is publishing, both the served page and the source. `dist/`
-  is gitignored, so an Astro page is not live merely because it builds; wiring
-  the runtime to the domain is a deliberate, still-pending step.
+- **The deploy is the repo root, and a push to `main` is a publish.** The apex
+  rebuilds from `main` on every push, and the repo is public — so committing
+  here is publishing, both the served page and the source. `dist/` is
+  gitignored, so an Astro page is not live merely because it builds; wiring the
+  runtime to the domain is a deliberate, still-pending step.
+- **A pull request can be looked at before it is published.** Every PR gets a
+  preview URL from the Worker, restricted with Cloudflare Access. It is built
+  from the repo, so it renders with fallback monospace rather than MonoLisa —
+  previews settle layout, content and behaviour, never typography.
 
 ## Pointers
 
@@ -61,8 +66,9 @@
   directly — the same commands `.github/workflows/pr.yml` runs on every pull
   request. What it asserts lives in `tools/check/facts.json`; why it asserts it
   is in `tools/check/README.md`. The Astro runtime is not gated.
-- Decisions: designs go in docs/specs/ (the gate is
-  `docs/specs/2026-08-12-pr-gate-design.md`); docs/adr/ is still empty.
-  README.md is still the untouched Astro starter template — trust this file and
-  PROMPT.md over it.
+- Decisions: `docs/adr/0001-serve-the-site-from-cloudflare-workers.md` ·
+  designs in docs/specs/ (`2026-08-12-pr-gate-design.md`) · operations in
+  docs/runbooks/ (`2026-08-12-pages-to-workers-cutover.md`, which carries the
+  rollback). README.md is still the untouched Astro starter template — trust
+  this file and PROMPT.md over it.
 - Workspace brief: `hk context web`

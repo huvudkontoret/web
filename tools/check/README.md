@@ -28,6 +28,7 @@ one.
 | Check | Holds |
 |---|---|
 | `publishing` | The repo root is safe to serve: `CNAME` is the expected host, `.nojekyll` is present so Jekyll does not drop `.well-known/`, robots keeps its `Content-Signal` and `Sitemap` lines, and no build output is committed |
+| `workers` | The Worker publishes **exactly** the site: `wrangler.jsonc` keeps its custom domain and `preview_urls`, and `.assetsignore` narrows the repo root to the published set — no more, no less |
 | `references` | Every local link, asset and anchor in `index.html` resolves to a file **git tracks**, and every `<loc>` in the sitemap points at something real |
 | `markup` | `index.html` is structurally sound: balanced structural tags, one non-empty `<title>`, `lang` set, unique ids, `alt` on images, a doctype |
 | `surfaces` | `index.html`, `index.md` and `llms.txt` agree on the declared facts, and an address that is announced but not running is never presented as live |
@@ -40,13 +41,23 @@ one.
 filesystem. A file that resolves only on the author's machine is precisely the
 failure this exists to catch, and checking the disk would hide it.
 
-**MonoLisa is referenced but must never be committed.** The typeface is
+**MonoLisa is referenced but must never be published.** The typeface is
 purchased and this repo is public, so the web files are generated locally and
 stay out of git until the web licence is confirmed — see
-`assets/fonts/README.md`. That makes two halves of one rule: `references`
-exempts `assets/fonts/*.woff2` from having to exist, and `fonts` fails if one
-is ever committed. The mistake is one-way; once a font has been served from
-huvudkontoret.io, deleting the file later does not undo it.
+`assets/fonts/README.md`. That makes three parts of one rule: `references`
+exempts `assets/fonts/*.woff2` from having to exist, `fonts` fails if one is
+ever committed, and `workers` fails if `.assetsignore` stops excluding them
+while `.gitignore` still does. The third exists because **wrangler uploads the
+working directory, not the git tree** — keeping the fonts out of git does not
+keep them off the site, so a local `wrangler deploy` would publish them. The
+mistake is one-way; once a font has been served from huvudkontoret.io, deleting
+the file later does not undo it.
+
+**The gate refuses to guess at `.assetsignore`.** It reads a deliberately small
+subset of gitignore syntax — a plain name, a `dir/`, a `*.ext`. A pattern
+outside that subset is a finding rather than a shrug, because the alternative
+is treating an unreadable pattern as "matches nothing" and waving through a
+file everyone believed was excluded.
 
 ## Changing what is asserted
 

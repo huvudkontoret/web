@@ -14,6 +14,19 @@
   "licensedFontPattern": "^assets/fonts/.+\\.woff2$",
 
   "requiredFiles": ["CNAME", ".nojekyll", "index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
+
+  "publishedPaths": [
+    "index.html",
+    "index.md",
+    "llms.txt",
+    "llms-full.txt",
+    "robots.txt",
+    "sitemap.xml",
+    ".well-known/",
+    "assets/"
+  ],
+  "requiredPublished": ["index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
+
   "expectedCname": "huvudkontoret.io",
   "contentSignal": "ai-train=no",
   "neverPublished": ["^dist/", "^node_modules/", "^\\.astro/", "\\.env$", "^\\.wrangler/"],

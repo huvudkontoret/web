@@ -23,6 +23,7 @@ import * as markup from "./checks/markup.mjs";
 import * as publishing from "./checks/publishing.mjs";
 import * as references from "./checks/references.mjs";
 import * as surfaces from "./checks/surfaces.mjs";
+import * as workers from "./checks/workers.mjs";
 import { loadSite } from "./lib/site.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -55,6 +56,17 @@ function baseline() {
     "robots.txt": "User-agent: *\nAllow: /\n\nContent-Signal: search=yes, ai-input=yes, ai-train=no\nSitemap: https://huvudkontoret.io/sitemap.xml\n",
     "sitemap.xml": '<?xml version="1.0" encoding="UTF-8"?>\n<urlset><url><loc>https://huvudkontoret.io/</loc></url></urlset>\n',
     "assets/logo.svg": '<svg xmlns="http://www.w3.org/2000/svg"></svg>\n',
+    "wrangler.jsonc": [
+      "{",
+      '  // The site is the repo root; https://example.com/ in a comment must not confuse the parser.',
+      '  "name": "web",',
+      '  "assets": { "directory": "." },',
+      '  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],',
+      '  "preview_urls": true,',
+      "}",
+      "",
+    ].join("\n"),
+    ".assetsignore": ".assetsignore\n.gitignore\nCNAME\n.nojekyll\nwrangler.jsonc\nassets/fonts/*.woff2\n",
   };
 }
 
@@ -103,9 +115,65 @@ function assertClean(check, edits = {}) {
 }
 
 test("baseline site passes every check", () => {
-  for (const check of [publishing, references, markup, surfaces, fonts, formatting]) {
+  for (const check of [publishing, workers, references, markup, surfaces, fonts, formatting]) {
     assertClean(check);
   }
+});
+
+test("workers: a file that is neither ignored nor part of the site is a finding", () => {
+  assertFires(workers, { "NOTES.md": "internal\n" }, "would be served from the site but is not part of it");
+});
+
+test("workers: excluding a surface the agents depend on is a finding", () => {
+  assertFires(workers, { ".assetsignore": `${baseline()[".assetsignore"]}llms.txt\n` }, "agent surfaces depend on");
+});
+
+test("workers: a missing .assetsignore is a finding", () => {
+  assertFires(workers, { ".assetsignore": null }, "entire repo root would be served");
+});
+
+test("workers: a pattern the gate cannot read is a finding, not a guess", () => {
+  // Silently treating an unreadable pattern as "matches nothing" would wave
+  // through a file everyone believed was excluded.
+  assertFires(workers, { ".assetsignore": `${baseline()[".assetsignore"]}!docs/**\n` }, "syntax this gate does not read");
+});
+
+test("workers: losing the custom domain is a finding", () => {
+  assertFires(
+    workers,
+    { "wrangler.jsonc": baseline()["wrangler.jsonc"].replace('"custom_domain": true', '"custom_domain": false') },
+    "no custom_domain route for huvudkontoret.io",
+  );
+});
+
+test("workers: preview_urls off is a finding", () => {
+  assertFires(
+    workers,
+    { "wrangler.jsonc": baseline()["wrangler.jsonc"].replace('"preview_urls": true', '"preview_urls": false') },
+    "preview_urls is not true",
+  );
+});
+
+test("workers: a wrangler config that does not parse is a finding", () => {
+  assertFires(workers, { "wrangler.jsonc": "{ oops\n" }, "does not parse");
+});
+
+test("workers: the licensed fonts must be excluded from upload while they are gitignored", () => {
+  // wrangler uploads the working directory, so .gitignore alone does not stop
+  // a local deploy from publishing MonoLisa. Dropping only the .assetsignore
+  // half quietly reopens that path.
+  assertFires(
+    workers,
+    { ".assetsignore": baseline()[".assetsignore"].replace("assets/fonts/*.woff2\n", "") },
+    "a local deploy would publish the licensed fonts",
+  );
+});
+
+test("workers: once the licence lands, dropping both rules together is fine", () => {
+  assertClean(workers, {
+    ".gitignore": "node_modules/\n",
+    ".assetsignore": baseline()[".assetsignore"].replace("assets/fonts/*.woff2\n", ""),
+  });
 });
 
 test("references: an asset that is not tracked is a finding", () => {

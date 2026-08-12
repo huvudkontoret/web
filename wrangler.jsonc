@@ -5,10 +5,26 @@
   "observability": {
     "enabled": true
   },
+  // The site is the repo root. What actually gets published is narrowed by
+  // .assetsignore — without it the whole checkout is served, agent
+  // instructions and design docs included.
   "assets": {
     "directory": "."
+    // not_found_handling is deliberately unset: the default returns a plain
+    // 404, which is what GitHub Pages does here today (custom_404: false).
+    // Setting "404-page" would need a 404.html this site does not have.
   },
-  "compatibility_flags": [
-    "nodejs_compat"
-  ]
+  // Serves huvudkontoret.io. www keeps its 301 to the apex through a zone
+  // redirect rule rather than a second custom domain — this Worker has no
+  // script and cannot redirect on its own. See
+  // docs/runbooks/2026-08-12-pages-to-workers-cutover.md.
+  "routes": [
+    {
+      "pattern": "huvudkontoret.io",
+      "custom_domain": true
+    }
+  ],
+  // Every pull request gets a preview at <branch>-web.<subdomain>.workers.dev.
+  // Restricted with Cloudflare Access — the previews show unreleased work.
+  "preview_urls": true
 }
