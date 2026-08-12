@@ -30,6 +30,7 @@ hk.json
 src/
 tools/
 tsconfig.json
+worker/
 wrangler.jsonc
 .assetsignore
 

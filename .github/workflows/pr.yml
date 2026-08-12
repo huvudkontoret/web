@@ -38,7 +38,7 @@ jobs:
       # The gate before what the gate checks: if these fail, the findings
       # below cannot be trusted either way.
       - name: Self-tests
-        run: node --test tools/check/test.mjs src/lib/tld.test.mjs
+        run: node --test tools/check/test.mjs src/lib/tld.test.mjs worker/index.test.mjs
 
       - name: Content
         run: node tools/check/run.mjs
