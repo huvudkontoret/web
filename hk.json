@@ -1,1 +1,6 @@
-{ "own": [".gitignore"] }
+{
+  "own": [".gitignore"],
+  "commands": {
+    "dev": "python3 -m http.server 8787 --bind 127.0.0.1"
+  }
+}
