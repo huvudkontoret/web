@@ -6,7 +6,7 @@
  * notices — plus the cases that must NOT fire, which are the ones that would
  * otherwise make the gate untrustworthy and get switched off.
  *
- *   node --test tools/check/
+ *   node --test tools/check/test.mjs
  */
 
 import assert from "node:assert/strict";
@@ -22,6 +22,7 @@ import * as formatting from "./checks/formatting.mjs";
 import * as markup from "./checks/markup.mjs";
 import * as publishing from "./checks/publishing.mjs";
 import * as references from "./checks/references.mjs";
+import * as sitemap from "./checks/sitemap.mjs";
 import * as surfaces from "./checks/surfaces.mjs";
 import * as workers from "./checks/workers.mjs";
 import { loadSite } from "./lib/site.mjs";
@@ -31,6 +32,12 @@ const FACTS = JSON.parse(readFileSync(join(HERE, "facts.json"), "utf8"));
 
 const TEAM = "Hanna Wikman, Magnus Renholm, Sebastian Berglönn";
 const CONTACT = "hej@huvudkontoret.io";
+
+/** A sitemap advertising exactly `paths`, each rooted at the fixture's origin. */
+function sitemapListing(paths) {
+  const entries = paths.map((path) => `  <url><loc>https://huvudkontoret.io${path}</loc></url>`).join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset>\n${entries}\n</urlset>\n`;
+}
 
 /** A minimal site that passes every check — the baseline each case perturbs. */
 function baseline() {
@@ -54,7 +61,9 @@ function baseline() {
     "index.md": `# Huvudkontoret\n\n${TEAM}\n\n${CONTACT}\n`,
     "llms.txt": `# Huvudkontoret\n\n${TEAM}\n\n${CONTACT}\n`,
     "robots.txt": "User-agent: *\nAllow: /\n\nContent-Signal: search=yes, ai-input=yes, ai-train=no\nSitemap: https://huvudkontoret.io/sitemap.xml\n",
-    "sitemap.xml": '<?xml version="1.0" encoding="UTF-8"?>\n<urlset><url><loc>https://huvudkontoret.io/</loc></url></urlset>\n',
+    // The baseline carries index.html, index.md and llms.txt, so those are the
+    // pages the sitemap check expects it to advertise.
+    "sitemap.xml": sitemapListing(["/", "/index.md", "/llms.txt"]),
     "assets/logo.svg": '<svg xmlns="http://www.w3.org/2000/svg"></svg>\n',
     "wrangler.jsonc": [
       "{",
@@ -118,7 +127,7 @@ function assertClean(check, edits = {}) {
 }
 
 test("baseline site passes every check", () => {
-  for (const check of [publishing, workers, references, markup, surfaces, fonts, formatting]) {
+  for (const check of [publishing, workers, references, sitemap, markup, surfaces, fonts, formatting]) {
     assertClean(check);
   }
 });
@@ -222,12 +231,42 @@ test("references: a duplicate id is a finding", () => {
   );
 });
 
-test("references: a sitemap entry pointing at nothing is a finding", () => {
+test("sitemap: an entry pointing at nothing is a finding", () => {
   assertFires(
-    references,
+    sitemap,
     { "sitemap.xml": '<urlset><url><loc>https://huvudkontoret.io/nope.html</loc></url></urlset>\n' },
     "nope.html",
   );
+});
+
+test("sitemap: a published page with no entry is a finding", () => {
+  // The quiet direction. Nothing 404s, nothing complains — the page is simply
+  // never found, and robots.txt points crawlers at this file and nowhere else.
+  assertFires(sitemap, { "sitemap.xml": sitemapListing(["/"]) }, "index.md is published but has no <loc>");
+});
+
+test("sitemap: reaching a page by a non-canonical URL is a finding", () => {
+  // Not a missing page: the same page advertised under two addresses.
+  assertFires(
+    sitemap,
+    { "sitemap.xml": sitemapListing(["/index.html", "/index.md", "/llms.txt"]) },
+    "non-canonical URL",
+  );
+});
+
+test("sitemap: advertising something that is not a page is a finding", () => {
+  assertFires(
+    sitemap,
+    { "sitemap.xml": sitemapListing(["/", "/index.md", "/llms.txt", "/assets/logo.svg"]) },
+    "which is not one of the site's pages",
+  );
+});
+
+test("sitemap: a declared page absent from this checkout is not a finding", () => {
+  // facts.json describes the site, not every branch of it. A checkout
+  // mid-change must not be told to advertise a file it does not have —
+  // `workers` owns the question of which files are required.
+  assertClean(sitemap);
 });
 
 test("references: the licensed fonts may be referenced while untracked", () => {

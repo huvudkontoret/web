@@ -27,6 +27,16 @@
   ],
   "requiredPublished": ["index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
 
+  "//sitemapPages": "The pages sitemap.xml has to advertise, as repo paths; index.html is the root URL. robots.txt names the sitemap as the crawl entry point and llms-full.txt is linked from nowhere else on the site, so a surface left out of this list is published and undiscoverable at once. robots.txt, sitemap.xml and assets/ are published without being pages and are deliberately absent.",
+  "sitemapPages": [
+    "index.html",
+    "index.md",
+    "llms.txt",
+    "llms-full.txt",
+    ".well-known/agent-skills/index.json",
+    ".well-known/api-catalog"
+  ],
+
   "expectedCname": "huvudkontoret.io",
 
   "//expectCustomDomain": "false until the cutover. Flipping this and adding the route to wrangler.jsonc are the same decision, and the gate fails on one without the other. See docs/runbooks/2026-08-12-pages-to-workers-cutover.md.",
