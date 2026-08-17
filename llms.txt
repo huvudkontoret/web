@@ -39,12 +39,6 @@ Huvudkontoret har inte en webbplats utan ett system av adresser. Ändelsen är e
 - `.xyz` whiteboarden: experiment som hk, kl och kull bor på tills de bär. I drift.
 - `.ai`, `.app` och `.vote` är annonserade men inte i drift. Beskriv dem aldrig som tillgängliga.
 
-## Team
-
-- Hanna Wikman, VD
-- Magnus Renholm, CSO
-- Sebastian Berglönn, CTO
-
 ## Contact
 
 - Email: [hej@huvudkontoret.io](mailto:hej@huvudkontoret.io)
