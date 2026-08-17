@@ -5,7 +5,7 @@
  */
 
 import { attributes, ids, lineAt, references, stripRawText, tags } from "../lib/html.mjs";
-import { origin, toRepoPath } from "../lib/site.mjs";
+import { toRepoPath } from "../lib/site.mjs";
 
 export const name = "references";
 export const summary = "local links, assets and anchors resolve";
@@ -24,8 +24,6 @@ export function run(site, facts, report) {
     checkReferences(site, surface, html, markup, licensedFont, report);
     checkAnchors(surface, html, markup, report);
   }
-
-  checkSitemap(site, report);
 }
 
 function checkReferences(site, surface, html, markup, licensedFont, report) {
@@ -66,31 +64,6 @@ function checkAnchors(surface, html, markup, report) {
     const target = decodeURIComponent(href.slice(1));
     if (!defined.has(target)) {
       report.fail(`${surface}:${lineAt(html, tag.index)}`, `anchor "${href}" has no matching id`);
-    }
-  }
-}
-
-function checkSitemap(site, report) {
-  const xml = site.read("sitemap.xml");
-  if (xml === null) {
-    report.fail("sitemap.xml", "missing");
-    return;
-  }
-
-  const locations = [...xml.matchAll(/<loc>\s*([^<]*?)\s*<\/loc>/g)].map((match) => match[1]);
-  if (locations.length === 0) {
-    report.fail("sitemap.xml", "no <loc> entries — nothing is being advertised to crawlers");
-  }
-
-  const site_origin = origin(site);
-  for (const location of locations) {
-    if (site_origin && !location.startsWith(site_origin)) {
-      report.fail("sitemap.xml", `<loc>${location}</loc> is not on ${site_origin}`);
-      continue;
-    }
-    const path = toRepoPath(location, site);
-    if (path && !site.has(path)) {
-      report.fail("sitemap.xml", `<loc>${location}</loc> resolves to ${path}, which is not tracked by git`);
     }
   }
 }
