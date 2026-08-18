@@ -604,7 +604,11 @@
                 flex-direction: column;
                 gap: 14px;
                 max-width: 68ch;
+                /* The panel's breathing room lives inside the clip: 26px
+                   matches the row's own padding, so the ink surface has the
+                   same air below as above without growing closed rows. */
                 padding-top: 18px;
+                padding-bottom: 26px;
             }
             .offer-panel.open .offer-inner {
                 opacity: 1;
@@ -923,6 +927,7 @@
                 }
                 .offer-slot .offer-inner {
                     margin-left: 42px;
+                    padding-bottom: 22px;
                 }
                 .offer-grid {
                     grid-template-columns: 30px 1fr 22px;
