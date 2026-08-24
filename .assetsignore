@@ -25,8 +25,12 @@ CONTEXT.md
 README.md
 docs/
 hk.json
+# Source, not site. Both go away with this file once the asset directory
+# becomes dist/, where only the built site exists in the first place.
+src/
 tools/
 tsconfig.json
+worker/
 wrangler.jsonc
 .assetsignore
 
