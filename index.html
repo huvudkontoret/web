@@ -69,15 +69,6 @@
         />
 
         <style>
-            @font-face {
-                font-family: "Nok";
-                src:
-                    url("assets/Nok.otf") format("opentype"),
-                    url("assets/Nok.ttf") format("truetype");
-                font-weight: normal;
-                font-style: normal;
-                font-display: swap;
-            }
             * {
                 box-sizing: border-box;
                 margin: 0;
@@ -91,7 +82,11 @@
                 --off: #f4f4f0;
                 --mid: #6b6b6b;
                 --rb: #ff0093;
-                --nok: "Nok", "DM Sans", sans-serif;
+                /* Was "Nok", a commercial face this public repo should not
+                   have been serving. The fallback was already declared here;
+                   dropping the face leaves it. The locked profile replaces it
+                   with MonoLisa — see the .io rebuild. */
+                --nok: "DM Sans", sans-serif;
                 --sans: "DM Sans", sans-serif;
                 --mono: "Space Mono", monospace;
                 --max: 1160px;

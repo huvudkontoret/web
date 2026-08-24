@@ -345,6 +345,13 @@ test("fonts: a committed licensed font is a finding", () => {
   assertFires(fonts, { "assets/fonts/MonoLisa-Light.woff2": "not really a font" }, "would publish it");
 });
 
+// The regression: Nok.otf and Nok.ttf sat directly in assets/ and the check
+// stayed green, because the pattern named one directory and one format.
+test("fonts: a font binary outside assets/fonts is a finding too", () => {
+  assertFires(fonts, { "assets/Nok.otf": "not really a font" }, "would publish it");
+  assertFires(fonts, { "assets/Nok.ttf": "not really a font" }, "would publish it");
+});
+
 test("fonts: losing the ignore rule is a finding once the font directory exists", () => {
   assertFires(
     fonts,
