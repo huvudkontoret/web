@@ -7,7 +7,17 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { byHost, crossesTree, isShared, liveTlds, tlds, toAssetPath } from "./tld.ts";
+import {
+  awaitingDelegation,
+  byHost,
+  canBeRouted,
+  crossesTree,
+  isShared,
+  liveTlds,
+  routableTlds,
+  tlds,
+  toAssetPath,
+} from "./tld.ts";
 
 test("every entry's key matches its record key and its host is unique", () => {
   const hosts = new Set();
@@ -48,6 +58,106 @@ test("only .io is live today — this step adds no domain", () => {
 test(".ai, .app and .vote are declared not in service", () => {
   for (const key of ["ai", "app", "vote"]) {
     assert.equal(tlds[key].status, "not-in-service", `${key} should be not-in-service`);
+  }
+});
+
+/**
+ * The registry is the inventory, not a wishlist. Reconciled against DNS, RDAP
+ * and the registrars on 2026-08-24 — see
+ * docs/runbooks/2026-08-24-domain-activation.md. Buying or dropping a domain
+ * has to come here, and this test is what makes forgetting expensive.
+ */
+test("the registry holds every domain Huvudkontoret owns and no others", () => {
+  assert.deepEqual(
+    Object.keys(tlds).sort(),
+    [
+      "ai",
+      "app",
+      "blog",
+      "cloud",
+      "club",
+      "cv",
+      "dev",
+      "email",
+      "info",
+      "io",
+      "link",
+      "name",
+      "news",
+      "one",
+      "online",
+      "sh",
+      "site",
+      "store",
+      "systems",
+      "tech",
+      "vote",
+      "website",
+      "wtf",
+      "xyz",
+    ],
+    "the estate changed — reconcile the runbook and this list together",
+  );
+});
+
+/**
+ * `.io` publishes the lens set in its SYSTEMET section. That page is the
+ * authority (ADR 0002), so this list changing means the page changed first —
+ * and if it did not, the registry is wrong.
+ */
+test("the lens set is exactly the eight addresses .io announces", () => {
+  const lenses = Object.values(tlds)
+    .filter((tld) => tld.kind !== "undecided")
+    .map((tld) => tld.key)
+    .sort();
+  assert.deepEqual(lenses, ["ai", "app", "cv", "dev", "io", "name", "vote", "xyz"]);
+});
+
+test("a held domain is not a lens and a lens is not held", () => {
+  for (const tld of Object.values(tlds)) {
+    assert.equal(
+      tld.status === "held",
+      tld.kind === "undecided",
+      `${tld.key} is ${tld.status} but kind ${tld.kind} — held and lens are the same distinction`,
+    );
+  }
+});
+
+test("every domain declares a tree of its own", () => {
+  const trees = Object.values(tlds).map((tld) => tld.tree);
+  assert.equal(new Set(trees).size, trees.length, "two domains claim the same tree");
+});
+
+test("a held domain has no content designed for it", () => {
+  for (const tld of Object.values(tlds)) {
+    if (tld.status !== "held") continue;
+    assert.equal(tld.kind, "undecided", `${tld.key} is held but claims kind ${tld.kind}`);
+  }
+});
+
+/**
+ * Cloudflare refuses a Worker custom domain on a zone it does not own, and
+ * Huvudkontoret's account holds no zones yet. Until the zone move lands, this
+ * is the truthful state of the world, and the assertion below is what stops a
+ * route from being added on top of a delegation that cannot carry it.
+ */
+test("nothing is routable yet — every zone still answers somewhere else", () => {
+  assert.deepEqual(routableTlds(), []);
+  assert.equal(canBeRouted(tlds.io), false);
+});
+
+test(".io is blocked on the zone move, not on intent", () => {
+  assert.equal(tlds.io.status, "live");
+  assert.equal(tlds.io.delegation, "cloudflare-sharpest");
+});
+
+test("the activation backlog is every domain with a role and the wrong DNS home", () => {
+  const backlog = awaitingDelegation().map((tld) => tld.key);
+  assert.ok(backlog.includes("io"), "the front is in the backlog until its zone moves");
+  for (const tld of Object.values(tlds)) {
+    if (tld.status === "held") {
+      assert.ok(!backlog.includes(tld.key), `${tld.key} is held and is not waiting on anything`);
+    }
   }
 });
 

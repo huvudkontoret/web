@@ -57,6 +57,12 @@ test("a domain declared not in service is refused", async () => {
   assert.deepEqual(result.asked, []);
 });
 
+test("a domain we merely hold is refused like any stranger", async () => {
+  const result = await get("https://huvudkontoret.wtf/");
+  assert.equal(result.status, 404);
+  assert.deepEqual(result.asked, []);
+});
+
 test("shared assets resolve on any live host, unprefixed", async () => {
   assert.deepEqual(await get("https://huvudkontoret.io/assets/logo_pos.svg"), {
     status: 200,
