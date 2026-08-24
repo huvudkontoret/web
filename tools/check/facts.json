@@ -11,6 +11,10 @@
   "addressesNotInService": [".ai", ".app", ".vote"],
   "inServiceMarkers": ["Snart", "inte i drift", "inte tillgänglig", "ännu inte", "kommer"],
 
+  "//profile": "The graphic profile is declared in two places by decision (ADR 0004). These name them; the profile check asserts they agree. When .io moves into public/, profileContactSurface moves with it.",
+  "profileContactSurface": "index.html",
+  "profileStylesheet": "src/styles/profile.css",
+
   "licensedFontPattern": "^assets/fonts/.+\\.woff2$",
 
   "requiredFiles": ["CNAME", ".nojekyll", "index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
@@ -47,7 +51,7 @@
   "contentSignal": "ai-train=no",
   "neverPublished": ["^dist/", "^node_modules/", "^\\.astro/", "\\.env$", "^\\.wrangler/"],
 
-  "textFileExtensions": [".html", ".md", ".txt", ".json", ".xml", ".svg", ".mjs", ".js", ".yml", ".yaml", ".jsonc"],
+  "textFileExtensions": [".html", ".md", ".txt", ".json", ".xml", ".svg", ".mjs", ".js", ".css", ".yml", ".yaml", ".jsonc"],
 
   "formattingIgnore": ["^assets/"]
 }

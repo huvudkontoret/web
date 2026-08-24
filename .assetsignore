@@ -11,6 +11,13 @@
 # what survives, so a new file added to the repo root cannot quietly appear on
 # the site — see tools/check/checks/workers.mjs.
 
+# Source, not site. `src/` holds the chrome layer the perspectives will be
+# built from — profile.css is a stylesheet the site never links, because .io
+# carries the same properties inline (ADR 0004). It goes away with this whole
+# file once the asset directory becomes dist/, where only the built site
+# exists in the first place.
+src/
+
 # Repo scaffolding
 .claude/
 .editorconfig

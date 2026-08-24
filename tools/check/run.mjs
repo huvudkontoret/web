@@ -20,6 +20,7 @@ import { fileURLToPath } from "node:url";
 import * as fonts from "./checks/fonts.mjs";
 import * as formatting from "./checks/formatting.mjs";
 import * as markup from "./checks/markup.mjs";
+import * as profile from "./checks/profile.mjs";
 import * as publishing from "./checks/publishing.mjs";
 import * as references from "./checks/references.mjs";
 import * as sitemap from "./checks/sitemap.mjs";
@@ -30,7 +31,7 @@ import { loadSite } from "./lib/site.mjs";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "..", "..");
 
-const CONTENT_CHECKS = [publishing, workers, references, sitemap, markup, surfaces, fonts];
+const CONTENT_CHECKS = [publishing, workers, references, sitemap, markup, surfaces, profile, fonts];
 const FORMAT_CHECKS = [formatting];
 
 function parseArguments(argv) {

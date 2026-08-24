@@ -20,6 +20,7 @@ import { after, test } from "node:test";
 import * as fonts from "./checks/fonts.mjs";
 import * as formatting from "./checks/formatting.mjs";
 import * as markup from "./checks/markup.mjs";
+import * as profile from "./checks/profile.mjs";
 import * as publishing from "./checks/publishing.mjs";
 import * as references from "./checks/references.mjs";
 import * as sitemap from "./checks/sitemap.mjs";
@@ -48,7 +49,14 @@ function baseline() {
     "index.html": [
       "<!doctype html>",
       '<html lang="sv">',
-      "<head><title>Huvudkontoret</title></head>",
+      "<head><title>Huvudkontoret</title>",
+      "<style>",
+      ":root { --black: #16150f; --signal: #d9481c; }",
+      // A responsive override is not a disagreement about the profile, and
+      // the real index.html has one. The check must look past it.
+      "@media (max-width: 640px) { :root { --gut: 20px; } }",
+      "</style>",
+      "</head>",
       "<body>",
       '  <nav><a href="#contact">Kontakt</a></nav>',
       '  <img src="assets/logo.svg" alt="Logotyp">',
@@ -65,6 +73,7 @@ function baseline() {
     // pages the sitemap check expects it to advertise.
     "sitemap.xml": sitemapListing(["/", "/index.md", "/llms.txt"]),
     "assets/logo.svg": '<svg xmlns="http://www.w3.org/2000/svg"></svg>\n',
+    "src/styles/profile.css": ":root {\n  --black: #16150f;\n  --signal: #d9481c;\n}\n",
     "wrangler.jsonc": [
       "{",
       '  // The site is the repo root; https://example.com/ in a comment must not confuse the parser.',
@@ -74,7 +83,7 @@ function baseline() {
       "}",
       "",
     ].join("\n"),
-    ".assetsignore": ".assetsignore\n.gitignore\nCNAME\n.nojekyll\nwrangler.jsonc\nassets/fonts/*.woff2\n",
+    ".assetsignore": ".assetsignore\n.gitignore\nCNAME\n.nojekyll\nwrangler.jsonc\nsrc/\nassets/fonts/*.woff2\n",
   };
 }
 
@@ -127,9 +136,67 @@ function assertClean(check, edits = {}) {
 }
 
 test("baseline site passes every check", () => {
-  for (const check of [publishing, workers, references, sitemap, markup, surfaces, fonts, formatting]) {
+  for (const check of [publishing, workers, references, sitemap, markup, surfaces, profile, fonts, formatting]) {
     assertClean(check);
   }
+});
+
+/**
+ * The profile is declared twice by decision (ADR 0004), so these are the cases
+ * that make the duplication safe. A check that only ever agreed with itself
+ * would be worth nothing.
+ */
+
+test("profile: a property with a different value in each place is a finding", () => {
+  assertFires(
+    profile,
+    { "src/styles/profile.css": ":root {\n  --black: #16150f;\n  --signal: #ff0000;\n}\n" },
+    'is "#ff0000" here and "#d9481c" in index.html',
+  );
+});
+
+test("profile: a property the page declares and the stylesheet does not is a finding", () => {
+  assertFires(
+    profile,
+    { "src/styles/profile.css": ":root {\n  --black: #16150f;\n}\n" },
+    "--signal is declared in index.html but not here",
+  );
+});
+
+test("profile: a property invented in the stylesheet is a finding", () => {
+  assertFires(
+    profile,
+    { "src/styles/profile.css": ":root {\n  --black: #16150f;\n  --signal: #d9481c;\n  --invented: 1px;\n}\n" },
+    "--invented is declared here but not in index.html",
+  );
+});
+
+test("profile: deleting the stylesheet does not silently switch the check off", () => {
+  assertFires(profile, { "src/styles/profile.css": null }, "the shared profile stylesheet is missing");
+});
+
+test("profile: a page with no :root block at all is a finding, not a pass", () => {
+  assertFires(
+    profile,
+    { "index.html": baseline()["index.html"].replace(/<style>[\s\S]*?<\/style>/, "") },
+    "no top-level :root block found",
+  );
+});
+
+/**
+ * The two that must NOT fire. `--gut` lives only inside a media query in the
+ * baseline page; treating that as a missing property would make the check fire
+ * on every responsive rule the profile has, which is how a check gets switched
+ * off rather than fixed.
+ */
+test("profile: a :root inside a media query is not part of the contact surface", () => {
+  assertClean(profile);
+});
+
+test("profile: reformatting a value does not count as disagreement", () => {
+  assertClean(profile, {
+    "src/styles/profile.css": ":root {\n  --black:   #16150f;\n  --signal:\n    #d9481c;\n}\n",
+  });
 });
 
 test("workers: a file that is neither ignored nor part of the site is a finding", () => {

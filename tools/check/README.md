@@ -33,14 +33,24 @@ one.
 | `sitemap` | `sitemap.xml` advertises every public page and only pages: each `<loc>` points at something real, each declared page has an entry, and each entry uses the page's canonical URL |
 | `markup` | `index.html` is structurally sound: balanced structural tags, one non-empty `<title>`, `lang` set, unique ids, `alt` on images, a doctype |
 | `surfaces` | `index.html`, `index.md` and `llms.txt` agree on the declared facts, and an address that is announced but not running is never presented as live |
+| `profile` | The graphic profile's custom properties are identical in `index.html`'s top-level `:root` block and in `src/styles/profile.css` — the two places ADR 0004 keeps them |
 | `fonts` | No licensed font file is committed, and the ignore rule that keeps it that way is intact |
 | `formatting` | `.editorconfig` is respected in hand-written files |
 
-## Two decisions worth knowing before you change anything
+## Three decisions worth knowing before you change anything
 
 **Tracked, not present.** `references` asks git what exists, not the
 filesystem. A file that resolves only on the author's machine is precisely the
 failure this exists to catch, and checking the disk would hide it.
+
+**The profile is duplicated on purpose, and the gate is what makes that
+safe.** `.io` stays hand-written and byte-exact, so it carries the profile
+inline; `src/styles/profile.css` carries the same properties for the chrome the
+perspectives will be built from. ADR 0002 refused to generate one from the
+other and could only state the direction of drift as a convention — *when the
+two disagree, the page is right*. `profile` turns that into a failure. A
+`:root` inside a media query is a responsive override, not a disagreement, so
+only top-level blocks are compared.
 
 **MonoLisa is referenced but must never be published.** The typeface is
 purchased and this repo is public, so the web files are generated locally and
