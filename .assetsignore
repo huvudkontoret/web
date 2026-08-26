@@ -34,12 +34,6 @@ worker/
 wrangler.jsonc
 .assetsignore
 
-# GitHub Pages leftovers. Kept in the repo until the cutover to Workers is
-# verified — removing them early would strip Pages of its custom domain while
-# it is still serving the apex.
-CNAME
-.nojekyll
-
 # Not linked from anywhere on the site.
 demo-hero.html
 

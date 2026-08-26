@@ -1,8 +1,7 @@
 # tools/check — the gate for the static site
 
-The deploy is the repo root and a push to `main` is a publish: GitHub Pages
-serves `main:/` behind the `huvudkontoret.io` CNAME, with no build step in
-between. Nothing downstream catches a mistake, so the pull request is the last
+The deploy is the repo root and a push to `main` is a publish: the Worker
+serves `main:/` at `huvudkontoret.io`, with no build step in between. Nothing downstream catches a mistake, so the pull request is the last
 place anything can be caught. This is what catches it.
 
 ```
@@ -28,7 +27,7 @@ one.
 
 | Check | Holds |
 |---|---|
-| `publishing` | The repo root is safe to serve: `CNAME` is the expected host, `.nojekyll` is present so Jekyll does not drop `.well-known/`, robots keeps its `Content-Signal` and `Sitemap` lines, and no build output is committed |
+| `publishing` | The repo root is safe to serve: every required surface is present, robots keeps its `Content-Signal` and `Sitemap` lines, and no build output is committed |
 | `workers` | The Worker publishes **exactly** the site: `wrangler.jsonc` keeps its custom domain and `preview_urls`, and `.assetsignore` narrows the repo root to the published set — no more, no less, including the paths git never tracks but wrangler uploads anyway |
 | `references` | Every local link, asset and anchor in `index.html` resolves to a file **git tracks** |
 | `sitemap` | `sitemap.xml` advertises every public page and only pages: each `<loc>` points at something real, each declared page has an entry, and each entry uses the page's canonical URL |

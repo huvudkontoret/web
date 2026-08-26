@@ -8,7 +8,7 @@
 > people can. **The identity runtime** is the Astro app under `src/`: an MVP
 > of `render(node, perspective)`, where the URL `huvudkontoret.<tld>/<slug>`
 > means "render this node through that perspective". The runtime is built and
-> committed but not yet deployed — GitHub Pages serves the repo root, not
+> committed but not yet deployed — the Worker serves the repo root, not
 > Astro's build output. The runtime is v1 of the TLD concept and is still in
 > the experiment and decision phase: nothing about it is settled, and it is
 > not waiting on a deploy step.
@@ -26,7 +26,7 @@
 | tokens | A perspective's design contract in `src/lib/tokens.ts`: label, role, POW, accent color and the Tailwind classes derived from it. Adding a perspective starts here — `.name` (coral, Identity) and `.cv` (mint, Capability) are implemented; `.dev`, `.ai`, `.club`, `.blog`, `.link` are named but unbuilt |
 | agent surface | A file published for machines rather than browsers: `llms.txt` (curated entry point), `index.md` (token-efficient homepage), `sitemap.xml`, `robots.txt`, `.well-known/api-catalog` and `.well-known/agent-skills/` (an installable skill describing how to talk about Huvudkontoret). They are content, maintained by hand, and they drift from the site unless updated with it |
 | Content-Signal policy | The published stance the agent surfaces state: content may be used for search and AI input; model training is not granted |
-| static site | The deployed artifact: `index.html` and its siblings at the repo root. **Mid-migration as of 2026-08-12**: GitHub Pages still serves the apex from `main` with the `huvudkontoret.io` CNAME, and the decision is to move to the Cloudflare Worker in `wrangler.jsonc` (ADR 0001). Until the cutover runbook has been run, `server: GitHub.com` on the apex is the correct answer, not a bug |
+| static site | The deployed artifact: `index.html` and its siblings at the repo root. Served by the Cloudflare Worker in `wrangler.jsonc`, which owns `huvudkontoret.io` as a custom domain (ADR 0001, cut over 2026-08-26). `server: cloudflare` on the apex is the correct answer; `server: GitHub.com` would mean something has been rolled back |
 | published set | What `.assetsignore` lets the Worker serve: `index.html`, `index.md`, `llms.txt`, `llms-full.txt`, `robots.txt`, `sitemap.xml`, `.well-known/`, `assets/`. The asset directory is the repo root, so everything else — agent instructions, docs, the gate's own source — is excluded by name. The gate asserts this set exactly |
 
 ## Rules that hold everywhere
@@ -60,10 +60,12 @@
   data) · `src/content.config.ts` + `src/content/nodes/` (node schema and
   data) · `src/pages/demo/` (layer demos)
 - Live site: `index.html` · `index.md` · `llms.txt` · `sitemap.xml` ·
-  `.well-known/` · `assets/` — served by GitHub Pages, domain in `CNAME`
-- Run: `hk dev web` serves the repo root at <http://127.0.0.1:8787> — exactly
-  the files GitHub Pages publishes, so the static site needs no build step.
-  The identity runtime keeps its own `npm run dev` in its worktree.
+  `.well-known/` · `assets/` — served by the Worker, domain in `wrangler.jsonc`
+- Run: `hk dev web` runs `npx wrangler dev` at <http://127.0.0.1:8787> — the
+  same Worker production runs, so `.assetsignore` decides what exists locally
+  too and `/CLAUDE.md` answers 404 here exactly as it does on the apex. The
+  static site still needs no build step. The identity runtime keeps its own
+  `npm run dev` in its worktree.
 - Gate for the static site: `hk verify web`, or `node tools/check/run.mjs`
   directly — the same commands `.github/workflows/pr.yml` runs on every pull
   request. What it asserts lives in `tools/check/facts.json`; why it asserts it
