@@ -136,24 +136,34 @@ test("a held domain has no content designed for it", () => {
 });
 
 /**
- * Cloudflare refuses a Worker custom domain on a zone it does not own, and
- * Huvudkontoret's account holds no zones yet. Until the zone move lands, this
- * is the truthful state of the world, and the assertion below is what stops a
- * route from being added on top of a delegation that cannot carry it.
+ * Cloudflare refuses a Worker custom domain on a zone it does not own. The
+ * zones moved into our account on 2026-08-26, so the front can now carry a
+ * route — but the rule is what matters, not the current answer: a domain whose
+ * DNS still answers elsewhere must never be treated as routable.
  */
-test("nothing is routable yet — every zone still answers somewhere else", () => {
-  assert.deepEqual(routableTlds(), []);
-  assert.equal(canBeRouted(tlds.io), false);
+test("only a zone we own can carry a route", () => {
+  assert.deepEqual(
+    routableTlds().map((tld) => tld.key),
+    ["io"],
+  );
+  assert.equal(canBeRouted(tlds.io), true);
+
+  for (const tld of Object.values(tlds)) {
+    if (tld.delegation !== "cloudflare-hk") {
+      assert.equal(canBeRouted(tld), false, `${tld.key} answers at ${tld.delegation} and cannot be routed`);
+    }
+  }
 });
 
-test(".io is blocked on the zone move, not on intent", () => {
+test(".io's zone has moved into our own account", () => {
   assert.equal(tlds.io.status, "live");
-  assert.equal(tlds.io.delegation, "cloudflare-sharpest");
+  assert.equal(tlds.io.delegation, "cloudflare-hk");
 });
 
 test("the activation backlog is every domain with a role and the wrong DNS home", () => {
   const backlog = awaitingDelegation().map((tld) => tld.key);
-  assert.ok(backlog.includes("io"), "the front is in the backlog until its zone moves");
+  assert.ok(!backlog.includes("io"), "the front left the backlog when its zone moved");
+  assert.ok(backlog.includes("name"), "a lens still delegated elsewhere is still waiting");
   for (const tld of Object.values(tlds)) {
     if (tld.status === "held") {
       assert.ok(!backlog.includes(tld.key), `${tld.key} is held and is not waiting on anything`);

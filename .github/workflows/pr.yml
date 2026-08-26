@@ -40,6 +40,15 @@ jobs:
       - name: Self-tests
         run: node --test tools/check/test.mjs src/lib/tld.test.mjs worker/index.test.mjs
 
+      # The repo squash-merges, so this title — not the commits in the branch —
+      # becomes the commit subject on main. Passed through the environment
+      # rather than interpolated into `run:`: a pull request title is text a
+      # stranger can write, and `${{ }}` inside a shell line would run it.
+      - name: Title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: node tools/check/title.mjs "$PR_TITLE"
+
       - name: Content
         run: node tools/check/run.mjs
 

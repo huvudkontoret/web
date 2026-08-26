@@ -42,6 +42,10 @@
   "//expectCustomDomain": "false until the cutover. Flipping this and adding the route to wrangler.jsonc are the same decision, and the gate fails on one without the other. See docs/runbooks/2026-08-12-pages-to-workers-cutover.md.",
   "expectCustomDomain": false,
 
+  "//title": "The pull request title becomes the commit subject on main, because this repo squash-merges one PR per slice. tools/check/title.mjs holds it to conventional commits; these are the types this workspace uses.",
+  "commitTypes": ["feat", "fix", "docs", "refactor", "perf", "test", "build", "ci", "chore", "style", "revert"],
+  "titleMaxLength": 72,
+
   "contentSignal": "ai-train=no",
   "neverPublished": ["^dist/", "^node_modules/", "^\\.astro/", "\\.env$", "^\\.wrangler/"],
 

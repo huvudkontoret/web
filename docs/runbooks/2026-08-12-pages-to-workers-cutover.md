@@ -16,8 +16,13 @@ www              301 → https://huvudkontoret.io/   (served by GitHub)
 Pages source     main:/           build_type: legacy      CNAME: huvudkontoret.io
 ```
 
-DNS for the zone is already on Cloudflare (`lennon`/`beth.ns.cloudflare.com`),
-so no nameserver change is involved — only records.
+DNS for the zone is on Cloudflare, so this cutover changes records and not
+nameservers. It does assume the zone is **in the same Cloudflare account as
+the Worker** — Cloudflare refuses a custom domain on a zone the account does
+not own, and until 2026-08-26 the zone sat in Sharpest Root while the Worker
+sat here, which blocked step 5 entirely. Moving it changed the assigned
+nameservers from `beth`/`lennon` to `ignacio`/`ollie`; see
+`2026-08-24-domain-activation.md` for how that move is done.
 
 ## 1. Enable preview builds (Cloudflare dashboard)
 

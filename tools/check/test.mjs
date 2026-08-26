@@ -25,6 +25,7 @@ import * as references from "./checks/references.mjs";
 import * as sitemap from "./checks/sitemap.mjs";
 import * as surfaces from "./checks/surfaces.mjs";
 import * as workers from "./checks/workers.mjs";
+import { checkTitle } from "./title.mjs";
 import { loadSite } from "./lib/site.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -209,6 +210,46 @@ test("workers: once the licence lands, dropping both rules together is fine", ()
     ".gitignore": "node_modules/\n",
     ".assetsignore": baseline()[".assetsignore"].replace("assets/fonts/*.woff2\n", ""),
   });
+});
+
+/** The subject line that lands on main, since the repo squash-merges. */
+function titleFindings(title) {
+  return checkTitle(title, FACTS);
+}
+
+test("title: a conventional subject passes, with and without a scope", () => {
+  assert.deepEqual(titleFindings("feat(deploy): serve huvudkontoret.io from the Worker"), []);
+  assert.deepEqual(titleFindings("docs: replace the Astro starter README with the real one"), []);
+  assert.deepEqual(titleFindings("feat(check)!: drop the Pages assertions"), []);
+});
+
+test("title: a subject with no type is a finding", () => {
+  // The shape this repo's own history keeps slipping into.
+  const found = titleFindings("The TLD workspace: the registry, the Worker, and the decision behind them");
+  assert.ok(found.some((finding) => finding.includes("not a conventional commit subject")), found.join("; "));
+});
+
+test("title: an invented type is a finding", () => {
+  const found = titleFindings("improve(check): tighten the gate");
+  assert.ok(found.some((finding) => finding.includes('uses the type "improve"')), found.join("; "));
+});
+
+test("title: a trailing period and an overlong subject are findings", () => {
+  assert.ok(titleFindings("fix(sitemap): advertise every surface.").some((f) => f.includes("ends in a period")));
+  const long = `feat(check): ${"x".repeat(FACTS.titleMaxLength)}`;
+  assert.ok(titleFindings(long).some((finding) => finding.includes("over the")), "expected a length finding");
+});
+
+test("title: an empty subject is a finding rather than a pass", () => {
+  // The workflow passes whatever GitHub hands it; an empty string must not
+  // read as "nothing to complain about".
+  assert.ok(titleFindings("").length > 0);
+  assert.ok(titleFindings("   ").length > 0);
+});
+
+test("title: case is deliberately not asserted", () => {
+  // "MonoLisa" and "GitHub Pages" open subjects legitimately in this repo.
+  assert.deepEqual(titleFindings("fix(fonts): MonoLisa must never reach the site"), []);
 });
 
 test("references: an asset that is not tracked is a finding", () => {
