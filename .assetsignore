@@ -17,8 +17,6 @@
 .githooks/
 .github/
 .gitignore
-.prettierrc
-.vscode/
 AGENTS.md
 CLAUDE.md
 CONTEXT.md
