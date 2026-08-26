@@ -67,6 +67,19 @@ Renewals cluster: fourteen Ascio names fall due 2027-05-12, three Namecheap
 names 2027-05-13, `.wtf` 2027-08-11, `.sh` and `.systems` 2027-08-24, `.io` and
 `.tech` 2027-02-04, `.dev` 2027-02-05. `.ai` runs to 2028-05-12.
 
+## Not in the registry, but in the account
+
+`lulea.ai` (Ascio, registered 2026-08-26) sits in the same Cloudflare account
+and is deliberately absent from `src/lib/tld.ts`: it is a different name, not a
+perspective on this one, and the registry is the address doctrine rather than a
+list of everything that renews. Parked — zone present, no records, nothing
+served.
+
+Its nameserver pair is `daisy`/`dax`, **not** the `ignacio`/`ollie` every
+`huvudkontoret.*` zone got. The pair belongs to the zone, not to the account:
+deleting and re-adding returns the same zone id and the same pair. Read what
+the zone reports before going to the registrar.
+
 ## What we do not own
 
 Worth writing down, because the name is not ours alone and the plan has twice
