@@ -64,10 +64,17 @@ test(".ai, .app and .vote are declared not in service", () => {
 /**
  * The registry is the inventory, not a wishlist. Reconciled against DNS, RDAP
  * and the registrars on 2026-08-24 — see
- * docs/runbooks/2026-08-24-domain-activation.md. Buying or dropping a domain
- * has to come here, and this test is what makes forgetting expensive.
+ * docs/runbooks/2026-08-24-domain-activation.md. Buying or dropping a
+ * `huvudkontoret.*` domain has to come here, and this test is what makes
+ * forgetting expensive.
+ *
+ * Scoped to `huvudkontoret.*` on purpose. This file is the address doctrine —
+ * one name seen through many top-level domains — not a ledger of everything
+ * the company owns. The Cloudflare account already holds `lulea.ai`, which is
+ * a different name and belongs to no perspective here; claiming it would make
+ * this table a billing report and the doctrine harder to read.
  */
-test("the registry holds every domain Huvudkontoret owns and no others", () => {
+test("the registry holds every huvudkontoret.* domain and no others", () => {
   assert.deepEqual(
     Object.keys(tlds).sort(),
     [

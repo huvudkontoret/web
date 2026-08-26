@@ -10,11 +10,13 @@
  * Tailwind and must do no I/O. Routing facts live here; presentation lives in
  * tokens.ts. The Worker never needs to know what colour .cv is.
  *
- * The table is the whole estate, not only the domains with a job. A domain we
- * pay for and cannot name a purpose for is a fact about the company, and the
- * honest place to record it is next to the ones that do have a purpose. See
- * docs/runbooks/2026-08-24-domain-activation.md for the inventory this was
- * reconciled against.
+ * The table is every `huvudkontoret.*` domain, not only the ones with a job. A
+ * domain we pay for and cannot name a purpose for is a fact about the company,
+ * and the honest place to record it is next to the ones that do have a
+ * purpose. Other names the company owns are out of scope — this is the address
+ * doctrine, one name through many top-level domains, not a list of everything
+ * that renews. See docs/runbooks/2026-08-24-domain-activation.md for the
+ * inventory this was reconciled against.
  *
  * Which domains are lenses is not decided here. `.io` publishes the list in its
  * own SYSTEMET section — eight addresses, each with a POW line and an accent —
