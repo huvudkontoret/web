@@ -111,7 +111,7 @@ export const tlds = {
     tree: "/name/",
     status: "planned",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
 
   /** "visar kompetensen: bevis, inte pitch" */
@@ -122,7 +122,7 @@ export const tlds = {
     tree: "/cv/",
     status: "planned",
     registrar: "namecheap",
-    delegation: "namecheap",
+    delegation: "cloudflare-hk",
   },
 
   /** "visar bygget: dokumentation, arkitektur, projekt" */
@@ -144,7 +144,7 @@ export const tlds = {
     tree: "/xyz/",
     status: "planned",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
 
   // Announced on .io with [ SNART ]. The gate holds the copy to it: an address
@@ -158,7 +158,7 @@ export const tlds = {
     tree: "/ai/",
     status: "not-in-service",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
 
   /** "visar produkterna: testa själv innan du frågar [ SNART ]" */
@@ -169,7 +169,7 @@ export const tlds = {
     tree: "/app/",
     status: "not-in-service",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
 
   /** "visar riktningen: rösta på vad vi bygger härnäst [ SNART ]" */
@@ -180,7 +180,7 @@ export const tlds = {
     tree: "/vote/",
     status: "not-in-service",
     registrar: "namecheap",
-    delegation: "namecheap",
+    delegation: "cloudflare-hk",
   },
 
   // ── Held ────────────────────────────────────────────────────────────────
@@ -198,7 +198,7 @@ export const tlds = {
     tree: "/blog/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   club: {
     key: "club",
@@ -207,7 +207,7 @@ export const tlds = {
     tree: "/club/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   link: {
     key: "link",
@@ -216,7 +216,7 @@ export const tlds = {
     tree: "/link/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   email: {
     key: "email",
@@ -225,7 +225,7 @@ export const tlds = {
     tree: "/email/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   news: {
     key: "news",
@@ -234,7 +234,7 @@ export const tlds = {
     tree: "/news/",
     status: "held",
     registrar: "namecheap",
-    delegation: "namecheap",
+    delegation: "cloudflare-hk",
   },
   wtf: {
     key: "wtf",
@@ -243,7 +243,7 @@ export const tlds = {
     tree: "/wtf/",
     status: "held",
     registrar: "namecheap",
-    delegation: "namecheap",
+    delegation: "cloudflare-hk",
   },
   tech: {
     key: "tech",
@@ -261,7 +261,7 @@ export const tlds = {
     tree: "/cloud/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   store: {
     key: "store",
@@ -270,7 +270,7 @@ export const tlds = {
     tree: "/store/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   one: {
     key: "one",
@@ -279,7 +279,7 @@ export const tlds = {
     tree: "/one/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   info: {
     key: "info",
@@ -288,7 +288,7 @@ export const tlds = {
     tree: "/info/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   site: {
     key: "site",
@@ -297,7 +297,7 @@ export const tlds = {
     tree: "/site/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   website: {
     key: "website",
@@ -306,7 +306,7 @@ export const tlds = {
     tree: "/website/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   online: {
     key: "online",
@@ -315,7 +315,7 @@ export const tlds = {
     tree: "/online/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   sh: {
     key: "sh",
@@ -324,7 +324,7 @@ export const tlds = {
     tree: "/sh/",
     status: "held",
     registrar: "namecheap",
-    delegation: "namecheap",
+    delegation: "cloudflare-hk",
   },
   systems: {
     key: "systems",
@@ -333,7 +333,7 @@ export const tlds = {
     tree: "/systems/",
     status: "held",
     registrar: "namecheap",
-    delegation: "namecheap",
+    delegation: "cloudflare-hk",
   },
 } as const satisfies Record<string, Tld>;
 
