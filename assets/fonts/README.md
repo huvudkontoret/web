@@ -40,6 +40,14 @@ Desktop/print belongs in the same purchase for anything the profile produces
 away from the browser. An application licence does not: the app never embeds
 the typeface (`kull`, ADR 0008).
 
+**Buy the media set in one order.** MonoLisa confirmed both halves of this by
+email on 2026-08-26: the "All media" discount is a one-time discount, so
+adding a usage type later "there would be some kind of premium compared to the
+bundle", and an existing personal v2 licence does not count towards a Creator
+purchase. There is no pay-the-difference upgrade and no credit for what is
+already owned — a category left out now is a category bought at a premium
+later.
+
 ## Generating the files
 
 Creator includes MonoLisa's own customization and webfont tools. **Use them.**
