@@ -11,6 +11,7 @@ node tools/check/run.mjs --format   .editorconfig conformance
 node tools/check/run.mjs --json     machine-readable
 node tools/check/run.mjs --root DIR check another checkout of this repo
 node --test tools/check/test.mjs    the gate's own tests
+node tools/check/title.mjs "..."   one subject line against conventional commits
 ```
 
 Exit codes follow hk: `0` ok, `1` findings, `2` usage error.
@@ -35,6 +36,19 @@ one.
 | `surfaces` | `index.html`, `index.md` and `llms.txt` agree on the declared facts, and an address that is announced but not running is never presented as live |
 | `fonts` | No licensed font file is committed, and the ignore rule that keeps it that way is intact |
 | `formatting` | `.editorconfig` is respected in hand-written files |
+| `title` | The pull request title is a conventional commit subject — run separately, from the workflow, because the title is not in the checkout |
+
+## The title is checked from the workflow, not from `run.mjs`
+
+Everything above reads the checkout. The pull request title does not live
+there, so `title.mjs` is its own entry point, taking the subject as an
+argument and run by `.github/workflows/pr.yml` inside the same `verify` job
+the branch ruleset already requires — which is what makes it binding without
+touching the ruleset.
+
+It is the title and not the branch's commits because the repo squash-merges:
+the title is what becomes the subject on `main`. The types live in
+`facts.json` like every other fact.
 
 ## Two decisions worth knowing before you change anything
 

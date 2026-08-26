@@ -8,42 +8,39 @@ This runbook is the verified inventory behind `src/lib/tld.ts`, the single
 blocker that holds all of it, and the order the lenses come online in once that
 blocker clears.
 
-Reconciled 2026-08-24 against DNS, RDAP and the registrars. The registry test
+Reconciled 2026-08-24 against DNS, RDAP and the registrars, and again on
+2026-08-26 for the three zones that moved account. The registry test
 `the registry holds every domain Huvudkontoret owns and no others` fails if
 this inventory and the code drift apart.
 
-## The blocker, stated once
+## The blocker, and how it cleared
 
-**Huvudkontoret's Cloudflare account holds zero zones.** Both zones we have on
-Cloudflare — `huvudkontoret.io` and `huvudkontoret.dev` — sit in Sharpest Root
-(`83788bafa0a20cc3e949be56285af076`), not in ours
-(`6d907037897704cfd96e793b6a71e908`).
+**Cleared 2026-08-26.** All three zones we have on Cloudflare —
+`huvudkontoret.io`, `huvudkontoret.dev` and `huvudkontoret.tech` — are now
+active in our own account (`6d907037897704cfd96e793b6a71e908`), and the
+Sharpest Root zones they came from read `moved`.
 
-Cloudflare refuses a Worker custom domain on a zone the account does not own,
-through the dashboard, Wrangler and the API alike. So:
+What it was: Cloudflare refuses a Worker custom domain on a zone the account
+does not own, through the dashboard, Wrangler and the API alike. The zones sat
+in Sharpest Root while the Worker sat here, so the Pages → Workers cutover had
+nothing to attach to, no second domain could be added, and the TLD workspace
+shell could not merge behind it. `canBeRouted()` in the registry is that fact
+expressed in code.
 
-- the Pages → Workers cutover cannot complete — the route flip in
-  `wrangler.jsonc` has nothing to attach to;
-- no second domain can be added, because adding one means the same route;
-- `docs/plans/2026-08-12-tld-workspace-shell.md` names the cutover as its
-  blocking prerequisite, so the shell work cannot merge either.
-
-Everything below is downstream of one move. `canBeRouted()` in the registry is
-that fact expressed in code, and it returns `false` for every domain today.
-
-Asked of Sharpest 2026-08-20 (Slack DM to Tommy Wassgren). Answer: *"Jag har
-inga problem med det"*, followed by a preference for exploring shared-account
-permissions first, and *"Måste klicka lite. Men inte ikväll."* Nothing has moved
-since. The background — including why the shared-account alternative fails on
-per-domain permissions — is in `sharpest-domain-hosting-memo.md`.
+How it cleared, and the part worth keeping: the answer was **not** a new
+account. `infra@huvudkontoret.io` was made Super Administrator on the account
+that already held the Worker, which is what a role account is for — a second
+account would have moved the same blocker one step sideways, since the Worker,
+its Workers Builds connection and its tokens would then have been in the wrong
+place instead of the zones.
 
 ## What we own
 
 | Domain | Registrar | DNS today | Status in the registry | Registered |
 |---|---|---|---|---|
-| `huvudkontoret.io` | Ascio (via Loopia) | Cloudflare — Sharpest | `live` (front, not yet routed) | 2026-02-04 |
-| `huvudkontoret.dev` | Ascio (via Loopia) | Cloudflare — Sharpest | `planned` (lens) | 2026-02-05 |
-| `huvudkontoret.tech` | Ascio (via Loopia) | Loopia | `held` | 2026-02-04 |
+| `huvudkontoret.io` | Ascio (via Loopia) | Cloudflare — Huvudkontoret | `live` (front, not yet routed) | 2026-02-04 |
+| `huvudkontoret.dev` | Ascio (via Loopia) | Cloudflare — Huvudkontoret | `planned` (lens) | 2026-02-05 |
+| `huvudkontoret.tech` | Ascio (via Loopia) | Cloudflare — Huvudkontoret | `held` | 2026-02-04 |
 | `huvudkontoret.ai` | Ascio (via Loopia) | Loopia | `not-in-service` (lens, SNART) | 2026-05-12 |
 | `huvudkontoret.name` | Ascio (via Loopia) | Loopia | `planned` (lens) | 2026-05-12 |
 | `huvudkontoret.blog` | Ascio (via Loopia) | Loopia | `held` | 2026-05-12 |
@@ -100,6 +97,19 @@ standing fact about the brand, not a problem to solve here. It is the reason
 Nothing starts until this lands. Two zones, done as two steps, because they
 carry very different risk.
 
+**A move between accounts is a registrar change, not a Cloudflare button.**
+The zone is re-added in the target account, which assigns a *different*
+nameserver pair, and the delegation is then repointed at the registrar. The old
+zone goes to `moved` on its own once the change is seen; nothing needs deleting
+in the source account.
+
+**Do not trust the quick scan.** Adding the zone offers the records it can
+resolve, which for a *proxied* source zone are Cloudflare's own edge addresses
+— importing those gives a proxied record pointing at Cloudflare, which is the
+error 1000 loop. Delete what the scan proposes, then either import the export
+above or let an unproxied source zone be scanned and verify the result record
+for record.
+
 **`huvudkontoret.dev` first.** It is empty — Loopia parking records and nothing
 else. No mail, no TXT, nothing anyone asks for. Moving it costs nothing and it
 unblocks kl's sync service as well as this repo.
@@ -111,8 +121,10 @@ mechanical, but the mail records must be recreated exactly. Export the full
 record set before starting:
 
 ```bash
-# from an account that can read the Sharpest zone
-wrangler dns export --zone huvudkontoret.io > io-zone-$(date +%F).txt
+# from an account that can read the Sharpest zone. Not wrangler: it has no
+# zone or DNS commands, and its OAuth grant tops out at zone:read.
+curl "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records/export" \
+  --header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" > io-zone-$(date +%F).txt
 ```
 
 Both are reversible — a zone can be moved back between accounts.

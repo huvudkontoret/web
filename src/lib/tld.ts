@@ -98,7 +98,7 @@ export const tlds = {
     tree: "/",
     status: "live",
     registrar: "ascio",
-    delegation: "cloudflare-sharpest",
+    delegation: "cloudflare-hk",
   },
 
   /** "visar människorna: en adress per person" */
@@ -131,7 +131,7 @@ export const tlds = {
     tree: "/dev/",
     status: "planned",
     registrar: "ascio",
-    delegation: "cloudflare-sharpest",
+    delegation: "cloudflare-hk",
   },
 
   /** "visar experimenten: vår whiteboard. hk, kl och kull bor här tills de bär" */
@@ -250,7 +250,7 @@ export const tlds = {
     tree: "/tech/",
     status: "held",
     registrar: "ascio",
-    delegation: "loopia",
+    delegation: "cloudflare-hk",
   },
   cloud: {
     key: "cloud",
