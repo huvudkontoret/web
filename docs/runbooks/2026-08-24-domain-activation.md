@@ -155,6 +155,13 @@ One lens, end to end: delegate to Cloudflare, add the route, generate its agent
 surfaces, build the page on the chrome. Rollback is deleting a route. This is
 where the chain either holds or does not.
 
+**Delete the lens's placeholder record first.** Every lens carries a proxied
+`AAAA -> 100::` on apex and `www` from step 5, and Cloudflare refuses a custom
+domain on a hostname that already has records — `code 100117`, the same failure
+that broke the `.io` cutover on 2026-08-26. Remove the apex record, then let
+`wrangler deploy` create the domain; the redirect rule can go at the same time
+or stay until the route is verified, since a route is matched before it.
+
 `.name` goes first because it is the only lens whose content already exists as
 data — `src/content/nodes/magnusrenholm.yaml`, recoverable from `bf21a0b^`. The
 `identity-runtime` branch it lived on has been deleted from the remote; the
@@ -171,15 +178,40 @@ announce. They are the three the page marks `[ SNART ]`, and the gate holds the
 copy to it.
 
 Namecheap names (`.cv`, `.vote`) need their nameservers pointed at Cloudflare
-from Namecheap's panel; Ascio/Loopia names from Loopia's.
+from Namecheap's panel; Ascio/Loopia names from Loopia's. Only `.io`, `.dev`
+and `.tech` sit in Sharpest's Loopia account — everything else is ours to
+change without asking.
 
-### 5. Held names: one Worker rule, no pages
+Delegating a Namecheap name drops its default email forwarding (`eforward1-5`
+plus Namecheap's SPF). Nothing uses it today; if that changes, Cloudflare Email
+Routing replaces it.
 
-The sixteen held names never get a tree, a route or a build. Left alone they
-resolve to registrar parking, which is the one outcome worth avoiding — a page
-we did not write, on our brand. Point them at the Worker and let it answer 404,
-or redirect them to `.io`; either is a DNS change and a registry row, and
-neither needs a page. Decide it once, apply it to all sixteen.
+### 5. Held names: one redirect rule, no pages
+
+**Decided 2026-08-26: every held name redirects home.** The sixteen never get a
+tree, a route or a build. Left alone they resolve to registrar parking, which
+is the one outcome worth avoiding — a page we did not write, on our brand. A
+404 would have been honest; a redirect is honest *and* useful, and costs the
+same.
+
+Per zone, three pieces, all of which can be put in place before the delegation
+lands so the name works the moment it does:
+
+- a proxied `AAAA <apex> -> 100::`, and the same for `www`. The discard prefix
+  is the placeholder Cloudflare itself uses for Worker custom domains: the edge
+  answers, no origin is ever reached
+- one dynamic redirect rule, ref `held_name_home`, matching apex and `www`,
+  301 to `https://huvudkontoret.io/`
+
+**To the root, not the same path.** A held name has no content, so preserving
+the path only turns a dead address into a 404 on the front. `preserve_query_string`
+is off for the same reason.
+
+Verified on `.tech` — apex, a deep path and `www` all land on the front.
+
+The lenses carry the same three pieces under the ref `lens_awaiting_content_home`
+until each has content of its own. `.dev` included: an apex redirect says
+nothing about `sync.huvudkontoret.dev`, which is a subdomain and unaffected.
 
 ## Decisions this runbook does not make
 
