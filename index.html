@@ -81,55 +81,24 @@
 
         <style>
             /* ===================== TYPOGRAFI ===================== */
-            /* MonoLisa på all typografi. Effektsnittet Permanent Marker
-               används enbart i hero, aldrig i UI eller brödtext. */
+            /* MonoLisa carries all typography; Permanent Marker is a hero-only
+               accent, never UI or body text. Two variable files cover every
+               weight the page uses, so the profile can reach for a new one
+               without a new download. The files are licensed and untracked —
+               assets/fonts/README.md is the whole rule. */
             @font-face {
                 font-family: "MonoLisa";
-                src: url("assets/fonts/MonoLisa-Light.woff2") format("woff2");
-                font-weight: 300;
+                src: url("assets/fonts/MonoLisa-Variable.woff2") format("woff2");
+                font-weight: 100 900;
                 font-style: normal;
                 font-display: swap;
             }
             @font-face {
                 font-family: "MonoLisa";
-                src: url("assets/fonts/MonoLisa-LightItalic.woff2") format("woff2");
-                font-weight: 300;
+                src: url("assets/fonts/MonoLisa-VariableItalic.woff2")
+                    format("woff2");
+                font-weight: 100 900;
                 font-style: italic;
-                font-display: swap;
-            }
-            @font-face {
-                font-family: "MonoLisa";
-                src: url("assets/fonts/MonoLisa-Regular.woff2") format("woff2");
-                font-weight: 400;
-                font-style: normal;
-                font-display: swap;
-            }
-            @font-face {
-                font-family: "MonoLisa";
-                src: url("assets/fonts/MonoLisa-RegularItalic.woff2") format("woff2");
-                font-weight: 400;
-                font-style: italic;
-                font-display: swap;
-            }
-            @font-face {
-                font-family: "MonoLisa";
-                src: url("assets/fonts/MonoLisa-Medium.woff2") format("woff2");
-                font-weight: 500;
-                font-style: normal;
-                font-display: swap;
-            }
-            @font-face {
-                font-family: "MonoLisa";
-                src: url("assets/fonts/MonoLisa-SemiBold.woff2") format("woff2");
-                font-weight: 600;
-                font-style: normal;
-                font-display: swap;
-            }
-            @font-face {
-                font-family: "MonoLisa";
-                src: url("assets/fonts/MonoLisa-Bold.woff2") format("woff2");
-                font-weight: 700;
-                font-style: normal;
                 font-display: swap;
             }
 

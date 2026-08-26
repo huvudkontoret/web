@@ -65,10 +65,13 @@ files they name are on the `identity-runtime` branch, not on `main`.
   `CLAUDE.md` is the rule source and whose `Huvudkontoret.io.dc.html` is the
   canonical mockup for this page. Read those before changing type, colour or
   the wordmark — `index.html` follows them, it does not define them.
-- MonoLisa carries all typography, but the `.woff2` files are gitignored
-  until the web licence is confirmed, so the deployed page falls back to
-  system monospace. See `assets/fonts/README.md` — that is the one gate
-  between this page and the profile as designed.
+- MonoLisa carries all typography, as two variable files
+  (`MonoLisa-Variable.woff2`, `MonoLisa-VariableItalic.woff2`), and both are
+  gitignored until the web licence is confirmed — so the deployed page falls
+  back to system monospace. See `assets/fonts/README.md` for what the licence
+  has to cover and `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md` for
+  the flip. That is the one gate between this page and the profile as
+  designed.
 - The OG image is generated, never designed: `tools/og-io.html` is the
   template and `assets/og-io.jpg` its current render.
 - The identity runtime is not here. It and its original brief (`PROMPT.md`)

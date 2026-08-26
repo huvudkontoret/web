@@ -34,7 +34,7 @@ one.
 | `markup` | `index.html` is structurally sound: balanced structural tags, one non-empty `<title>`, `lang` set, unique ids, `alt` on images, a doctype |
 | `surfaces` | `index.html`, `index.md` and `llms.txt` agree on the declared facts, and an address that is announced but not running is never presented as live |
 | `profile` | The graphic profile's custom properties are identical in `index.html`'s top-level `:root` block and in `src/styles/profile.css` — the two places ADR 0004 keeps them |
-| `fonts` | No licensed font file is committed, and the ignore rule that keeps it that way is intact |
+| `fonts` | The licensed fonts are carried exactly as licensed: none committed while the web licence is unconfirmed, exactly `licensedWebFonts` once it is |
 | `formatting` | `.editorconfig` is respected in hand-written files |
 
 ## Three decisions worth knowing before you change anything
@@ -52,16 +52,27 @@ two disagree, the page is right*. `profile` turns that into a failure. A
 `:root` inside a media query is a responsive override, not a disagreement, so
 only top-level blocks are compared.
 
-**MonoLisa is referenced but must never be published.** The typeface is
-purchased and this repo is public, so the web files are generated locally and
-stay out of git until the web licence is confirmed — see
-`assets/fonts/README.md`. That makes three parts of one rule: `references`
-exempts `assets/fonts/*.woff2` from having to exist, `fonts` fails if one is
-ever committed, and `workers` fails if `.assetsignore` stops excluding them
-while `.gitignore` still does. The third exists because **wrangler uploads the
-working directory, not the git tree** — keeping the fonts out of git does not
-keep them off the site, so a local `wrangler deploy` would publish them. The
-mistake is one-way; once a font has been served from huvudkontoret.io, deleting
+**MonoLisa is referenced but must never be published — until it may be.** The
+typeface is purchased and this repo is public, so the web files stay out of git
+until the web licence covers serving them; `assets/fonts/README.md` says what
+the licence has to cover. One fact, `webFontLicence`, says whether it does, and
+it turns three checks around at once:
+
+| | while it is `false` | once it is `true` |
+|---|---|---|
+| `references` | `assets/fonts/*.woff2` is exempt from having to exist | the fonts the page names are assets like any other |
+| `fonts` | no font file may be committed, and both ignore rules stand | exactly `licensedWebFonts` is committed, and both are gone |
+| `workers` | `.assetsignore` must exclude them | `.assetsignore` must not |
+
+The third exists because **wrangler uploads the working directory, not the git
+tree** — keeping the fonts out of git does not keep them off the site, so a
+local `wrangler deploy` would publish them. It stays in the flipped state for
+the mirror-image reason: a rule left behind there means the page names fonts
+production never uploaded, and every visitor silently gets system monospace.
+
+The mistake is one-way in one direction only, which is why the flip is a
+runbook (`docs/runbooks/2026-08-26-monolisa-webfont-cutover.md`) rather than a
+one-line change: once a font has been served from huvudkontoret.io, deleting
 the file later does not undo it.
 
 **The gate refuses to guess at `.assetsignore`.** It reads a deliberately small

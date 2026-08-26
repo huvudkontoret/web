@@ -117,18 +117,30 @@ function checkPublishedSet(site, facts, report) {
 /**
  * Wrangler uploads the working directory, not the git tree. Keeping the fonts
  * out of git therefore does not keep them off the site — a local
- * `wrangler deploy` would publish them. The two rules have to move together.
+ * `wrangler deploy` would publish them. The two rules have to move together,
+ * and `webFontLicence` says which way: excluded while the licence is
+ * unconfirmed, published once it is.
  */
 function checkLicensedFonts(site, facts, patterns, report) {
-  const gitignore = site.read(".gitignore") ?? "";
-  const stillUnlicensed = /assets\/fonts\/\*\.woff2/.test(gitignore);
-  if (!stillUnlicensed) return;
+  const sample = facts.licensedWebFonts[0];
+  const excluded = matchesAny(patterns, sample);
 
-  if (!matchesAny(patterns, "assets/fonts/MonoLisa-Regular.woff2")) {
+  if (!facts.webFontLicence) {
+    if (!excluded) {
+      report.fail(
+        ".assetsignore",
+        "does not exclude assets/fonts/*.woff2 while the web licence is unconfirmed. Wrangler uploads the " +
+          "working directory, so a local deploy would publish the licensed fonts.",
+      );
+    }
+    return;
+  }
+
+  if (excluded) {
     report.fail(
       ".assetsignore",
-      "does not exclude assets/fonts/*.woff2 while .gitignore still does. Wrangler uploads the working " +
-        "directory, so a local deploy would publish the licensed fonts. Remove both rules together or neither.",
+      `still excludes ${sample} while webFontLicence is set — the Worker would serve a page whose fonts 404, ` +
+        "and every visitor would get system monospace. Drop this rule and the matching .gitignore rule together.",
     );
   }
 }

@@ -95,7 +95,10 @@ layout, content and behaviour, never typography.
   `index.md` and `llms.txt` together. A stale `llms.txt` is a wrong answer
   given confidently by someone else's agent.
 - MonoLisa is purchased but the web licence is unconfirmed, so no font file
-  is committed and the gate fails if one ever is.
+  is committed and the gate fails if one ever is. When the licence lands,
+  `webFontLicence` in `tools/check/facts.json` turns that rule around and
+  `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md` is the order to do it
+  in — the publication itself has no rollback.
 
 ## Work that lives off `main`
 

@@ -15,7 +15,10 @@
   "profileContactSurface": "index.html",
   "profileStylesheet": "src/styles/profile.css",
 
+  "//licensedFonts": "MonoLisa is purchased and this repo is public, so the webfont files stay out of git until the licence covers the web. webFontLicence is the one fact that says whether it does, and it turns the fonts, references and workers checks around together — see docs/runbooks/2026-08-26-monolisa-webfont-cutover.md. licensedFontPattern is what counts as a licensed font file; licensedWebFonts is the exact set the site is allowed to carry once it may carry any.",
+  "webFontLicence": false,
   "licensedFontPattern": "^assets/fonts/.+\\.woff2$",
+  "licensedWebFonts": ["assets/fonts/MonoLisa-Variable.woff2", "assets/fonts/MonoLisa-VariableItalic.woff2"],
 
   "requiredFiles": ["CNAME", ".nojekyll", "index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
 

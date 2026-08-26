@@ -1,39 +1,63 @@
 # Fonts
 
-The profile puts MonoLisa on all typography, so `index.html` declares
-`@font-face` for seven weights under `assets/fonts/`. The `.woff2` files are
-**not committed** — `.gitignore` excludes them.
+The profile puts MonoLisa on all typography. `index.html` declares two
+`@font-face` rules, both pointing here:
+
+```
+MonoLisa-Variable.woff2         upright, weight axis 100–900
+MonoLisa-VariableItalic.woff2   italic,  weight axis 100–900
+```
+
+Two variable files replace the seven static weights this page used to name
+(Light, LightItalic, Regular, RegularItalic, Medium, SemiBold, Bold). The page
+uses 300–700 today; the variable axis means the profile can reach for another
+weight without another download, and a licence is priced per weight, so it is
+the cheaper half of the same decision. `tools/og-io.html` loads the upright
+file only — the OG image has no italics.
 
 ## Why they are not in the repo
 
-MonoLisa is a purchased typeface, not a redistributable one, and its desktop
-licence does not by itself cover serving the font from a website. A push to
-`main` publishes this repo, so committing the binaries would publish them
-too. The licence terms are at <https://www.monolisa.dev/license>.
+MonoLisa is a purchased typeface, not a redistributable one. A push to `main`
+publishes this repo, so committing the binaries would publish them too. The
+licence terms are at <https://www.monolisa.dev/license>.
 
 Until the web licence is confirmed, the page falls back to the system
 monospace stack (`ui-monospace, SFMono-Regular, Menlo, Consolas`). The design
 survives that — the profile is monospace-native — but it is not the profile.
 
-## To ship MonoLisa
+## What the licence has to cover
 
-1. Confirm the web licence covers `huvudkontoret.io`.
-2. Drop the `assets/fonts/*.woff2` line from `.gitignore`.
-3. Generate the files (below) and commit them.
+The desktop licence a developer buys to *write code* in MonoLisa does not
+cover serving it from a website, and the personal ("Developer") plan is
+personal: MonoLisa's own FAQ sends a company or a product to the commercial
+("Creator") plan. Two things about this site put it there:
+
+- **Web.** Self-hosting the `.woff2` files from `huvudkontoret.io`.
+- **Logotype.** The wordmark in the chrome and the footer is set in MonoLisa,
+  and the EULA carves logotypes out into a separate right.
+
+Desktop/print belongs in the same purchase for anything the profile produces
+away from the browser. An application licence does not: the app never embeds
+the typeface (`kull`, ADR 0008).
 
 ## Generating the files
 
-Source: `MonoLisa Plus v2.010 2023-08-24`, the same release the design
-project uses. `woff2_compress` comes from `brew install woff2`.
+Creator includes MonoLisa's own customization and webfont tools. **Use them.**
+Select the Code family, the variable upright and italic, and `woff2` output;
+rename the two downloads to the names above.
 
-```sh
-for w in Light LightItalic Regular RegularItalic Medium SemiBold Bold; do
-  cp "$HOME/Library/Fonts/MonoLisa-$w.ttf" assets/fonts/
-  woff2_compress "assets/fonts/MonoLisa-$w.ttf"
-  rm "assets/fonts/MonoLisa-$w.ttf"
-done
-```
+Do not build these locally from the desktop `.ttf`, and do not subset them.
+The EULA forbids modification: you "may not modify, translate, adapt, alter …
+add or subtract any glyphs, symbols or accents, or any other derivative
+works." Subsetting to Latin plus the grammar glyphs (`▮`, `·`, `°`) would cut
+the payload nicely and is exactly what the licence does not allow — ask
+MonoLisa for a subset build instead of producing one.
 
-That is roughly 370 kB for the seven weights, unsubset. Subsetting to Latin
-plus the grammar glyphs (`▮`, `·`, `°`) would cut it substantially and is
-worth doing before this goes live.
+Renaming a file is not modifying the font. Everything else here is.
+
+## Shipping them
+
+The three-part gate that keeps these files out of production has to be lifted
+in one change, in the right order, or the site either ships a licensed font it
+may not ship or ships nothing at all. That order is a runbook:
+`docs/runbooks/2026-08-26-monolisa-webfont-cutover.md`.
