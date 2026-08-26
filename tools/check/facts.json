@@ -47,6 +47,9 @@
   "titleMaxLength": 72,
 
   "contentSignal": "ai-train=no",
+  "//alwaysIgnored": "Paths that are never in git but are always in the working directory wrangler uploads. The published set is derived from tracked files, so nothing else in this gate can see them; each must be named in .assetsignore explicitly.",
+  "alwaysIgnored": [".git/", ".wrangler/", "node_modules/"],
+
   "neverPublished": ["^dist/", "^node_modules/", "^\\.astro/", "\\.env$", "^\\.wrangler/"],
 
   "textFileExtensions": [".html", ".md", ".txt", ".json", ".xml", ".svg", ".mjs", ".js", ".yml", ".yaml", ".jsonc"],
