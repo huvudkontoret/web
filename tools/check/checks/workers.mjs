@@ -48,19 +48,19 @@ function checkConfig(config, facts, report) {
   // guards it in both directions: it may not arrive before the decision, and
   // it may not go missing after.
   const domains = (config.routes ?? []).filter((route) => route.custom_domain).map((route) => route.pattern);
-  const serving = domains.includes(facts.expectedCname);
+  const serving = domains.includes(facts.apexHostname);
 
   if (facts.expectCustomDomain && !serving) {
     report.fail(
       "wrangler.jsonc",
-      `no custom_domain route for ${facts.expectedCname} — found ${domains.length ? domains.join(", ") : "none"}. ` +
+      `no custom_domain route for ${facts.apexHostname} — found ${domains.length ? domains.join(", ") : "none"}. ` +
         "Without it the Worker serves only its workers.dev URL.",
     );
   }
   if (!facts.expectCustomDomain && serving) {
     report.fail(
       "wrangler.jsonc",
-      `adds a custom_domain route for ${facts.expectedCname}, which performs the cutover on the next production ` +
+      `adds a custom_domain route for ${facts.apexHostname}, which performs the cutover on the next production ` +
         "deploy. If that is the intent, set expectCustomDomain in facts.json in the same change and follow " +
         "docs/runbooks/2026-08-12-pages-to-workers-cutover.md.",
     );

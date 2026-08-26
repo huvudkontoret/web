@@ -13,7 +13,7 @@
 
   "licensedFontPattern": "^assets/fonts/.+\\.woff2$",
 
-  "requiredFiles": ["CNAME", ".nojekyll", "index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
+  "requiredFiles": ["index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
 
   "publishedPaths": [
     "index.html",
@@ -37,7 +37,8 @@
     ".well-known/api-catalog"
   ],
 
-  "expectedCname": "huvudkontoret.io",
+  "//apexHostname": "The hostname the Worker serves. Named expectedCname until 2026-08-26, when the CNAME file it referred to went away with GitHub Pages.",
+  "apexHostname": "huvudkontoret.io",
 
   "//expectCustomDomain": "true since the cutover. This and the custom_domain route in wrangler.jsonc are the same decision, and the gate fails on one without the other. See docs/runbooks/2026-08-12-pages-to-workers-cutover.md.",
   "expectCustomDomain": true,

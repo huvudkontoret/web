@@ -160,8 +160,10 @@ After step 5, to go back:
    `huvudkontoret.io` custom domain.
 2. DNS → recreate four proxied-off `A` records for the apex:
    `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`.
-3. Repository → Settings → Pages → source **main / (root)**. `CNAME` is still
-   in the tree, so the custom domain returns with it.
+3. Repository → Settings → Pages → source **main / (root)**, then set the
+   custom domain to `huvudkontoret.io` in the same screen. The `CNAME` file
+   that used to carry it was removed once the cutover verified, so this is one
+   field to fill rather than a file already in the tree.
 4. Remove the www redirect rule if it now conflicts with Pages' own redirect.
 
 Certificate issuance can lag a few minutes in either direction. If the apex
@@ -169,6 +171,10 @@ serves but the browser complains about the certificate, wait before assuming
 the rollback failed.
 
 ## After the cutover
+
+Run on 2026-08-26 and done, listed here because the procedure is what a rerun
+would follow, not because anything is outstanding.
+
 
 - Update the `static site` row in `CONTEXT.md` — it describes Pages as what
   serves the apex.

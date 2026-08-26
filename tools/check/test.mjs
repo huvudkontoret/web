@@ -43,8 +43,6 @@ function sitemapListing(paths) {
 /** A minimal site that passes every check — the baseline each case perturbs. */
 function baseline() {
   return {
-    "CNAME": "huvudkontoret.io\n",
-    ".nojekyll": "",
     ".gitignore": "assets/fonts/*.woff2\n",
     "index.html": [
       "<!doctype html>",
@@ -76,7 +74,7 @@ function baseline() {
       "}",
       "",
     ].join("\n"),
-    ".assetsignore": ".assetsignore\n.gitignore\nCNAME\n.nojekyll\nwrangler.jsonc\nassets/fonts/*.woff2\n.git/\n.wrangler/\nnode_modules/\n",
+    ".assetsignore": ".assetsignore\n.gitignore\nwrangler.jsonc\nassets/fonts/*.woff2\n.git/\n.wrangler/\nnode_modules/\n",
   };
 }
 
@@ -396,12 +394,8 @@ test("surfaces: the same address is fine once marked as not yet running", () => 
   });
 });
 
-test("publishing: the wrong CNAME is a finding", () => {
-  assertFires(publishing, { CNAME: "example.com\n" }, "points the custom domain");
-});
-
-test("publishing: a missing .nojekyll is a finding", () => {
-  assertFires(publishing, { ".nojekyll": null }, "Jekyll would drop dot-directories");
+test("publishing: a missing required surface is a finding", () => {
+  assertFires(publishing, { "llms.txt": null }, "required at the repo root");
 });
 
 test("publishing: dropping ai-train=no from Content-Signal is a finding", () => {

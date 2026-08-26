@@ -21,16 +21,16 @@ export function run(site, facts, report) {
     }
     const markup = stripRawText(html);
 
-    checkReferences(site, surface, html, markup, licensedFont, report);
+    checkReferences(site, facts, surface, html, markup, licensedFont, report);
     checkAnchors(surface, html, markup, report);
   }
 }
 
-function checkReferences(site, surface, html, markup, licensedFont, report) {
+function checkReferences(site, facts, surface, html, markup, licensedFont, report) {
   // References are read from the full source: CSS url() lives inside <style>,
   // which stripRawText blanks out.
   for (const reference of references(html)) {
-    const path = toRepoPath(reference.url, site);
+    const path = toRepoPath(reference.url, site, facts);
     if (path === null) continue;
 
     if (licensedFont.test(path)) {
