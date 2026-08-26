@@ -167,13 +167,25 @@ test(".io's zone has moved into our own account", () => {
   assert.equal(tlds.io.delegation, "cloudflare-hk");
 });
 
-test("the activation backlog is every domain with a role and the wrong DNS home", () => {
-  const backlog = awaitingDelegation().map((tld) => tld.key);
-  assert.ok(!backlog.includes("io"), "the front left the backlog when its zone moved");
-  assert.ok(backlog.includes("name"), "a lens still delegated elsewhere is still waiting");
+/**
+ * The backlog emptied on 2026-08-26, when the last of the twenty-four moved.
+ * Asserting that it is empty is worth more than asserting what used to be in
+ * it: the next domain that arrives delegated somewhere else fails here, which
+ * is the moment someone should notice rather than three steps later when its
+ * route will not attach.
+ */
+test("nothing is waiting on delegation", () => {
+  assert.deepEqual(
+    awaitingDelegation().map((tld) => tld.key),
+    [],
+    "a domain with a role is delegated somewhere other than our Cloudflare account",
+  );
+
+  // Held names are excluded by construction, not by luck — they are not
+  // waiting on anything, they are just owned.
   for (const tld of Object.values(tlds)) {
     if (tld.status === "held") {
-      assert.ok(!backlog.includes(tld.key), `${tld.key} is held and is not waiting on anything`);
+      assert.ok(!awaitingDelegation().includes(tld), `${tld.key} is held and cannot be in the backlog`);
     }
   }
 });
