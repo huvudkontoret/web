@@ -50,5 +50,15 @@ demo-hero.html
 # never on its own. See assets/fonts/README.md.
 assets/fonts/*.woff2
 
+# Never tracked, always present, and uploaded anyway: wrangler publishes the
+# working directory, so the clone's own metadata reaches the site unless it is
+# named here. The 2026-08-26 cutover build uploaded /.git/HEAD, /.git/index
+# and /.git/objects/... before this existed. The gate cannot infer these — it
+# derives the published set from tracked files, and these are never tracked —
+# so facts.json lists them and `workers` asserts each one is here.
+.git/
+.wrangler/
+node_modules/
+
 # Local noise that is never part of the site.
 .DS_Store

@@ -76,7 +76,7 @@ function baseline() {
       "}",
       "",
     ].join("\n"),
-    ".assetsignore": ".assetsignore\n.gitignore\nCNAME\n.nojekyll\nwrangler.jsonc\nassets/fonts/*.woff2\n",
+    ".assetsignore": ".assetsignore\n.gitignore\nCNAME\n.nojekyll\nwrangler.jsonc\nassets/fonts/*.woff2\n.git/\n.wrangler/\nnode_modules/\n",
   };
 }
 
@@ -183,6 +183,25 @@ test("workers: with the decision recorded, the route is required and cannot go m
 
   // And the config that performs it passes — the baseline carries the route.
   assertClean(workers);
+});
+
+test("workers: dropping .git/ from .assetsignore is a finding", () => {
+  // The case the gate could not see before: git never tracks .git/, so the
+  // published set — derived from tracked files — says nothing about it, while
+  // wrangler uploads it with everything else in the directory.
+  assertFires(
+    workers,
+    { ".assetsignore": baseline()[".assetsignore"].replace(".git/\n", "") },
+    "does not exclude .git/",
+  );
+});
+
+test("workers: every always-ignored path is asserted, not just the first", () => {
+  assertFires(
+    workers,
+    { ".assetsignore": baseline()[".assetsignore"].replace(".wrangler/\n", "") },
+    "does not exclude .wrangler/",
+  );
 });
 
 test("workers: preview_urls off is a finding", () => {

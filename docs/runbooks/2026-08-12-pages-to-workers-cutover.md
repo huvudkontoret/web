@@ -90,13 +90,33 @@ Both, in one PR. The gate fails on either without the other, so the cutover
 cannot arrive as a side effect of an unrelated change, and it cannot silently
 disappear afterwards.
 
-Merging it hands the apex to the Worker: Cloudflare replaces the four GitHub
-Pages A records with its own routing and issues a certificate. Propagation is
-usually seconds because the zone is already on Cloudflare.
+**Delete the four apex A records first.** Cloudflare does not replace them —
+it refuses, and the deploy fails with `Hostname 'huvudkontoret.io' already has
+externally managed DNS records (A, CNAME, etc). Delete them first or try a
+different hostname. [code: 100117]`. This runbook claimed the opposite until
+the 2026-08-26 attempt proved otherwise, and the failed build left `main`
+deploying red until it was resolved.
 
-(Adding the custom domain by hand in Workers & Pages → **web** → Settings →
-Domains & Routes achieves the same thing, but the next deploy from `main`
-would reconcile it against the config file — so change the file.)
+That ordering costs a gap: between deleting the records and the custom domain
+existing, the apex resolves to nothing. Keep it to seconds by deleting the
+records and creating the domain back to back over the API rather than waiting
+on a build:
+
+```bash
+# after the route is merged; each returns the record id to delete
+curl "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records?type=A&name=huvudkontoret.io" \
+  --header "Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+```
+
+Creating the domain by hand is not a deviation here: `wrangler.jsonc` already
+declares the route, so the next deploy reconciles against the file rather than
+fighting it. Cloudflare then issues a certificate; propagation is usually
+seconds because the zone is already on Cloudflare.
+
+(The file is still what decides. Adding the domain by hand is how the gap is
+kept short, not a way around the config — a deploy from `main` reconciles the
+domain against `wrangler.jsonc`, so a hand-made domain the file does not
+declare would be removed again.)
 
 Verify:
 

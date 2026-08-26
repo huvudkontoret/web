@@ -83,6 +83,8 @@ function checkPublishedSet(site, facts, report) {
   }
 
   const { patterns, unsupported } = parsePatterns(text);
+
+  checkAlwaysIgnored(text, facts, report);
   for (const pattern of unsupported) {
     report.fail(
       `.assetsignore:${pattern.number}`,
@@ -112,6 +114,30 @@ function checkPublishedSet(site, facts, report) {
   }
 
   checkLicensedFonts(site, facts, patterns, report);
+}
+
+/**
+ * The blind spot in the check above.
+ *
+ * `checkPublishedSet` derives what reaches the site from the files git tracks,
+ * which is right for everything the repo contains and wrong for everything it
+ * does not. `.git/` and `.wrangler/` are never tracked, are always present in
+ * the directory wrangler uploads, and were therefore invisible: the 2026-08-26
+ * cutover build published /.git/HEAD, /.git/index and /.git/objects/... with a
+ * green gate. Nothing can be inferred here, so the paths are listed in
+ * facts.json and each one has to be named in .assetsignore.
+ */
+function checkAlwaysIgnored(text, facts, report) {
+  const lines = text.split(/\r?\n/).map((line) => line.trim());
+  for (const path of facts.alwaysIgnored ?? []) {
+    if (!lines.includes(path)) {
+      report.fail(
+        ".assetsignore",
+        `does not exclude ${path}, which git never tracks and wrangler uploads anyway — ` +
+          "it would be served from the site. Add it verbatim, or drop it from alwaysIgnored in facts.json.",
+      );
+    }
+  }
 }
 
 /**
