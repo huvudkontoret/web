@@ -1,5 +1,27 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  // Nothing to extend from. This file was written for the Astro app that left
+  // the repo in `bf21a0b`, and `astro/tsconfigs/strict` has pointed at a
+  // package this repo does not install ever since — every production build
+  // logs the warning. What actually remains is two files: `src/lib/tld.ts`,
+  // the domain registry, and `worker/index.ts`.
+  //
+  // `erasableSyntaxOnly` is the load-bearing line. Both files are read by
+  // Node's type stripping — `node --test` imports the registry directly, with
+  // no compile step anywhere in this repo — and stripping fails on enums,
+  // parameter properties and namespaces. Declaring it lets an editor say so
+  // before CI does.
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": ["esnext"],
+    "types": [],
+    "strict": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "worker/**/*.ts"]
 }
