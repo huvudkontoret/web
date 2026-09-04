@@ -56,17 +56,41 @@ later.
 ## Generating the files
 
 Creator includes MonoLisa's own customization and webfont tools. **Use them.**
-Select the Code family, the variable upright and italic, and `woff2` output;
-rename the two downloads to the names above.
+In the customize tool pick the **Webfont** target (not Desktop), the variable
+upright and italic, and `woff2`; rename the two downloads to the names above.
 
-Do not build these locally from the desktop `.ttf`, and do not subset them.
-The EULA forbids modification: you "may not modify, translate, adapt, alter …
+The tool builds the subset the licence does not let us build ourselves. The
+EULA forbids modification — you "may not modify, translate, adapt, alter …
 add or subtract any glyphs, symbols or accents, or any other derivative
-works." Subsetting to Latin plus the grammar glyphs (`▮`, `·`, `°`) would cut
-the payload nicely and is exactly what the licence does not allow — ask
-MonoLisa for a subset build instead of producing one.
-
+works" — so never subset or rebuild these locally from the desktop `.ttf`.
 Renaming a file is not modifying the font. Everything else here is.
+
+### The recipe
+
+The same settings for upright and italic:
+
+| Unicode ranges | Why |
+|---|---|
+| Basic Latin | everything |
+| Latin-1 Supplement | å ä ö é, `°`, `·` |
+| Latin Extended-A | names in copy (š, ł, ő …) |
+| General Punctuation | `—`, `…`, typographic quotes |
+| Currency Symbols | `€` lives here, not in Latin-1 |
+| Geometric Shapes | `▮`, the wordmark's cursor |
+
+Every other range off, arrows included: the profile forbids the arrow glyph
+in copy and writes `->` as two characters.
+
+**Every OpenType feature off.** The page disables `calt`, `liga` and `dlig`
+in CSS and uses none of the others, so the default glyphs are the whole
+page. `ss01` (script italic) in particular stays off — the profile is set in
+the standard italic.
+
+This is exactly what `index.html` and `tools/og-io.html` use today, plus a
+small margin for Swedish copy. A surface that needs more — coding ligatures
+or box drawing for a TUI lens, say — is a new build from the tool and a
+normal pull request replacing the two files; the gate holds the directory to
+the two names, not to their contents.
 
 ## How they got here
 
