@@ -39,13 +39,6 @@ wrangler.jsonc
 # Not linked from anywhere on the site.
 demo-hero.html
 
-# MonoLisa is purchased and the web licence is not confirmed, so the woff2
-# files are gitignored. Wrangler uploads the working directory rather than the
-# git tree, so a local `wrangler deploy` would publish them anyway — this is
-# the only thing that stops it. Remove this together with the .gitignore rule,
-# never on its own. See assets/fonts/README.md.
-assets/fonts/*.woff2
-
 # Never tracked, always present, and uploaded anyway: wrangler publishes the
 # working directory, so the clone's own metadata reaches the site unless it is
 # named here. The 2026-08-26 cutover build uploaded /.git/HEAD, /.git/index

@@ -75,9 +75,8 @@ either appears without the other.
 
 Every pull request already gets a preview at
 `<branch>-web.<subdomain>.workers.dev`, restricted with Cloudflare Access
-because previews show unreleased work. They are built from the repo, so they
-render with fallback monospace rather than MonoLisa: a preview can settle
-layout, content and behaviour, never typography.
+because previews show unreleased work. They are built from the repo, fonts
+included, so a preview renders as designed.
 
 - Decision: `docs/adr/0001-serve-the-site-from-cloudflare-workers.md`
 - Cutover, including the rollback:
@@ -94,19 +93,19 @@ layout, content and behaviour, never typography.
   Huvudkontoret *is* — services, contact, positioning — changes `index.html`,
   `index.md` and `llms.txt` together. A stale `llms.txt` is a wrong answer
   given confidently by someone else's agent.
-- MonoLisa is purchased but the web licence is unconfirmed, so no font file
-  is committed and the gate fails if one ever is. When the licence lands,
-  `webFontLicence` in `tools/check/facts.json` turns that rule around and
-  `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md` is the order to do it
-  in — the publication itself has no rollback.
+- MonoLisa is licensed for the web and its two variable files are committed.
+  `webFontLicence` in `tools/check/facts.json` is the fact that allows it, and
+  the gate holds `assets/fonts/` to exactly the licensed set — an extra font
+  binary anywhere under `assets/` is a finding. The publication has no
+  rollback; `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md` is how it
+  was done.
 
 ## Work that lives off `main`
 
 Two things belong to this repo without being on the trunk:
 
-- **`io-profile`** (draft PR #2) — the page rebuilt on the locked graphic
-  profile. Held back by the MonoLisa web licence, since publishing it today
-  would serve the page in fallback monospace.
+- **`io-profile`** (PR #2) — the page rebuilt on the locked graphic
+  profile, with MonoLisa shipped as a webfont.
 - **`identity-runtime`** — the Astro MVP of `render(node, perspective)`,
   where `huvudkontoret.<tld>/<slug>` means "render this node through that
   perspective". Still an experiment, deliberately not deployed and not gated.

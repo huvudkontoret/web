@@ -15,15 +15,20 @@ weight without another download, and a licence is priced per weight, so it is
 the cheaper half of the same decision. `tools/og-io.html` loads the upright
 file only — the OG image has no italics.
 
-## Why they are not in the repo
+## Why they are in the repo
 
 MonoLisa is a purchased typeface, not a redistributable one. A push to `main`
-publishes this repo, so committing the binaries would publish them too. The
-licence terms are at <https://www.monolisa.dev/license>.
+publishes this repo, so committing the binaries publishes them too — which is
+allowed only because the licence covers the web. The licence terms are at
+<https://www.monolisa.dev/license>.
 
-Until the web licence is confirmed, the page falls back to the system
-monospace stack (`ui-monospace, SFMono-Regular, Menlo, Consolas`). The design
-survives that — the profile is monospace-native — but it is not the profile.
+The two files here are the whole set the licence covers for this site.
+`webFontLicence` in `tools/check/facts.json` is the fact that allows them, and
+the gate fails on any font binary under `assets/` that is not one of them.
+Should a file go missing, the page falls back to the system monospace stack
+(`ui-monospace, SFMono-Regular, Menlo, Consolas`) — the design survives that,
+the profile is monospace-native, but it is not the profile, and the gate
+catches it before it is published.
 
 ## What the licence has to cover
 
@@ -63,9 +68,9 @@ MonoLisa for a subset build instead of producing one.
 
 Renaming a file is not modifying the font. Everything else here is.
 
-## Shipping them
+## How they got here
 
-The three-part gate that keeps these files out of production has to be lifted
-in one change, in the right order, or the site either ships a licensed font it
-may not ship or ships nothing at all. That order is a runbook:
-`docs/runbooks/2026-08-26-monolisa-webfont-cutover.md`.
+The three-part gate that kept these files out of production was lifted in one
+change, in the order `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md`
+sets out. That publication has no rollback: reverting removes the files from
+the site going forward, but does not unpublish what was served.
