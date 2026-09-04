@@ -93,7 +93,7 @@ included, so a preview renders as designed.
   Huvudkontoret *is* — services, contact, positioning — changes `index.html`,
   `index.md` and `llms.txt` together. A stale `llms.txt` is a wrong answer
   given confidently by someone else's agent.
-- MonoLisa is licensed for the web and its two variable files are committed.
+- MonoLisa is licensed for the web and its variable files are committed.
   `webFontLicence` in `tools/check/facts.json` is the fact that allows it, and
   the gate holds `assets/fonts/` to exactly the licensed set — an extra font
   binary anywhere under `assets/` is a finding. The publication has no

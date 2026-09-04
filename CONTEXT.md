@@ -69,9 +69,9 @@ terms that describe the live site — static site, published set, agent surface
   `CLAUDE.md` is the rule source and whose `Huvudkontoret.io.dc.html` is the
   canonical mockup for this page. Read those before changing type, colour or
   the wordmark — `index.html` follows them, it does not define them.
-- MonoLisa carries all typography, as two variable files
-  (`MonoLisa-Variable.woff2`, `MonoLisa-VariableItalic.woff2`) committed
-  under the web licence. `webFontLicence` in `tools/check/facts.json` is the
+- MonoLisa carries all typography, as variable files committed under the
+  web licence — one upright and one italic per Unicode block the site uses,
+  loaded through `unicode-range`. `webFontLicence` in `tools/check/facts.json` is the
   fact that allows them, and the gate holds `assets/fonts/` to exactly that
   set. See `assets/fonts/README.md` for what the licence covers and
   `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md` for how the files

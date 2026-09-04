@@ -22,13 +22,14 @@ flips all three:
 
 ## 1. Produce the files
 
-Build them with MonoLisa's own webfont tool — not locally, not subset. See
-`assets/fonts/README.md`.
+Build them with MonoLisa's own webfont tool — not locally, never subset by
+hand. `assets/fonts/README.md` carries the recipe and the file names.
 
-```
-assets/fonts/MonoLisa-Variable.woff2
-assets/fonts/MonoLisa-VariableItalic.woff2
-```
+This runbook was written expecting two files, one upright and one italic.
+What the tool actually emits (2026-09-04) is one file per Unicode block per
+style, twelve for the six blocks the recipe selects, each with a matching
+`unicode-range` in `index.html`. The steps below are the same; the file list
+is longer.
 
 The names are not cosmetic: `licensedWebFonts` in `tools/check/facts.json` is
 the list the gate holds the directory to, and anything else in there is a
@@ -56,17 +57,21 @@ tree, so `.gitignore` alone never governed what production serves.
 ## 4. Commit the fonts
 
 ```sh
-git add assets/fonts/MonoLisa-Variable.woff2 assets/fonts/MonoLisa-VariableItalic.woff2
+git add assets/fonts/*.woff2
 ```
+
+The gate then says whether what was added is exactly `licensedWebFonts`.
 
 ## 5. Preload them
 
-Two files are on the critical path for every view of the page, so with the
-fonts actually present the `<head>` should ask for them early:
+The blocks every first view needs are on the critical path, so with the
+fonts actually present the `<head>` should ask for those early — and only
+those, since a preloaded block the page never uses is a wasted request:
 
 ```html
-<link rel="preload" href="assets/fonts/MonoLisa-Variable.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="assets/fonts/MonoLisa-VariableItalic.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+<!-- … and the Latin-1, punctuation and shapes blocks the page uses above the fold -->
 ```
 
 `crossorigin` is required even same-origin — a font preload without it is

@@ -440,7 +440,7 @@ function pageLoading(file) {
 test("references: the licensed fonts may be referenced while untracked", () => {
   // The whole point of the exception — index.html loads MonoLisa, git does not
   // carry it, and that combination has to stay green.
-  assertClean(references, { "index.html": pageLoading("assets/fonts/MonoLisa-Variable.woff2") });
+  assertClean(references, { "index.html": pageLoading("assets/fonts/MonoLisa-Variable-0020-007F.woff2") });
 });
 
 test("references: once the licence lands, a font the page names has to exist", () => {
@@ -455,7 +455,7 @@ test("references: once the licence lands, a font the page names has to exist", (
 });
 
 test("fonts: a committed licensed font is a finding", () => {
-  assertFires(fonts, { "assets/fonts/MonoLisa-Variable.woff2": "not really a font" }, "would publish it");
+  assertFires(fonts, { "assets/fonts/MonoLisa-Variable-0020-007F.woff2": "not really a font" }, "would publish it");
 });
 
 // The regression: Nok.otf and Nok.ttf sat directly in assets/ and the check
@@ -480,7 +480,7 @@ test("fonts: the licensed set, committed with both rules lifted, is what the fli
 test("fonts: a licensed file that never arrived is a finding", () => {
   assertFires(
     fonts,
-    shipped({ "assets/fonts/MonoLisa-VariableItalic.woff2": null }),
+    shipped({ "assets/fonts/MonoLisa-VariableItalic-25A0-25FF.woff2": null }),
     "is not tracked",
     LICENSED,
   );
