@@ -41,6 +41,7 @@ the tooling must not give it one.
 | Path | What it is |
 |---|---|
 | `index.html` | The site. Hand-written and design-sensitive; no formatter reflows it |
+| `profil.html` | The press kit at `/profil`: the marks, the colours and the rules, mirrored from the graphic profile (ADR 0005) |
 | `index.md` · `llms.txt` · `llms-full.txt` | Agent surfaces — the same company, written for machines |
 | `robots.txt` · `sitemap.xml` · `.well-known/` | Crawl policy, resource list, API catalog and an installable agent skill |
 | `assets/` | Images, icons and fonts |
@@ -55,8 +56,8 @@ the tooling must not give it one.
 
 The asset directory is the repo root, so without a rule the whole checkout is
 the website. `.assetsignore` is that rule, and it narrows the site to
-`index.html`, `index.md`, `llms.txt`, `llms-full.txt`, `robots.txt`,
-`sitemap.xml`, `.well-known/` and `assets/`. The gate asserts that set is
+`index.html`, `profil.html`, `index.md`, `llms.txt`, `llms-full.txt`,
+`robots.txt`, `sitemap.xml`, `.well-known/` and `assets/`. The gate asserts that set is
 *exactly* what survives, so a new file at the repo root cannot quietly appear
 on the site.
 

@@ -1,0 +1,17 @@
+/* huvudkontoret · farger · gallande lage 2026-09-04 · huvudkontoret.io/profil */
+:root{
+  /* konstanter */
+  --hk-black:#16150F;        /* Blaeck: text och ytor */
+  --hk-paper:#F4F2EC;        /* Papper: ljus yta */
+  --hk-signal:#D9481C;       /* Signal: punkten i ordbilden. Aldrig yta. */
+
+  /* tonskala, ljusa ytor */
+  --hk-frame:#3A382F;        /* Ram */
+  --hk-stone:#5A574E;        /* Sten: sekundaer text */
+  --hk-graphite:#8A877D;     /* Grafit: bindestrecket i radbruten form, metadata */
+  --hk-lightgraphite:#B5B1A6;/* Ljusgrafit: haarlinjer, aldrig text */
+
+  /* Signal som text pa ljus yta (WCAG AA 4,6:1) */
+  --hk-signal-text:#C34119;
+}
+/* Status-, varme- och produktfarger ingar i profilen men anvands bara av huvudkontoret. */
