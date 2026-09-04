@@ -42,22 +42,28 @@ export function loadSite(root) {
   };
 }
 
-/** The site's public origin, from CNAME, without a trailing slash. */
-export function origin(site) {
-  const cname = (site.read("CNAME") ?? "").trim();
-  return cname ? `https://${cname}` : null;
+/**
+ * The site's public origin, without a trailing slash.
+ *
+ * Read from the CNAME file until 2026-08-26, which was GitHub Pages' way of
+ * naming the custom domain. The Worker takes its hostname from
+ * `wrangler.jsonc` instead, so the origin is now a stated fact rather than a
+ * file left over from another host.
+ */
+export function origin(facts) {
+  return facts.apexHostname ? `https://${facts.apexHostname}` : null;
 }
 
 /**
  * Map a URL found in the markup to the repo path it must resolve to, or null
  * when it is not ours to check (external host, mailto:, #anchor, data:).
  */
-export function toRepoPath(url, site) {
+export function toRepoPath(url, site, facts) {
   const value = url.trim();
   if (!value || value.startsWith("#")) return null;
   if (/^(mailto|tel|data|javascript|blob):/i.test(value)) return null;
 
-  const site_origin = origin(site);
+  const site_origin = origin(facts);
   let path = null;
 
   if (/^https?:\/\//i.test(value) || value.startsWith("//")) {

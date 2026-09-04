@@ -1,6 +1,8 @@
 /**
- * MonoLisa is a purchased typeface and this repo is public: committing a
- * .woff2 here would publish it. Whether that is allowed is one fact,
+ * Typefaces are licensed and this repo is public: committing a font binary
+ * here publishes it. MonoLisa is the case this was written for, but the rule
+ * is the class, not the face, so the pattern covers every font binary under
+ * assets/ in any format. Whether MonoLisa may be committed is one fact,
  * `webFontLicence`, and this check reads it in both directions.
  *
  * The mistake is quiet and one-way. Once a font file lands on `main` it has

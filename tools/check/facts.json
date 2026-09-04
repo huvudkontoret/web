@@ -17,10 +17,11 @@
 
   "//licensedFonts": "MonoLisa is purchased and this repo is public, so the webfont files stay out of git until the licence covers the web. webFontLicence is the one fact that says whether it does, and it turns the fonts, references and workers checks around together — see docs/runbooks/2026-08-26-monolisa-webfont-cutover.md. licensedFontPattern is what counts as a licensed font file; licensedWebFonts is the exact set the site is allowed to carry once it may carry any.",
   "webFontLicence": false,
-  "licensedFontPattern": "^assets/fonts/.+\\.woff2$",
+  "//licensedFontPattern": "Any font binary under assets/, not just MonoLisa's woff2. Nok.otf and Nok.ttf sat in assets/ for months because the pattern named one directory and one format; a commercial face is a commercial face wherever it lands. A genuinely free font is the exception and has to be argued for here.",
+  "licensedFontPattern": "^assets/.+\\.(?:woff2?|otf|ttf|eot)$",
   "licensedWebFonts": ["assets/fonts/MonoLisa-Variable.woff2", "assets/fonts/MonoLisa-VariableItalic.woff2"],
 
-  "requiredFiles": ["CNAME", ".nojekyll", "index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
+  "requiredFiles": ["index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
 
   "publishedPaths": [
     "index.html",
@@ -46,12 +47,20 @@
     ".well-known/api-catalog"
   ],
 
-  "expectedCname": "huvudkontoret.io",
+  "//apexHostname": "The hostname the Worker serves. Named expectedCname until 2026-08-26, when the CNAME file it referred to went away with GitHub Pages.",
+  "apexHostname": "huvudkontoret.io",
 
-  "//expectCustomDomain": "false until the cutover. Flipping this and adding the route to wrangler.jsonc are the same decision, and the gate fails on one without the other. See docs/runbooks/2026-08-12-pages-to-workers-cutover.md.",
-  "expectCustomDomain": false,
+  "//expectCustomDomain": "true since the cutover. This and the custom_domain route in wrangler.jsonc are the same decision, and the gate fails on one without the other. See docs/runbooks/2026-08-12-pages-to-workers-cutover.md.",
+  "expectCustomDomain": true,
+
+  "//title": "The pull request title becomes the commit subject on main, because this repo squash-merges one PR per slice. tools/check/title.mjs holds it to conventional commits; these are the types this workspace uses.",
+  "commitTypes": ["feat", "fix", "docs", "refactor", "perf", "test", "build", "ci", "chore", "style", "revert"],
+  "titleMaxLength": 72,
 
   "contentSignal": "ai-train=no",
+  "//alwaysIgnored": "Paths that are never in git but are always in the working directory wrangler uploads. The published set is derived from tracked files, so nothing else in this gate can see them; each must be named in .assetsignore explicitly.",
+  "alwaysIgnored": [".git/", ".wrangler/", "node_modules/"],
+
   "neverPublished": ["^dist/", "^node_modules/", "^\\.astro/", "\\.env$", "^\\.wrangler/"],
 
   "textFileExtensions": [".html", ".md", ".txt", ".json", ".xml", ".svg", ".mjs", ".js", ".css", ".yml", ".yaml", ".jsonc"],

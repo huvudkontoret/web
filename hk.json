@@ -1,8 +1,8 @@
 {
   "own": [".gitignore"],
   "commands": {
-    "dev": "python3 -m http.server 8787 --bind 127.0.0.1",
-    "test": "node --test tools/check/test.mjs && node tools/check/run.mjs",
+    "dev": "npx wrangler dev",
+    "test": "node --test tools/check/test.mjs src/lib/tld.test.mjs worker/index.test.mjs && node tools/check/run.mjs",
     "lint": "node tools/check/run.mjs --format"
   }
 }

@@ -1,8 +1,7 @@
 # tools/check — the gate for the static site
 
-The deploy is the repo root and a push to `main` is a publish: GitHub Pages
-serves `main:/` behind the `huvudkontoret.io` CNAME, with no build step in
-between. Nothing downstream catches a mistake, so the pull request is the last
+The deploy is the repo root and a push to `main` is a publish: the Worker
+serves `main:/` at `huvudkontoret.io`, with no build step in between. Nothing downstream catches a mistake, so the pull request is the last
 place anything can be caught. This is what catches it.
 
 ```
@@ -11,6 +10,7 @@ node tools/check/run.mjs --format   .editorconfig conformance
 node tools/check/run.mjs --json     machine-readable
 node tools/check/run.mjs --root DIR check another checkout of this repo
 node --test tools/check/test.mjs    the gate's own tests
+node tools/check/title.mjs "..."   one subject line against conventional commits
 ```
 
 Exit codes follow hk: `0` ok, `1` findings, `2` usage error.
@@ -27,8 +27,8 @@ one.
 
 | Check | Holds |
 |---|---|
-| `publishing` | The repo root is safe to serve: `CNAME` is the expected host, `.nojekyll` is present so Jekyll does not drop `.well-known/`, robots keeps its `Content-Signal` and `Sitemap` lines, and no build output is committed |
-| `workers` | The Worker publishes **exactly** the site: `wrangler.jsonc` keeps its custom domain and `preview_urls`, and `.assetsignore` narrows the repo root to the published set — no more, no less |
+| `publishing` | The repo root is safe to serve: every required surface is present, robots keeps its `Content-Signal` and `Sitemap` lines, and no build output is committed |
+| `workers` | The Worker publishes **exactly** the site: `wrangler.jsonc` keeps its custom domain and `preview_urls`, and `.assetsignore` narrows the repo root to the published set — no more, no less, including the paths git never tracks but wrangler uploads anyway |
 | `references` | Every local link, asset and anchor in `index.html` resolves to a file **git tracks** |
 | `sitemap` | `sitemap.xml` advertises every public page and only pages: each `<loc>` points at something real, each declared page has an entry, and each entry uses the page's canonical URL |
 | `markup` | `index.html` is structurally sound: balanced structural tags, one non-empty `<title>`, `lang` set, unique ids, `alt` on images, a doctype |
@@ -36,6 +36,19 @@ one.
 | `profile` | The graphic profile's custom properties are identical in `index.html`'s top-level `:root` block and in `src/styles/profile.css` — the two places ADR 0004 keeps them |
 | `fonts` | The licensed fonts are carried exactly as licensed: none committed while the web licence is unconfirmed, exactly `licensedWebFonts` once it is |
 | `formatting` | `.editorconfig` is respected in hand-written files |
+| `title` | The pull request title is a conventional commit subject — run separately, from the workflow, because the title is not in the checkout |
+
+## The title is checked from the workflow, not from `run.mjs`
+
+Everything above reads the checkout. The pull request title does not live
+there, so `title.mjs` is its own entry point, taking the subject as an
+argument and run by `.github/workflows/pr.yml` inside the same `verify` job
+the branch ruleset already requires — which is what makes it binding without
+touching the ruleset.
+
+It is the title and not the branch's commits because the repo squash-merges:
+the title is what becomes the subject on `main`. The types live in
+`facts.json` like every other fact.
 
 ## Three decisions worth knowing before you change anything
 

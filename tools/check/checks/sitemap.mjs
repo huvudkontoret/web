@@ -33,20 +33,20 @@ export function run(site, facts, report) {
     report.fail("sitemap.xml", "no <loc> entries — nothing is being advertised to crawlers");
   }
 
-  checkEntriesResolve(site, locations, report);
+  checkEntriesResolve(site, facts, locations, report);
   checkPagesAdvertised(site, facts, locations, report);
 }
 
 /** Every entry points at something this repo actually publishes. */
-function checkEntriesResolve(site, locations, report) {
-  const site_origin = origin(site);
+function checkEntriesResolve(site, facts, locations, report) {
+  const site_origin = origin(facts);
 
   for (const location of locations) {
     if (site_origin && !location.startsWith(site_origin)) {
       report.fail("sitemap.xml", `<loc>${location}</loc> is not on ${site_origin}`);
       continue;
     }
-    const path = toRepoPath(location, site);
+    const path = toRepoPath(location, site, facts);
     if (path && !site.has(path)) {
       report.fail("sitemap.xml", `<loc>${location}</loc> resolves to ${path}, which is not tracked by git`);
     }
@@ -60,9 +60,9 @@ function checkEntriesResolve(site, locations, report) {
  * fix is a different one.
  */
 function checkPagesAdvertised(site, facts, locations, report) {
-  const site_origin = origin(site);
-  // Without a CNAME there is no origin to build canonical URLs from; the
-  // publishing check owns that failure and this one has nothing to say.
+  const site_origin = origin(facts);
+  // Without an apex hostname there is no origin to build canonical URLs from;
+  // facts.json owns that value and this check has nothing to say without it.
   if (!site_origin) return;
 
   const canonical = new Map();
@@ -75,7 +75,7 @@ function checkPagesAdvertised(site, facts, locations, report) {
 
   const listed = new Map();
   for (const location of locations) {
-    const path = toRepoPath(location, site);
+    const path = toRepoPath(location, site, facts);
     if (path !== null) listed.set(path, location);
   }
 
