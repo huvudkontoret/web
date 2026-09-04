@@ -32,6 +32,15 @@ import { loadSite } from "./lib/site.mjs";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const FACTS = JSON.parse(readFileSync(join(HERE, "facts.json"), "utf8"));
 
+/**
+ * The baseline fixture below is the site before the fonts shipped: no font
+ * file carried, both ignore rules intact. facts.json has since flipped
+ * webFontLicence, so the fixture's own reading of it is pinned here and the
+ * licensed cases say LICENSED explicitly — both halves of the rule stay
+ * tested whichever way the real fact points.
+ */
+const UNLICENSED = { ...FACTS, webFontLicence: false };
+
 const TEAM = "Hanna Wikman, Magnus Renholm, Sebastian Berglönn";
 const CONTACT = "hej@huvudkontoret.io";
 
@@ -109,7 +118,7 @@ function fixtureRoot(files) {
 }
 
 /** Findings from one check against a site built from `files`. */
-function findings(check, files, facts = FACTS) {
+function findings(check, files, facts = UNLICENSED) {
   const collected = [];
   check.run(loadSite(fixtureRoot(files)), facts, {
     fail: (where, message) => collected.push({ where, message }),
@@ -139,7 +148,7 @@ function shipped(edits = {}) {
   };
 }
 
-function assertFires(check, edits, needle, facts = FACTS) {
+function assertFires(check, edits, needle, facts = UNLICENSED) {
   const found = findings(check, withEdits(edits), facts);
   assert.ok(
     found.some((finding) => `${finding.where} ${finding.message}`.includes(needle)),
@@ -147,7 +156,7 @@ function assertFires(check, edits, needle, facts = FACTS) {
   );
 }
 
-function assertClean(check, edits = {}, facts = FACTS) {
+function assertClean(check, edits = {}, facts = UNLICENSED) {
   const found = findings(check, withEdits(edits), facts);
   assert.deepEqual(found, [], `expected no findings, got: ${JSON.stringify(found, null, 2)}`);
 }
@@ -431,7 +440,7 @@ function pageLoading(file) {
 test("references: the licensed fonts may be referenced while untracked", () => {
   // The whole point of the exception — index.html loads MonoLisa, git does not
   // carry it, and that combination has to stay green.
-  assertClean(references, { "index.html": pageLoading("assets/fonts/MonoLisa-Variable.woff2") });
+  assertClean(references, { "index.html": pageLoading("assets/fonts/MonoLisa-Variable-0020-007F.woff2") });
 });
 
 test("references: once the licence lands, a font the page names has to exist", () => {
@@ -446,7 +455,7 @@ test("references: once the licence lands, a font the page names has to exist", (
 });
 
 test("fonts: a committed licensed font is a finding", () => {
-  assertFires(fonts, { "assets/fonts/MonoLisa-Variable.woff2": "not really a font" }, "would publish it");
+  assertFires(fonts, { "assets/fonts/MonoLisa-Variable-0020-007F.woff2": "not really a font" }, "would publish it");
 });
 
 // The regression: Nok.otf and Nok.ttf sat directly in assets/ and the check
@@ -471,7 +480,7 @@ test("fonts: the licensed set, committed with both rules lifted, is what the fli
 test("fonts: a licensed file that never arrived is a finding", () => {
   assertFires(
     fonts,
-    shipped({ "assets/fonts/MonoLisa-VariableItalic.woff2": null }),
+    shipped({ "assets/fonts/MonoLisa-VariableItalic-25A0-25FF.woff2": null }),
     "is not tracked",
     LICENSED,
   );

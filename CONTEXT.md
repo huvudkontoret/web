@@ -60,8 +60,7 @@ terms that describe the live site — static site, published set, agent surface
   set exactly.
 - **A pull request can be looked at before it is published.** Every PR gets a
   preview URL from the Worker, restricted with Cloudflare Access. It is built
-  from the repo, so it renders with fallback monospace rather than MonoLisa —
-  previews settle layout, content and behaviour, never typography.
+  from the repo, fonts included, so it renders as designed.
 
 ## Pointers
 
@@ -70,13 +69,13 @@ terms that describe the live site — static site, published set, agent surface
   `CLAUDE.md` is the rule source and whose `Huvudkontoret.io.dc.html` is the
   canonical mockup for this page. Read those before changing type, colour or
   the wordmark — `index.html` follows them, it does not define them.
-- MonoLisa carries all typography, as two variable files
-  (`MonoLisa-Variable.woff2`, `MonoLisa-VariableItalic.woff2`), and both are
-  gitignored until the web licence is confirmed — so the deployed page falls
-  back to system monospace. See `assets/fonts/README.md` for what the licence
-  has to cover and `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md` for
-  the flip. That is the one gate between this page and the profile as
-  designed.
+- MonoLisa carries all typography, as variable files committed under the
+  web licence — one upright and one italic per Unicode block the site uses,
+  loaded through `unicode-range`. `webFontLicence` in `tools/check/facts.json` is the
+  fact that allows them, and the gate holds `assets/fonts/` to exactly that
+  set. See `assets/fonts/README.md` for what the licence covers and
+  `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md` for how the files
+  got here — the publication has no rollback.
 - The OG image is generated, never designed: `tools/og-io.html` is the
   template and `assets/og-io.jpg` its current render.
 - The identity runtime and its original brief (`PROMPT.md`) are not here. They
