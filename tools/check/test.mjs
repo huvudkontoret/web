@@ -323,6 +323,49 @@ test("sitemap: advertising something that is not a page is a finding", () => {
   );
 });
 
+test("sitemap: a second page is advertised without its .html, the way the Worker serves it", () => {
+  // profil.html answers at /profil under html_handling auto-trailing-slash,
+  // so /profil is the canonical entry and /profil.html the non-canonical one.
+  const facts = { ...FACTS, sitemapPages: [...FACTS.sitemapPages, "om.html"] };
+  const page = { "om.html": "<!doctype html>\n<html lang=\"sv\"><head><title>Om</title></head><body></body></html>\n" };
+
+  const clean = findings(sitemap, withEdits({ ...page, "sitemap.xml": sitemapListing(["/", "/index.md", "/llms.txt", "/om"]) }), facts);
+  assert.deepEqual(clean, [], JSON.stringify(clean, null, 2));
+
+  const withExtension = findings(sitemap, withEdits({ ...page, "sitemap.xml": sitemapListing(["/", "/index.md", "/llms.txt", "/om.html"]) }), facts);
+  assert.ok(withExtension.some((f) => f.message.includes("non-canonical URL")), JSON.stringify(withExtension, null, 2));
+
+  const missing = findings(sitemap, withEdits({ ...page, "sitemap.xml": sitemapListing(["/", "/index.md", "/llms.txt"]) }), facts);
+  assert.ok(missing.some((f) => f.message.includes("om.html is published but has no <loc>")), JSON.stringify(missing, null, 2));
+});
+
+test("references: an extensionless link resolves to the page the Worker serves there", () => {
+  const link = baseline()["index.html"].replace("<nav>", '<nav><a href="/om">Om</a>');
+  assertClean(references, {
+    "index.html": link,
+    "om.html": "<!doctype html>\n<html lang=\"sv\"><head><title>Om</title></head><body></body></html>\n",
+  });
+  assertFires(references, { "index.html": link }, "om is not tracked");
+});
+
+test("markup and references: every declared page is checked, and an absent one is skipped", () => {
+  const facts = { ...FACTS, pages: ["index.html", "om.html"] };
+  const broken = findings(markup, withEdits({ "om.html": "<!doctype html>\n<html lang=\"sv\"><head><title>Om</title></head><body><div></body></html>\n" }), facts);
+  assert.ok(broken.some((f) => f.where.startsWith("om.html:") && f.message.includes("never closed")), JSON.stringify(broken, null, 2));
+
+  const dangling = findings(
+    references,
+    withEdits({ "om.html": "<!doctype html>\n<html lang=\"sv\"><head><title>Om</title></head><body><img src=\"assets/nope.png\" alt=\"\"></body></html>\n" }),
+    facts,
+  );
+  assert.ok(dangling.some((f) => f.where.startsWith("om.html:") && f.message.includes("assets/nope.png is not tracked")), JSON.stringify(dangling, null, 2));
+
+  // Declared but not on this branch yet: not a defect, the same allowance the
+  // sitemap check makes. index.html stays required and still fails when gone.
+  assert.deepEqual(findings(markup, withEdits({}), facts), []);
+  assert.deepEqual(findings(references, withEdits({}), facts), []);
+});
+
 test("sitemap: a declared page absent from this checkout is not a finding", () => {
   // facts.json describes the site, not every branch of it. A checkout
   // mid-change must not be told to advertise a file it does not have —

@@ -34,8 +34,8 @@ terms that describe the live site — static site, published set, agent surface
 | tokens | A perspective's design contract in `src/lib/tokens.ts`: label, role, POW, accent color and the Tailwind classes derived from it. Adding a perspective starts here — `.name` (coral, Identity) and `.cv` (mint, Capability) are implemented; `.dev`, `.ai`, `.club`, `.blog`, `.link` are named but unbuilt |
 | agent surface | A file published for machines rather than browsers: `llms.txt` (curated entry point), `index.md` (token-efficient homepage), `sitemap.xml`, `robots.txt`, `.well-known/api-catalog` and `.well-known/agent-skills/` (an installable skill describing how to talk about Huvudkontoret). They are content, maintained by hand, and they drift from the site unless updated with it |
 | Content-Signal policy | The published stance the agent surfaces state: content may be used for search and AI input; model training is not granted |
-| static site | The deployed artifact: `index.html` and its siblings at the repo root. Served by the Cloudflare Worker in `wrangler.jsonc`, which owns `huvudkontoret.io` as a custom domain (ADR 0001, cut over 2026-08-26). `server: cloudflare` on the apex is the correct answer; `server: GitHub.com` would mean something has been rolled back |
-| published set | What `.assetsignore` lets the Worker serve: `index.html`, `index.md`, `llms.txt`, `llms-full.txt`, `robots.txt`, `sitemap.xml`, `.well-known/`, `assets/`. The asset directory is the repo root, so everything else — agent instructions, docs, the gate's own source — is excluded by name. The gate asserts this set exactly |
+| static site | The deployed artifact: `index.html`, `profil.html` and their siblings at the repo root. Served by the Cloudflare Worker in `wrangler.jsonc`, which owns `huvudkontoret.io` as a custom domain (ADR 0001, cut over 2026-08-26). `server: cloudflare` on the apex is the correct answer; `server: GitHub.com` would mean something has been rolled back |
+| published set | What `.assetsignore` lets the Worker serve: `index.html`, `profil.html`, `index.md`, `llms.txt`, `llms-full.txt`, `robots.txt`, `sitemap.xml`, `.well-known/`, `assets/`. The asset directory is the repo root, so everything else — agent instructions, docs, the gate's own source — is excluded by name. The gate asserts this set exactly |
 
 ## Rules that hold everywhere
 
@@ -70,8 +70,9 @@ terms that describe the live site — static site, published set, agent surface
 - Code that is here: `src/lib/tld.ts` (the domain registry — every address,
   its role and where its DNS answers) · `worker/index.ts` (routes a host to
   its tree) · `tools/check/` (the gate)
-- Live site: `index.html` · `index.md` · `llms.txt` · `sitemap.xml` ·
-  `.well-known/` · `assets/` — served by the Worker, domain in `wrangler.jsonc`
+- Live site: `index.html` · `profil.html` (the press kit at `/profil`,
+  ADR 0005) · `index.md` · `llms.txt` · `sitemap.xml` · `.well-known/` ·
+  `assets/` — served by the Worker, domain in `wrangler.jsonc`
 - Run: `hk dev web` runs `npx wrangler dev` at <http://127.0.0.1:8787> — the
   same Worker production runs, so `.assetsignore` decides what exists locally
   too and `/CLAUDE.md` answers 404 here exactly as it does on the apex. The

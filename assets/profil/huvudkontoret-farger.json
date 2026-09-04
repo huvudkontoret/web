@@ -1,0 +1,94 @@
+{
+  "version": "0.1",
+  "datum": "2026-08-17",
+  "konstanter": {
+    "Bläck": {
+      "hex": "#16150F",
+      "bruk": "text och ytor"
+    },
+    "Papper": {
+      "hex": "#F4F2EC",
+      "bruk": "redaktionellt ljus"
+    },
+    "Signal": {
+      "hex": "#D9481C",
+      "bruk": "markering, max 2 %"
+    },
+    "Glöd": {
+      "hex": "#F0862B",
+      "bruk": "värme, yta upp till 8 %"
+    },
+    "Kvitto": {
+      "hex": "#46A758",
+      "bruk": "[ OK ]"
+    },
+    "Larm": {
+      "hex": "#E5484D",
+      "bruk": "[ FEL ]"
+    }
+  },
+  "tonskala": {
+    "Bläck": "#16150F",
+    "Ram": "#3A382F",
+    "Sten": "#5A574E",
+    "Grafit": "#8A877D",
+    "Ljusgrafit": "#B5B1A6"
+  },
+  "text pa ljus yta": {
+    "Signal": "#C34119",
+    "Kvitto": "#347D42",
+    "Larm": "#C53E42",
+    "Glöd dämpad": "#8C4D14"
+  },
+  "morkerytor": {
+    "Natt": "#0E0D09",
+    "Panel": "#14130D",
+    "Bläck": "#16150F",
+    "Ram": "#3A382F"
+  },
+  "ark": {
+    "Ark": "#FBFAF4",
+    "Bläck": "#131208",
+    "Grafit": "#7D7A6E",
+    "Signal": "#E8430F",
+    "Kvitto": "#35B455",
+    "Larm": "#EF3A41"
+  },
+  "pow": {
+    ".ai": {
+      "full": "#3FB6CE",
+      "papperston": "#2A7888"
+    },
+    ".dev": {
+      "full": "#63C275",
+      "papperston": "#3E7A4A"
+    },
+    ".app": {
+      "papperston": "#9A6219"
+    },
+    ".io": {
+      "full": "#D9481C",
+      "papperston": "#C34119"
+    },
+    ".cv": {
+      "full": "#57B27E",
+      "papperston": "#3C7B57"
+    },
+    ".name": {
+      "full": "#E0685E",
+      "papperston": "#AF5149"
+    },
+    ".xyz": {
+      "full": "#E8762C",
+      "papperston": "#A35B20"
+    },
+    ".vote": {
+      "full": "#7F6FCE",
+      "papperston": "#6D5BC7"
+    },
+    ".wtf": {
+      "full": "#E85CA0",
+      "papperston": "#B23575"
+    }
+  }
+}

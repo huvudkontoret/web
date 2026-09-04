@@ -16,7 +16,7 @@
  * editorial, not mechanical.
  */
 
-import { origin, toRepoPath } from "../lib/site.mjs";
+import { origin, pagePath, toRepoPath } from "../lib/site.mjs";
 
 export const name = "sitemap";
 export const summary = "the sitemap advertises every public page, and only pages";
@@ -57,7 +57,8 @@ function checkEntriesResolve(site, facts, locations, report) {
  * Every declared page is advertised, in its canonical form, and nothing else
  * is. The canonical case is separate on purpose: a sitemap carrying both `/`
  * and `/index.html` is not a missing page, it is the same page twice, and the
- * fix is a different one.
+ * fix is a different one. What "canonical" means is the Worker's rule, held
+ * in one place: `pagePath` in lib/site.mjs.
  */
 function checkPagesAdvertised(site, facts, locations, report) {
   const site_origin = origin(facts);
@@ -70,7 +71,7 @@ function checkPagesAdvertised(site, facts, locations, report) {
     // Declared but absent from this checkout — a branch mid-change is not a
     // defect, and `workers` already owns the required-file question.
     if (!site.has(page)) continue;
-    canonical.set(page, page === "index.html" ? `${site_origin}/` : `${site_origin}/${page}`);
+    canonical.set(page, `${site_origin}${pagePath(page)}`);
   }
 
   const listed = new Map();

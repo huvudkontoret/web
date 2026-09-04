@@ -29,9 +29,9 @@ one.
 |---|---|
 | `publishing` | The repo root is safe to serve: every required surface is present, robots keeps its `Content-Signal` and `Sitemap` lines, and no build output is committed |
 | `workers` | The Worker publishes **exactly** the site: `wrangler.jsonc` keeps its custom domain and `preview_urls`, and `.assetsignore` narrows the repo root to the published set — no more, no less, including the paths git never tracks but wrangler uploads anyway |
-| `references` | Every local link, asset and anchor in `index.html` resolves to a file **git tracks** |
+| `references` | Every local link, asset and anchor in each page (`pages` in `facts.json`) resolves to a file **git tracks**; `/profil` resolves to `profil.html`, the way the Worker serves it |
 | `sitemap` | `sitemap.xml` advertises every public page and only pages: each `<loc>` points at something real, each declared page has an entry, and each entry uses the page's canonical URL |
-| `markup` | `index.html` is structurally sound: balanced structural tags, one non-empty `<title>`, `lang` set, unique ids, `alt` on images, a doctype |
+| `markup` | Each page is structurally sound: balanced structural tags, one non-empty `<title>`, `lang` set, unique ids, `alt` on images, a doctype |
 | `surfaces` | `index.html`, `index.md` and `llms.txt` agree on the declared facts, and an address that is announced but not running is never presented as live |
 | `fonts` | No licensed font file is committed, and the ignore rule that keeps it that way is intact |
 | `formatting` | `.editorconfig` is respected in hand-written files |

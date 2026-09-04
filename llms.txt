@@ -8,6 +8,7 @@ Huvudkontoret arbetar nära team och verksamheter för att få teknik, AI och di
 
 - [Startsida](https://huvudkontoret.io/): Översikt över Huvudkontoret, erbjudanden, team och kontakt.
 - [Markdown-version](https://huvudkontoret.io/index.md): Token-effektiv textversion av startsidans viktigaste innehåll.
+- [Profil](https://huvudkontoret.io/profil): Presskit med ordbild, sigill, färger och regler för märket, och filpaketet som nedladdning.
 - [Sitemap](https://huvudkontoret.io/sitemap.xml): Maskinläsbar lista över publika resurser.
 - [Agent Skill Index](https://huvudkontoret.io/.well-known/agent-skills/index.json): Instruktioner för agenter som vill förstå eller beskriva Huvudkontoret.
 - [API Catalog](https://huvudkontoret.io/.well-known/api-catalog): Aktuell maskinläsbar katalog över publika API:er och agentytor.

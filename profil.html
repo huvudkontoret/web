@@ -1,0 +1,1116 @@
+<!doctype html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Profil · huvudkontoret</title>
+        <meta
+            name="description"
+            content="Presskit för huvudkontoret: ordbilden, sigillet, färgerna och reglerna, som färdiga filer. För press, kunder, partners, byråer och tryckerier."
+        />
+        <meta name="theme-color" content="#F4F2EC" />
+        <meta property="og:title" content="Profil · huvudkontoret" />
+        <meta property="og:description" content="Ordbilden, sigillet och färgerna som färdiga filer, och de få regler som gör att de förblir våra." />
+        <meta property="og:url" content="https://huvudkontoret.io/profil" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="sv_SE" />
+        <link rel="canonical" href="https://huvudkontoret.io/profil" />
+        <link rel="icon" type="image/svg+xml" href="assets/profil/hk-sigill-black.svg" />
+        <link rel="icon" type="image/png" sizes="128x128" href="assets/profil/png/hk-ikon-mork-1x.png" />
+
+        <style>
+            /* ===================== KONSTANTER ===================== */
+            /* The profile as CSS custom properties, one to one against its own
+               names (ADR 0002). Same block as the rebuilt homepage carries. */
+            :root {
+                /* Tonskalan på ljusa ytor */
+                --black: #16150f; /* Bläck */
+                --paper: #f4f2ec; /* Papper */
+                --frame: #3a382f; /* Ram */
+                --stone: #5a574e; /* Sten */
+                --graphite: #8a877d; /* Grafit */
+                --light-graphite: #b5b1a6; /* Ljusgrafit */
+
+                /* Koncernfärgen. 2 %-regeln: den pekar, den dekorerar inte. */
+                --signal: #d9481c;
+
+                /* POW per lins, i papperston när den står som text på ljus yta */
+                --pow-ai: #2a7888;
+                --pow-dev: #3e7a4a;
+                --pow-app: #9a6219;
+                --pow-io: #c34119;
+                --pow-cv: #3c7b57;
+                --pow-name: #af5149;
+                --pow-xyz: #a35b20;
+                --pow-vote: #6d5bc7;
+
+                --shell: 1060px;
+                --gut: 48px;
+                --ease: cubic-bezier(0.2, 0, 0, 1);
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+                scroll-padding-top: 72px;
+            }
+            body {
+                margin: 0;
+                background: var(--paper);
+                color: var(--black);
+                /* MonoLisa where it is installed; the system monospace stack
+                   otherwise. The marks on this page are files, so they render
+                   in the profile's own face regardless. */
+                font-family: "MonoLisa", ui-monospace, SFMono-Regular, "SF Mono",
+                    Menlo, Consolas, monospace;
+                font-weight: 400;
+                font-feature-settings: "calt" 0, "liga" 0, "dlig" 0;
+                -webkit-font-smoothing: antialiased;
+                text-rendering: optimizeLegibility;
+            }
+            h1,
+            h2,
+            h3,
+            p,
+            figure {
+                margin: 0;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            a:hover {
+                color: var(--signal);
+                text-decoration: underline;
+            }
+            :focus-visible {
+                outline: 2px solid var(--signal);
+                outline-offset: 3px;
+            }
+            img {
+                display: block;
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* Grammatiken bryter aldrig rad: -> <- [ STATUS ] */
+            .g {
+                white-space: nowrap;
+            }
+
+            .shell {
+                max-width: var(--shell);
+                margin: 0 auto;
+            }
+            .band {
+                padding: 88px var(--gut);
+                border-bottom: 1px solid var(--black);
+            }
+            .stack {
+                display: flex;
+                flex-direction: column;
+                gap: 44px;
+            }
+
+            /* Sektionsetikett: // SEKTION */
+            .label {
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--graphite);
+            }
+            .h2 {
+                font-size: clamp(24px, 3.2vw, 34px);
+                font-weight: 600;
+                line-height: 1.25;
+            }
+            .aside {
+                font-size: 13px;
+                font-weight: 300;
+                font-style: italic;
+                line-height: 1.6;
+                max-width: 40ch;
+            }
+            .head {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+            .head > div {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .status {
+                font-size: 10px;
+                font-weight: 500;
+                letter-spacing: 0.1em;
+            }
+            .prose {
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 1.8;
+                max-width: 66ch;
+            }
+            .prose b {
+                font-weight: 600;
+            }
+            .quiet {
+                font-size: 12px;
+                font-weight: 300;
+                font-style: italic;
+                line-height: 1.7;
+                color: var(--stone);
+            }
+
+            .skip {
+                position: absolute;
+                left: -9999px;
+                top: 0;
+                z-index: 100;
+                background: var(--black);
+                color: var(--paper);
+                padding: 12px 20px;
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .skip:focus {
+                left: 0;
+            }
+
+            /* ===================== CHROME ===================== */
+            .chrome {
+                position: sticky;
+                top: 0;
+                z-index: 40;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                padding: 16px var(--gut);
+                border-bottom: 1px solid var(--black);
+                background: var(--paper);
+                font-size: 12px;
+                font-weight: 500;
+            }
+            .lockup {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                min-height: 44px;
+            }
+            .lockup:hover {
+                color: inherit;
+                text-decoration: none;
+            }
+            /* Sigillet färgas via mask, originalfilen ritas aldrig om. */
+            .sigill {
+                width: 22px;
+                aspect-ratio: 100.1 / 98.2;
+                background: currentColor;
+                -webkit-mask: url("assets/profil/hk-sigill-black.svg") center /
+                    contain no-repeat;
+                mask: url("assets/profil/hk-sigill-black.svg") center / contain
+                    no-repeat;
+                flex-shrink: 0;
+            }
+            .wordmark {
+                font-size: 14px;
+                font-weight: 600;
+            }
+            .tld {
+                color: var(--pow-io);
+            }
+            .chrome nav {
+                display: flex;
+                gap: 24px;
+                letter-spacing: 0.1em;
+            }
+            .coords {
+                color: var(--graphite);
+                letter-spacing: 0.1em;
+            }
+
+            /* ===================== INGÅNG ===================== */
+            .intro {
+                padding: 104px var(--gut) 88px var(--gut);
+                border-bottom: 1px solid var(--black);
+            }
+            .intro .meta {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .intro h1 {
+                font-size: clamp(30px, 5vw, 56px);
+                font-weight: 600;
+                line-height: 1.1;
+                letter-spacing: -0.02em;
+                max-width: 20ch;
+            }
+            .intro .row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 40px;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
+            .actions {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 14px 26px;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.08em;
+                min-height: 44px;
+                background: var(--black);
+                color: var(--paper);
+                transition: background-color 200ms var(--ease);
+            }
+            .btn:hover {
+                background: var(--frame);
+                color: var(--paper);
+                text-decoration: none;
+            }
+            .filemeta {
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.1em;
+                color: var(--graphite);
+            }
+
+            /* ===================== SPECIMEN ===================== */
+            /* Delade linjer: ett rutnät där cellerna delar 1 px, aldrig 2. */
+            .specimen {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+                border: 1px solid var(--black);
+            }
+            .specimen > figure {
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+            }
+            .specimen > figure + figure {
+                border-left: 1px solid var(--black);
+            }
+            @media (max-width: 660px) {
+                .specimen > figure + figure {
+                    border-left: 0;
+                    border-top: 1px solid var(--black);
+                }
+            }
+            .plate {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 28px;
+                min-height: 180px;
+                flex: 1;
+            }
+            .plate.paper {
+                background: var(--paper);
+            }
+            .plate.ink {
+                background: var(--black);
+            }
+            .plate img {
+                max-width: min(100%, 420px);
+            }
+            .plate.tall {
+                min-height: 260px;
+            }
+            .plate .mark {
+                width: 128px;
+                max-width: 60%;
+            }
+            .specimen figcaption {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 12px;
+                flex-wrap: wrap;
+                padding: 12px 16px;
+                border-top: 1px solid var(--black);
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.1em;
+            }
+            .specimen figcaption .file {
+                font-weight: 300;
+                letter-spacing: 0;
+                color: var(--graphite);
+            }
+
+            .two {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+                gap: 56px;
+                align-items: start;
+            }
+
+            /* Rader med linje över: grundläget för listor. */
+            .rows {
+                display: flex;
+                flex-direction: column;
+                font-size: 14px;
+            }
+            .rows > div {
+                display: grid;
+                grid-template-columns: minmax(120px, 200px) 1fr;
+                gap: 24px;
+                padding: 18px 4px;
+                border-top: 1px solid var(--black);
+                align-items: baseline;
+            }
+            .rows > div:last-child {
+                border-bottom: 1px solid var(--black);
+            }
+            .rows b {
+                font-weight: 600;
+            }
+            .rows span {
+                font-weight: 300;
+                line-height: 1.7;
+            }
+            .rows .file {
+                font-weight: 500;
+                color: var(--stone);
+            }
+            .rows .fel {
+                font-size: 10px;
+                font-weight: 500;
+                letter-spacing: 0.1em;
+                color: #c53e42;
+            }
+            @media (max-width: 520px) {
+                .rows > div {
+                    grid-template-columns: 1fr;
+                    gap: 6px;
+                }
+            }
+
+            /* ===================== FÄRG ===================== */
+            .swatches {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+                border: 1px solid var(--black);
+            }
+            .swatch {
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+                border-left: 1px solid var(--black);
+                border-top: 1px solid var(--black);
+                margin: -1px 0 0 -1px;
+            }
+            .swatch .chip {
+                height: 120px;
+            }
+            .swatch .chip.lined {
+                border-bottom: 1px solid var(--black);
+            }
+            .swatch .name {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 8px;
+                padding: 12px 14px 0 14px;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            .swatch .hex {
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.06em;
+                color: var(--stone);
+            }
+            .swatch .use {
+                padding: 6px 14px 14px 14px;
+                font-size: 12px;
+                font-weight: 300;
+                line-height: 1.6;
+                color: var(--stone);
+            }
+            .tones {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0;
+                border: 1px solid var(--black);
+            }
+            .tones > span {
+                flex: 1 1 120px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                padding: 12px 14px 14px 14px;
+                font-size: 12px;
+                border-left: 1px solid var(--black);
+                margin-left: -1px;
+            }
+            .tones > span i {
+                display: block;
+                height: 28px;
+            }
+            .tones b {
+                font-weight: 600;
+            }
+            .tones small {
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.06em;
+                color: var(--stone);
+            }
+
+            /* ===================== INK ===================== */
+            .ink-band {
+                background: var(--black);
+                color: var(--paper);
+                border-bottom: 0;
+            }
+            .ink-band .label {
+                color: var(--graphite);
+            }
+            .ink-band .quiet,
+            .ink-band .prose {
+                color: var(--light-graphite);
+            }
+            .ink-band .prose b {
+                color: var(--paper);
+            }
+            .ink-band .rows > div {
+                border-color: var(--stone);
+            }
+            .ink-band .rows .file {
+                color: var(--light-graphite);
+            }
+            .ink-band .btn {
+                background: var(--paper);
+                color: var(--black);
+            }
+            .ink-band .btn:hover {
+                background: #ffffff;
+                color: var(--black);
+            }
+            .ink-band .filemeta {
+                color: var(--graphite);
+            }
+
+            /* ===================== KONTAKT ===================== */
+            .contact {
+                padding: 88px var(--gut) 56px var(--gut);
+            }
+            .contact h2 {
+                font-size: clamp(26px, 3.6vw, 40px);
+                font-weight: 600;
+                line-height: 1.2;
+            }
+            .contact .mark {
+                display: flex;
+                justify-content: center;
+            }
+            .contact .mark .sigill {
+                width: 200px;
+            }
+            .foot {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 16px;
+                border-top: 1px solid var(--black);
+                padding-top: 24px;
+                font-size: 12px;
+            }
+            .foot .where {
+                font-weight: 300;
+                font-style: italic;
+                color: var(--stone);
+            }
+            .foot .mirror {
+                font-weight: 500;
+                letter-spacing: 0.1em;
+                color: var(--graphite);
+            }
+
+            @media (max-width: 720px) {
+                :root {
+                    --gut: 20px;
+                }
+                .band,
+                .intro,
+                .contact {
+                    padding-top: 56px;
+                    padding-bottom: 56px;
+                }
+                .chrome nav {
+                    display: none;
+                }
+                .coords {
+                    display: none;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                * {
+                    transition-duration: 1ms !important;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <a class="skip" href="#ordbilden">Hoppa till innehållet</a>
+
+        <!-- CHROME -->
+        <div class="chrome">
+            <a class="lockup" href="/">
+                <span class="sigill" aria-hidden="true"></span>
+                <span class="wordmark"
+                    >huvudkontoret<span class="tld">.io</span></span
+                >
+            </a>
+            <nav aria-label="Sidsektioner">
+                <a href="#ordbilden">ORDBILDEN</a>
+                <a href="#sigillet">SIGILLET</a>
+                <a href="#farg">FÄRG</a>
+                <a href="#regler">REGLER</a>
+                <a href="#filpaketet">FILPAKETET</a>
+                <a href="#kontakt">KONTAKT</a>
+            </nav>
+            <span class="coords">LULEÅ · 65.5848° N</span>
+        </div>
+
+        <!-- INGÅNG -->
+        <header class="intro" id="top">
+            <div class="shell stack">
+                <div class="meta label">
+                    <span>// PROFIL · PRESSKIT</span>
+                    <span class="g">SPEGEL AV GRAFISK PROFIL · 2026-09-04</span>
+                </div>
+                <h1>Märket, som det ska användas.</h1>
+                <div class="row">
+                    <p class="prose">
+                        För press, kunder, partners, byråer och tryckerier.
+                        Här finns ordbilden, sigillet och färgerna som färdiga
+                        filer, och de få regler som gör att de förblir våra.
+                        Hämta paketet, använd filerna som de är, och hör av dig
+                        när något inte täcks.
+                    </p>
+                    <div class="actions">
+                        <a class="btn" href="assets/profil/huvudkontoret-profil.zip" download
+                            ><span class="g">HÄMTA FILPAKETET -&gt;</span></a
+                        >
+                        <span class="filemeta g">ZIP · SVG, PNG, CSS, JSON · 2026-08-26</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ORDBILDEN -->
+        <section class="band" id="ordbilden">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// 01 · ORDBILDEN</span>
+                        <h2 class="h2">huvudkontoret, med punkt.</h2>
+                    </div>
+                    <span class="aside"
+                        >Gemener, monospace, ospärrad. Som ett domännamn, en
+                        sökväg, ett system.</span
+                    >
+                </div>
+
+                <div class="specimen">
+                    <figure>
+                        <div class="plate paper">
+                            <img
+                                src="assets/profil/png/hk-wordmark-punkt-black-2x.png"
+                                alt="Ordbilden huvudkontoret med punkt, i Bläck på Papper"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>BLÄCK PÅ LJUS YTA</span>
+                            <span class="file">hk-wordmark-punkt-black</span>
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <div class="plate ink">
+                            <img
+                                src="assets/profil/png/hk-wordmark-punkt-papper-2x.png"
+                                alt="Ordbilden huvudkontoret med punkt, i Papper på Bläck"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>PAPPER PÅ MÖRK YTA</span>
+                            <span class="file">hk-wordmark-punkt-papper</span>
+                        </figcaption>
+                    </figure>
+                </div>
+
+                <div class="two">
+                    <p class="prose">
+                        Ordbilden är satt i MonoLisa Medium och skrivs alltid
+                        <b>huvudkontoret</b>, med liten bokstav, även först i
+                        en mening. <b>Punkten är adressens första tecken.</b>
+                        Utan adress står den ensam i Signal, koncernens egen
+                        färg. Med adress hör den till adressen och tar dess
+                        färg, som i huvudkontoret<span style="color: var(--pow-io)">.io</span>
+                        i sidhuvudet. Aldrig versaler, aldrig spärrat, aldrig
+                        i ett annat typsnitt.
+                    </p>
+                    <div class="rows">
+                        <div>
+                            <b>Utan punkt</b>
+                            <span
+                                >I löpande text och listor, där namnet står
+                                bland andra namn. Punkten hör till en adress, och
+                                utan adress i sammanhanget står den i vägen.
+                                <span class="file">hk-wordmark</span></span
+                            >
+                        </div>
+                        <div>
+                            <b>Radbruten</b>
+                            <span
+                                >huvud- / kontoret. med bindestrecket i Grafit.
+                                Endast smala eller monumentala ytor, aldrig när
+                                den enradiga får plats.
+                                <span class="file">hk-wordmark-stack</span></span
+                            >
+                        </div>
+                        <div>
+                            <b>Juridiskt namn</b>
+                            <span
+                                >Huvudkontoret Norr AB används bara där den
+                                juridiska personen menas: avtal och register.
+                                Aldrig i löptext, gränssnitt eller
+                                marknadsyta.</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="specimen">
+                    <figure>
+                        <div class="plate paper tall">
+                            <img
+                                src="assets/profil/png/hk-wordmark-stack-black-2x.png"
+                                alt="Ordbilden radbruten: huvud- på första raden, kontoret. på andra, i Bläck på Papper"
+                                style="max-width: min(100%, 300px)"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>RADBRUTEN</span>
+                            <span class="file">hk-wordmark-stack-black</span>
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <div class="plate ink tall">
+                            <img
+                                src="assets/profil/png/hk-wordmark-stack-papper-2x.png"
+                                alt="Ordbilden radbruten i Papper på Bläck"
+                                style="max-width: min(100%, 300px)"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>RADBRUTEN, MÖRK YTA</span>
+                            <span class="file">hk-wordmark-stack-papper</span>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIGILLET -->
+        <section class="band" id="sigillet">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// 02 · SIGILLET</span>
+                        <h2 class="h2">Ett brädgårdstecken med ett H i kärnan.</h2>
+                    </div>
+                    <span class="aside"
+                        >Fristående där ordbilden inte får plats: avatarer,
+                        favikoner, stämplar.</span
+                    >
+                </div>
+
+                <div class="specimen">
+                    <figure>
+                        <div class="plate paper tall">
+                            <img
+                                class="mark"
+                                src="assets/profil/hk-sigill-black.svg"
+                                alt="Sigillet i Bläck på Papper"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>BLÄCK PÅ LJUS YTA</span>
+                            <span class="file">hk-sigill-black.svg</span>
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <div class="plate ink tall">
+                            <img
+                                class="mark"
+                                src="assets/profil/hk-sigill-papper.svg"
+                                alt="Sigillet i Papper på Bläck"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>PAPPER PÅ MÖRK YTA</span>
+                            <span class="file">hk-sigill-papper.svg</span>
+                        </figcaption>
+                    </figure>
+                </div>
+
+                <div class="two">
+                    <p class="prose">
+                        Sigillet är ett ritat original. <b>Använd alltid
+                        filen.</b> Rita aldrig om, förenkla eller förändra
+                        formen. Det färgsätts aldrig i mer än en färg och
+                        roteras aldrig ytterligare. Som SVG är det riktig
+                        vektor: använd den där det går, och PNG bara i ytor som
+                        inte tar vektor.
+                    </p>
+                    <p class="prose">
+                        Sigillet och ordbilden finns i <b>två låsta
+                        kombinationer</b>, och avstånden i dem är mätta. Den
+                        horisontella lockupen är den tyngsta avsändarformen:
+                        avtal, sidhuvud, koncernfooter. Den monumentala står
+                        på poster, omslag och scen. Bygg aldrig en egen.
+                    </p>
+                </div>
+
+                <div class="specimen">
+                    <figure>
+                        <div class="plate paper tall">
+                            <img
+                                src="assets/profil/png/hk-lockup-horisontell-black-2x.png"
+                                alt="Horisontell lockup: sigillet till vänster om ordbilden huvudkontoret., i Bläck på Papper"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>HORISONTELL LOCKUP</span>
+                            <span class="file">hk-lockup-horisontell-black</span>
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <div class="plate ink tall">
+                            <img
+                                src="assets/profil/png/hk-lockup-monumental-papper-2x.png"
+                                alt="Monumental lockup: sigillet över den radbrutna ordbilden, i Papper på Bläck"
+                                style="max-width: min(100%, 300px)"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>MONUMENTAL LOCKUP</span>
+                            <span class="file">hk-lockup-monumental-papper</span>
+                        </figcaption>
+                    </figure>
+                </div>
+
+                <div class="rows">
+                    <div>
+                        <b>Frizon, sigillet</b>
+                        <span
+                            >Ett strecks bredd, alltså en sjättedel av sigillets
+                            höjd, på alla fyra sidor.</span
+                        >
+                    </div>
+                    <div>
+                        <b>Frizon, ordbilden</b>
+                        <span
+                            >Ett teckens bredd runtom, alltså 0,64 em. I
+                            PNG-filerna ligger frizonen inbakad som transparent
+                            kant. Beskär dem inte.</span
+                        >
+                    </div>
+                    <div>
+                        <b>Minsta storlek</b>
+                        <span
+                            >Sigillet 16 px på skärm, 6 mm i tryck. Ordbilden
+                            12 px på skärm, 8 pt i tryck. Den horisontella
+                            lockupen mäts på ordbilden, inte på sigillet.</span
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FÄRG -->
+        <section class="band" id="farg">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// 03 · FÄRG</span>
+                        <h2 class="h2">Nästan svartvitt.</h2>
+                    </div>
+                    <span class="aside"
+                        >Signal används som ett utropstecken: högst två
+                        procent av en yta.</span
+                    >
+                </div>
+
+                <div class="swatches">
+                    <div class="swatch">
+                        <div class="chip" style="background: #16150f"></div>
+                        <div class="name"><span>Bläck</span><span class="hex">#16150F</span></div>
+                        <div class="use">text och ytor · 60 %</div>
+                    </div>
+                    <div class="swatch">
+                        <div class="chip lined" style="background: #f4f2ec"></div>
+                        <div class="name"><span>Papper</span><span class="hex">#F4F2EC</span></div>
+                        <div class="use">bakgrund, det redaktionella ljuset · 30 %</div>
+                    </div>
+                    <div class="swatch">
+                        <div class="chip" style="background: #8a877d"></div>
+                        <div class="name"><span>Grafit</span><span class="hex">#8A877D</span></div>
+                        <div class="use">linjer, metadata, sekundärt · 8 %</div>
+                    </div>
+                    <div class="swatch">
+                        <div class="chip" style="background: #d9481c"></div>
+                        <div class="name"><span>Signal</span><span class="hex">#D9481C</span></div>
+                        <div class="use">markering, punktens färg · 2 %, aldrig en yta</div>
+                    </div>
+                    <div class="swatch">
+                        <div class="chip" style="background: #f0862b"></div>
+                        <div class="name"><span>Glöd</span><span class="hex">#F0862B</span></div>
+                        <div class="use">värme, får vara yta · upp till 8 %, aldrig data</div>
+                    </div>
+                    <div class="swatch">
+                        <div class="chip" style="background: #46a758"></div>
+                        <div class="name"><span>Kvitto</span><span class="hex">#46A758</span></div>
+                        <div class="use"><span class="g">[ OK ]</span> · status, aldrig dekor</div>
+                    </div>
+                    <div class="swatch">
+                        <div class="chip" style="background: #e5484d"></div>
+                        <div class="name"><span>Larm</span><span class="hex">#E5484D</span></div>
+                        <div class="use"><span class="g">[ FEL ]</span> · status, aldrig dekor</div>
+                    </div>
+                </div>
+
+                <div class="two">
+                    <div class="stack" style="gap: 14px">
+                        <span class="label">// TONSKALAN PÅ LJUSA YTOR</span>
+                        <div class="tones">
+                            <span><i style="background: #16150f"></i><b>Bläck</b><small>#16150F</small></span>
+                            <span><i style="background: #3a382f"></i><b>Ram</b><small>#3A382F</small></span>
+                            <span><i style="background: #5a574e"></i><b>Sten</b><small>#5A574E</small></span>
+                            <span><i style="background: #8a877d"></i><b>Grafit</b><small>#8A877D</small></span>
+                            <span><i style="background: #b5b1a6"></i><b>Ljusgrafit</b><small>#B5B1A6</small></span>
+                        </div>
+                    </div>
+                    <p class="prose">
+                        Märket har <b>två färglägen och inga andra</b>: Bläck
+                        på ljus yta, Papper på mörk. Bindestrecket i den
+                        radbrutna formen är Grafit i båda. Hela paletten,
+                        med papperstoner för text, mörkerytor och verktygsljus,
+                        följer med i paketet som CSS-variabler och som JSON.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- REGLER -->
+        <section class="band ink-band" id="regler">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// 04 · TYPSNITT OCH REGLER</span>
+                        <h2 class="h2">Typsnittet följer inte med.</h2>
+                    </div>
+                    <span class="aside"
+                        >Det är hela skälet till att filerna finns.</span
+                    >
+                </div>
+
+                <div class="two">
+                    <p class="prose">
+                        Allt huvudkontoret skriver är satt i <b>MonoLisa</b>:
+                        rubrik, brödtext, kod och detalj. Typsnittet
+                        licensieras per användare och får inte
+                        vidaredistribueras, så paketet innehåller ingen font.
+                        Behöver du sätta text i vår typografi är svaret att du
+                        inte ska: <b>använd filerna</b>. Effektsnitten
+                        Permanent Marker och Rock Salt är fria, men de är våra
+                        och används inte av andra.
+                    </p>
+                    <p class="prose">
+                        Reglerna är få och de är samma i paketets README. Det
+                        som inte står här är inte tillåtet av misstag: fråga
+                        oss, så svarar vi.
+                    </p>
+                </div>
+
+                <div class="rows">
+                    <div><span class="fel g">[ FEL ]</span><span>Sätt inte ordbilden i ett annat typsnitt. Har du inte MonoLisa, använd filen.</span></div>
+                    <div><span class="fel g">[ FEL ]</span><span>Rita inte om sigillet, och rita inte av det.</span></div>
+                    <div><span class="fel g">[ FEL ]</span><span>Sträck inte, rotera inte, luta inte. Skala proportionellt eller inte alls.</span></div>
+                    <div><span class="fel g">[ FEL ]</span><span>Lägg inte på skugga, glöd, kontur, gradient eller genomskinlighet.</span></div>
+                    <div><span class="fel g">[ FEL ]</span><span>Färga inte om filerna. Behövs en tredje färg är svaret nej, och behövs den ändå: fråga oss.</span></div>
+                    <div><span class="fel g">[ FEL ]</span><span>Lägg inte ordbilden på foto, mönster eller kulör utan prövad kontrast. På orolig botten används den kvadratiska filen med egen yta.</span></div>
+                    <div><span class="fel g">[ FEL ]</span><span>Sätt inte in punkten där ingen punkt finns, och ta inte bort den där den finns. Punkten hör till filen.</span></div>
+                    <div><span class="fel g">[ FEL ]</span><span>Bygg inte en egen lockup av sigillet plus ordbilden. De två låsta kombinationerna finns som filer.</span></div>
+                    <div><span class="fel g">[ FEL ]</span><span>Skriv inte Huvudkontoret med stor bokstav i löptext. Det juridiska namnet används bara där den juridiska personen menas.</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILPAKETET -->
+        <section class="band" id="filpaketet">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// 05 · FILPAKETET</span>
+                        <h2 class="h2">Sex märken, två färglägen, tre grader.</h2>
+                    </div>
+                    <span class="aside"
+                        >Filerna är låsta. Använd dem som de är, sätt inte om
+                        dem, bygg inte vidare på dem.</span
+                    >
+                </div>
+
+                <div class="two">
+                    <div class="rows">
+                        <div><b>3 SVG</b><span>sigillet i Bläck, Papper och Signal. Riktig vektor, använd dem först.</span></div>
+                        <div><b>36 PNG</b><span>sex märken i två färglägen och tre grader, transparent bakgrund, frizonen inbakad.</span></div>
+                        <div><b>12 PNG</b><span>fyra kvadrater i tre grader med egen yta: profilbild och ikon, ljus och mörk. För ytor vi inte styr, som beskär.</span></div>
+                        <div><b>2 filer</b><span>färgerna som CSS-variabler och som JSON.</span></div>
+                        <div><b>README</b><span>samma regler som står här, i text, med paketets datum.</span></div>
+                    </div>
+                    <div class="stack" style="gap: 24px">
+                        <p class="prose">
+                            Namnet säger vilket: märket först, färgläget efter,
+                            graden sist. <span class="file" style="font-weight: 500">hk-lockup-horisontell-papper-2x</span>
+                            är den horisontella lockupen i Papper, i två
+                            gånger grundstorleken. <b>Välj den grad som är
+                            större än ytan du ska fylla</b>, aldrig mindre, och
+                            skala aldrig upp en PNG.
+                        </p>
+                        <p class="quiet">
+                            Paketet har inget versionsnummer i adressen.
+                            Profilen har ett giltigt läge, och gamla lägen är
+                            fel, inte äldre. Har du en äldre mapp liggande:
+                            hämta om.
+                        </p>
+                        <div class="actions">
+                            <a class="btn" href="assets/profil/huvudkontoret-profil.zip" download
+                                ><span class="g">HÄMTA FILPAKETET -&gt;</span></a
+                            >
+                            <span class="filemeta g">huvudkontoret-profil.zip · 2026-08-26</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="specimen">
+                    <figure>
+                        <div class="plate paper">
+                            <img
+                                class="mark"
+                                src="assets/profil/png/hk-profilbild-ljus-1x.png"
+                                alt="Profilbild, ljus: ordbild och sigill i en ljus kvadrat"
+                                style="width: 160px"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>PROFILBILD, LJUS</span>
+                            <span class="file">hk-profilbild-ljus</span>
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <div class="plate paper">
+                            <img
+                                class="mark"
+                                src="assets/profil/png/hk-profilbild-mork-1x.png"
+                                alt="Profilbild, mörk: ordbild och sigill i en mörk kvadrat"
+                                style="width: 160px"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>PROFILBILD, MÖRK</span>
+                            <span class="file">hk-profilbild-mork</span>
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <div class="plate paper">
+                            <img
+                                class="mark"
+                                src="assets/profil/png/hk-ikon-ljus-1x.png"
+                                alt="Ikon, ljus: sigillet i en ljus kvadrat"
+                                style="width: 160px"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>IKON, LJUS</span>
+                            <span class="file">hk-ikon-ljus</span>
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <div class="plate paper">
+                            <img
+                                class="mark"
+                                src="assets/profil/png/hk-ikon-mork-1x.png"
+                                alt="Ikon, mörk: sigillet i en mörk kvadrat"
+                                style="width: 160px"
+                            />
+                        </div>
+                        <figcaption>
+                            <span>IKON, MÖRK</span>
+                            <span class="file">hk-ikon-mork</span>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- KONTAKT -->
+        <section class="contact" id="kontakt">
+            <div class="shell" style="display: flex; flex-direction: column; gap: 56px">
+                <div class="two" style="align-items: center">
+                    <div style="display: flex; flex-direction: column; gap: 20px">
+                        <span class="label">// KONTAKT</span>
+                        <h2>Täcks inte ditt fall?</h2>
+                        <p class="prose">
+                            Skriv till oss med ordet profil i ämnesraden, så
+                            hamnar frågan hos den som äger märket. Vi svarar
+                            hellre en gång för mycket än ser ordbilden satt i
+                            fel typsnitt.
+                        </p>
+                        <a
+                            class="btn"
+                            style="align-self: flex-start"
+                            href="mailto:hej@huvudkontoret.io?subject=Profil"
+                            >hej@huvudkontoret.io</a
+                        >
+                    </div>
+                    <div class="mark">
+                        <span class="sigill" aria-hidden="true"></span>
+                    </div>
+                </div>
+                <footer class="foot">
+                    <span style="font-weight: 600"
+                        >huvudkontoret<span class="tld">.io</span></span
+                    >
+                    <span class="where"
+                        >huvudkontoret · Luleå · 65.5848° N / 22.1547° E</span
+                    >
+                    <span class="mirror g">SPEGEL · ORIGINALET LIGGER I FÖRVARET</span>
+                </footer>
+            </div>
+        </section>
+    </body>
+</html>
