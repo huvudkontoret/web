@@ -16,10 +16,15 @@ export function run(site, facts, report) {
   // and a name the page gets wrong is a silent fallback to system monospace.
   const exemptFont = facts.webFontLicence ? null : new RegExp(facts.licensedFontPattern);
 
-  for (const surface of ["index.html"]) {
+  for (const surface of facts.pages) {
     const html = site.read(surface);
     if (html === null) {
-      report.fail(surface, `missing — the gate cannot check a page that is not there`);
+      // A required page that is not there is a defect; any other declared
+      // page may simply not exist on this branch yet — the sitemap check makes
+      // the same allowance, and `publishing` owns the required-file question.
+      if (facts.requiredFiles.includes(surface)) {
+        report.fail(surface, `missing — the gate cannot check a page that is not there`);
+      }
       continue;
     }
     const markup = stripRawText(html);

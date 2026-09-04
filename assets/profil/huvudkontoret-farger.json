@@ -1,0 +1,18 @@
+{
+  "datum": "2026-09-04",
+  "hamtas": "https://huvudkontoret.io/profil",
+  "konstanter": {
+    "Bläck": { "hex": "#16150F", "bruk": "text och ytor" },
+    "Papper": { "hex": "#F4F2EC", "bruk": "ljus yta" },
+    "Signal": { "hex": "#D9481C", "bruk": "punkten i ordbilden, aldrig yta" }
+  },
+  "tonskala": {
+    "Bläck": "#16150F",
+    "Ram": "#3A382F",
+    "Sten": "#5A574E",
+    "Grafit": "#8A877D",
+    "Ljusgrafit": "#B5B1A6"
+  },
+  "text pa ljus yta": { "Signal": "#C34119" },
+  "anmarkning": "Status-, varme- och produktfarger ingar i profilen men anvands bara av huvudkontoret."
+}

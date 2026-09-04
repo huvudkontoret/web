@@ -1,4 +1,7 @@
 {
+  "//pages": "The hand-written HTML pages. references and markup read each of them; a page left out here is published unchecked.",
+  "pages": ["index.html", "profil.html"],
+
   "surfaces": ["index.html", "index.md", "llms.txt"],
 
   "sharedFacts": [
@@ -38,6 +41,7 @@
 
   "publishedPaths": [
     "index.html",
+    "profil.html",
     "index.md",
     "llms.txt",
     "llms-full.txt",
@@ -50,9 +54,10 @@
   ],
   "requiredPublished": ["index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
 
-  "//sitemapPages": "The pages sitemap.xml has to advertise, as repo paths; index.html is the root URL. robots.txt names the sitemap as the crawl entry point and llms-full.txt is linked from nowhere else on the site, so a surface left out of this list is published and undiscoverable at once. robots.txt, sitemap.xml and assets/ are published without being pages and are deliberately absent.",
+  "//sitemapPages": "The pages sitemap.xml has to advertise, as repo paths; index.html is the root URL and any other page is advertised without its .html, the way the Worker serves it (pagePath in lib/site.mjs). robots.txt names the sitemap as the crawl entry point and llms-full.txt is linked from nowhere else on the site, so a surface left out of this list is published and undiscoverable at once. robots.txt, sitemap.xml and assets/ are published without being pages and are deliberately absent.",
   "sitemapPages": [
     "index.html",
+    "profil.html",
     "index.md",
     "llms.txt",
     "llms-full.txt",

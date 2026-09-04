@@ -55,6 +55,23 @@ export function origin(facts) {
 }
 
 /**
+ * The URL a page is served at, without the origin.
+ *
+ * Workers static assets default to `html_handling: auto-trailing-slash`, so
+ * `profil.html` answers at `/profil` and a request for `/profil.html` is
+ * redirected there. The canonical address is therefore the one without the
+ * extension, and `index.html` is the root. The gate has to know this rule in
+ * both directions: to read a `<loc>` back to a file, and to say which URL a
+ * file should be advertised under.
+ */
+export function pagePath(page) {
+  if (page === "index.html") return "/";
+  if (page.endsWith("/index.html")) return `/${page.slice(0, -"index.html".length)}`;
+  if (page.endsWith(".html")) return `/${page.slice(0, -".html".length)}`;
+  return `/${page}`;
+}
+
+/**
  * Map a URL found in the markup to the repo path it must resolve to, or null
  * when it is not ours to check (external host, mailto:, #anchor, data:).
  */
@@ -91,6 +108,12 @@ export function toRepoPath(url, site, facts) {
     path = decodeURIComponent(path);
   } catch {
     // A URL that will not decode is a finding for the caller, not a crash.
+  }
+  // `/profil` is `profil.html` under the Worker's html_handling (see
+  // pagePath). Only when no file of the bare name exists — a directory or
+  // an extensionless file would otherwise be shadowed by a sibling page.
+  if (!path.split("/").pop().includes(".") && !site.has(path) && site.has(`${path}.html`)) {
+    return `${path}.html`;
   }
   return path;
 }

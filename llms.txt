@@ -10,6 +10,7 @@ Huvudkontoret har inte en webbplats utan ett system av adresser. Ändelsen är e
 
 - [Startsida](https://huvudkontoret.io/): Erbjudande, arbetssätt, team, adressystem och kontakt.
 - [Markdown-version](https://huvudkontoret.io/index.md): Token-effektiv textversion av startsidans viktigaste innehåll.
+- [Profil](https://huvudkontoret.io/profil): Presskit med ordbild, sigill, färger och regler för märket, och filpaketet som nedladdning.
 - [Sitemap](https://huvudkontoret.io/sitemap.xml): Maskinläsbar lista över publika resurser.
 - [Agent Skill Index](https://huvudkontoret.io/.well-known/agent-skills/index.json): Instruktioner för agenter som vill förstå eller beskriva Huvudkontoret.
 - [API Catalog](https://huvudkontoret.io/.well-known/api-catalog): Aktuell maskinläsbar katalog över publika API:er och agentytor.
