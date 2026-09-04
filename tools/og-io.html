@@ -17,22 +17,13 @@
             sips -s format jpeg -s formatOptions 82 og.png --out assets/og-io.jpg
         -->
         <style>
+            /* One variable file, same build the page loads — see
+               assets/fonts/README.md. Italics are never used here. */
             @font-face {
                 font-family: "MonoLisa";
-                src: url("../assets/fonts/MonoLisa-Light.woff2") format("woff2");
-                font-weight: 300;
-            }
-            @font-face {
-                font-family: "MonoLisa";
-                src: url("../assets/fonts/MonoLisa-Medium.woff2")
+                src: url("../assets/fonts/MonoLisa-Variable.woff2")
                     format("woff2");
-                font-weight: 500;
-            }
-            @font-face {
-                font-family: "MonoLisa";
-                src: url("../assets/fonts/MonoLisa-SemiBold.woff2")
-                    format("woff2");
-                font-weight: 600;
+                font-weight: 100 900;
             }
             html,
             body {
