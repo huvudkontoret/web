@@ -31,12 +31,23 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          # 24, not 22: the gate imports the TypeScript registry directly, and
+          # Node strips types without a flag only from 23.6 onward.
+          node-version: "24"
 
       # The gate before what the gate checks: if these fail, the findings
       # below cannot be trusted either way.
       - name: Self-tests
-        run: node --test tools/check/test.mjs
+        run: node --test tools/check/test.mjs src/lib/tld.test.mjs worker/index.test.mjs
+
+      # The repo squash-merges, so this title — not the commits in the branch —
+      # becomes the commit subject on main. Passed through the environment
+      # rather than interpolated into `run:`: a pull request title is text a
+      # stranger can write, and `${{ }}` inside a shell line would run it.
+      - name: Title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: node tools/check/title.mjs "$PR_TITLE"
 
       - name: Content
         run: node tools/check/run.mjs

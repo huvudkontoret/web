@@ -26,6 +26,7 @@ import * as references from "./checks/references.mjs";
 import * as sitemap from "./checks/sitemap.mjs";
 import * as surfaces from "./checks/surfaces.mjs";
 import * as workers from "./checks/workers.mjs";
+import { checkTitle } from "./title.mjs";
 import { loadSite } from "./lib/site.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -43,8 +44,6 @@ function sitemapListing(paths) {
 /** A minimal site that passes every check — the baseline each case perturbs. */
 function baseline() {
   return {
-    "CNAME": "huvudkontoret.io\n",
-    ".nojekyll": "",
     ".gitignore": "assets/fonts/*.woff2\n",
     "index.html": [
       "<!doctype html>",
@@ -79,11 +78,12 @@ function baseline() {
       '  // The site is the repo root; https://example.com/ in a comment must not confuse the parser.',
       '  "name": "web",',
       '  "assets": { "directory": "." },',
+      '  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],',
       '  "preview_urls": true,',
       "}",
       "",
     ].join("\n"),
-    ".assetsignore": ".assetsignore\n.gitignore\nCNAME\n.nojekyll\nwrangler.jsonc\nsrc/\nassets/fonts/*.woff2\n",
+    ".assetsignore": ".assetsignore\n.gitignore\nwrangler.jsonc\nsrc/\nassets/fonts/*.woff2\n.git/\n.wrangler/\nnode_modules/\n",
   };
 }
 
@@ -217,35 +217,56 @@ test("workers: a pattern the gate cannot read is a finding, not a guess", () => 
   assertFires(workers, { ".assetsignore": `${baseline()[".assetsignore"]}!docs/**\n` }, "syntax this gate does not read");
 });
 
-/** wrangler.jsonc with the apex route added — the cutover, as a diff. */
-function withCutoverRoute() {
+/** wrangler.jsonc with the apex route taken out — the site before the cutover. */
+function withoutCutoverRoute() {
   return baseline()["wrangler.jsonc"].replace(
-    '"preview_urls": true,',
-    '"preview_urls": true,\n  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],',
+    '  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],\n',
+    "",
   );
 }
 
 test("workers: the custom domain arriving before the decision is a finding", () => {
-  // `wrangler deploy` creates the domain it finds in config, so this route
-  // moves the apex off GitHub Pages. It must never arrive as a side effect.
-  assertFires(
-    workers,
-    { "wrangler.jsonc": withCutoverRoute() },
-    "performs the cutover on the next production deploy",
+  // `wrangler deploy` creates the domain it finds in config, so a route moves
+  // its apex off whatever serves it today. The cutover for huvudkontoret.io is
+  // taken, but the guard is what keeps the next domain's from arriving as a
+  // side effect, so it is asserted against facts that have not decided yet.
+  const undecided = { ...FACTS, expectCustomDomain: false };
+
+  const found = findings(workers, withEdits({}), undecided);
+  assert.ok(
+    found.some((finding) => finding.message.includes("performs the cutover on the next production deploy")),
+    `expected a premature-cutover finding, got: ${JSON.stringify(found, null, 2)}`,
   );
 });
 
-test("workers: once the decision is recorded, the route is required and accepted", () => {
-  const decided = { ...FACTS, expectCustomDomain: true };
-
-  const missing = findings(workers, withEdits({}), decided);
+test("workers: with the decision recorded, the route is required and cannot go missing", () => {
+  const missing = findings(workers, withEdits({ "wrangler.jsonc": withoutCutoverRoute() }));
   assert.ok(
     missing.some((finding) => finding.message.includes("no custom_domain route for huvudkontoret.io")),
     `expected a missing-domain finding, got: ${JSON.stringify(missing, null, 2)}`,
   );
 
-  const present = findings(workers, withEdits({ "wrangler.jsonc": withCutoverRoute() }), decided);
-  assert.deepEqual(present, [], `expected the cutover config to pass, got: ${JSON.stringify(present, null, 2)}`);
+  // And the config that performs it passes — the baseline carries the route.
+  assertClean(workers);
+});
+
+test("workers: dropping .git/ from .assetsignore is a finding", () => {
+  // The case the gate could not see before: git never tracks .git/, so the
+  // published set — derived from tracked files — says nothing about it, while
+  // wrangler uploads it with everything else in the directory.
+  assertFires(
+    workers,
+    { ".assetsignore": baseline()[".assetsignore"].replace(".git/\n", "") },
+    "does not exclude .git/",
+  );
+});
+
+test("workers: every always-ignored path is asserted, not just the first", () => {
+  assertFires(
+    workers,
+    { ".assetsignore": baseline()[".assetsignore"].replace(".wrangler/\n", "") },
+    "does not exclude .wrangler/",
+  );
 });
 
 test("workers: preview_urls off is a finding", () => {
@@ -276,6 +297,46 @@ test("workers: once the licence lands, dropping both rules together is fine", ()
     ".gitignore": "node_modules/\n",
     ".assetsignore": baseline()[".assetsignore"].replace("assets/fonts/*.woff2\n", ""),
   });
+});
+
+/** The subject line that lands on main, since the repo squash-merges. */
+function titleFindings(title) {
+  return checkTitle(title, FACTS);
+}
+
+test("title: a conventional subject passes, with and without a scope", () => {
+  assert.deepEqual(titleFindings("feat(deploy): serve huvudkontoret.io from the Worker"), []);
+  assert.deepEqual(titleFindings("docs: replace the Astro starter README with the real one"), []);
+  assert.deepEqual(titleFindings("feat(check)!: drop the Pages assertions"), []);
+});
+
+test("title: a subject with no type is a finding", () => {
+  // The shape this repo's own history keeps slipping into.
+  const found = titleFindings("The TLD workspace: the registry, the Worker, and the decision behind them");
+  assert.ok(found.some((finding) => finding.includes("not a conventional commit subject")), found.join("; "));
+});
+
+test("title: an invented type is a finding", () => {
+  const found = titleFindings("improve(check): tighten the gate");
+  assert.ok(found.some((finding) => finding.includes('uses the type "improve"')), found.join("; "));
+});
+
+test("title: a trailing period and an overlong subject are findings", () => {
+  assert.ok(titleFindings("fix(sitemap): advertise every surface.").some((f) => f.includes("ends in a period")));
+  const long = `feat(check): ${"x".repeat(FACTS.titleMaxLength)}`;
+  assert.ok(titleFindings(long).some((finding) => finding.includes("over the")), "expected a length finding");
+});
+
+test("title: an empty subject is a finding rather than a pass", () => {
+  // The workflow passes whatever GitHub hands it; an empty string must not
+  // read as "nothing to complain about".
+  assert.ok(titleFindings("").length > 0);
+  assert.ok(titleFindings("   ").length > 0);
+});
+
+test("title: case is deliberately not asserted", () => {
+  // "MonoLisa" and "GitHub Pages" open subjects legitimately in this repo.
+  assert.deepEqual(titleFindings("fix(fonts): MonoLisa must never reach the site"), []);
 });
 
 test("references: an asset that is not tracked is a finding", () => {
@@ -351,6 +412,13 @@ test("fonts: a committed licensed font is a finding", () => {
   assertFires(fonts, { "assets/fonts/MonoLisa-Light.woff2": "not really a font" }, "would publish it");
 });
 
+// The regression: Nok.otf and Nok.ttf sat directly in assets/ and the check
+// stayed green, because the pattern named one directory and one format.
+test("fonts: a font binary outside assets/fonts is a finding too", () => {
+  assertFires(fonts, { "assets/Nok.otf": "not really a font" }, "would publish it");
+  assertFires(fonts, { "assets/Nok.ttf": "not really a font" }, "would publish it");
+});
+
 test("fonts: losing the ignore rule is a finding once the font directory exists", () => {
   assertFires(
     fonts,
@@ -400,12 +468,8 @@ test("surfaces: the same address is fine once marked as not yet running", () => 
   });
 });
 
-test("publishing: the wrong CNAME is a finding", () => {
-  assertFires(publishing, { CNAME: "example.com\n" }, "points the custom domain");
-});
-
-test("publishing: a missing .nojekyll is a finding", () => {
-  assertFires(publishing, { ".nojekyll": null }, "Jekyll would drop dot-directories");
+test("publishing: a missing required surface is a finding", () => {
+  assertFires(publishing, { "llms.txt": null }, "required at the repo root");
 });
 
 test("publishing: dropping ai-train=no from Content-Signal is a finding", () => {

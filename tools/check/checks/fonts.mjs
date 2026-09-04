@@ -1,7 +1,9 @@
 /**
- * MonoLisa is a purchased typeface and this repo is public: committing a
- * .woff2 here would publish it. The web licence is not confirmed, so the web
- * files are generated locally and stay out of git — see assets/fonts/README.md.
+ * Typefaces are licensed and this repo is public: committing a font binary
+ * here publishes it. MonoLisa is the case this was written for — purchased,
+ * web licence unconfirmed, so the files are generated locally and stay out of
+ * git (see assets/fonts/README.md) — but the rule is the class, not the face.
+ * The pattern therefore covers every font binary under assets/, in any format.
  *
  * The mistake is quiet and one-way. Once a font file lands on `main` it has
  * been served from huvudkontoret.io, and deleting the file later does not
