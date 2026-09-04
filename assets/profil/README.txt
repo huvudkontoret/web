@@ -1,5 +1,9 @@
-huvudkontoret // filpaket v0.2 // 2026-08-26
+huvudkontoret // filpaket // gallande lage 2026-09-04
+Hamtas pa huvudkontoret.io/profil
 For extern anvandning: press, kunder, partners, arrangorer.
+
+Paketet har ingen version. Det som ligger pa /profil ar det som galler.
+Har du en aldre mapp liggande ar den fel, inte aldre: hamta om.
 
 
 INNEHALL
@@ -7,8 +11,9 @@ INNEHALL
   hk-sigill-papper.svg      sigillet i Papper, for moerka ytor
   hk-sigill-signal.svg      sigillet i Signal, endast dar en yta kraver det
   png/                      36 transparenta PNG + 12 kvadratiska, se nedan
-  huvudkontoret-farger.css  alla farger som CSS-variabler
+  huvudkontoret-farger.css  de externa fargerna som CSS-variabler
   huvudkontoret-farger.json samma farger som data
+  README.txt                den har filen
 
 
 FILERNA AR LASTA
@@ -92,10 +97,8 @@ GOR INTE
   ar Huvudkontoret Norr AB och anvands bara dar den juridiska personen menas.
 
 
-ANDRAT SEDAN v0.1
-  v0.1 sa att ordbilden aldrig exporteras som bild utan satts pa plats.
-  Regeln galler fortfarande internt. Externt galler den inte, eftersom
-  MonoLisa inte far vidaredistribueras och en mottagare utan fonten da
-  satter ordbilden i nagot annat. Darfor levereras ordbilden som fil.
-  Priset ar att filer aldras. Paketet har darfor version och datum, och
-  har du en aldre mapp liggande: hamta om.
+ORDBILDEN SOM FIL
+  Internt satts ordbilden alltid som text i MonoLisa och exporteras
+  aldrig som bild. Externt galler det inte: MonoLisa far inte
+  vidaredistribueras, och en mottagare utan fonten satter da ordbilden
+  i nagot annat. Darfor levereras ordbilden som fil, och filen ar last.

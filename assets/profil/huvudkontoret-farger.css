@@ -1,34 +1,17 @@
-/* huvudkontoret · farger v0.1 · 2026-08-17 */
+/* huvudkontoret · farger · gallande lage 2026-09-04 · huvudkontoret.io/profil */
 :root{
   /* konstanter */
   --hk-black:#16150F;        /* Blaeck: text och ytor */
-  --hk-paper:#F4F2EC;        /* Papper: redaktionellt ljus */
-  --hk-signal:#D9481C;       /* Signal: markering, max 2 % */
-  --hk-glow:#F0862B;         /* Gloed: varme, yta upp till 8 % */
-  --hk-receipt:#46A758;      /* Kvitto: [ OK ] */
-  --hk-alarm:#E5484D;        /* Larm: [ FEL ] */
+  --hk-paper:#F4F2EC;        /* Papper: ljus yta */
+  --hk-signal:#D9481C;       /* Signal: punkten i ordbilden. Aldrig yta. */
 
   /* tonskala, ljusa ytor */
   --hk-frame:#3A382F;        /* Ram */
   --hk-stone:#5A574E;        /* Sten: sekundaer text */
-  --hk-graphite:#8A877D;     /* Grafit: metadata, etiketter */
+  --hk-graphite:#8A877D;     /* Grafit: bindestrecket i radbruten form, metadata */
   --hk-lightgraphite:#B5B1A6;/* Ljusgrafit: haarlinjer, aldrig text */
 
-  /* text pa ljus yta (WCAG AA) */
-  --hk-signal-text:#C34119;  /* 4,6:1 */
-  --hk-receipt-text:#347D42; /* 4,5:1 */
-  --hk-alarm-text:#C53E42;   /* 4,5:1 */
-  --hk-glow-text:#8C4D14;    /* 5,9:1 */
-
-  /* moerkerytor */
-  --hk-night:#0E0D09;
-  --hk-panel:#14130D;
-
-  /* verktygsljus (produkt-UI, tabeller) */
-  --hk-ark:#FBFAF4;
-  --hk-ark-black:#131208;
-  --hk-ark-graphite:#7D7A6E;
-  --hk-ark-signal:#E8430F;
-  --hk-ark-receipt:#35B455;
-  --hk-ark-alarm:#EF3A41;
+  /* Signal som text pa ljus yta (WCAG AA 4,6:1) */
+  --hk-signal-text:#C34119;
 }
+/* Status-, varme- och produktfarger ingar i profilen men anvands bara av huvudkontoret. */
