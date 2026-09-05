@@ -35,6 +35,7 @@ one.
 | `surfaces` | `index.html`, `index.md` and `llms.txt` agree on the declared facts, and an address that is announced but not running is never presented as live |
 | `profile` | The graphic profile's custom properties are identical in `index.html`'s top-level `:root` block and in `src/styles/profile.css` — the two places ADR 0004 keeps them |
 | `fonts` | The licensed fonts are carried exactly as licensed: none committed while the web licence is unconfirmed, exactly `licensedWebFonts` once it is |
+| `analytics` | Every declared page carries the Cloudflare Web Analytics beacon, once, with the site's token (`analytics` in `facts.json`) — a page without it is published unmeasured, which is how the homepage rebuild shipped |
 | `formatting` | `.editorconfig` is respected in hand-written files |
 | `title` | The pull request title is a conventional commit subject — run separately, from the workflow, because the title is not in the checkout |
 

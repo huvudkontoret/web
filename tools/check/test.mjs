@@ -17,6 +17,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { after, test } from "node:test";
 
+import * as analytics from "./checks/analytics.mjs";
 import * as fonts from "./checks/fonts.mjs";
 import * as formatting from "./checks/formatting.mjs";
 import * as markup from "./checks/markup.mjs";
@@ -42,6 +43,8 @@ const FACTS = JSON.parse(readFileSync(join(HERE, "facts.json"), "utf8"));
 const UNLICENSED = { ...FACTS, webFontLicence: false };
 
 const TEAM = "Hanna Wikman, Magnus Renholm, Sebastian Berglönn";
+/** The beacon as the real pages carry it, built from the fact so the fixture follows it. */
+const BEACON = `<script defer src="${FACTS.analytics.script}" data-cf-beacon='${JSON.stringify({ token: FACTS.analytics.token })}'></script>`;
 const CONTACT = "hej@huvudkontoret.io";
 
 /** A sitemap advertising exactly `paths`, each rooted at the fixture's origin. */
@@ -70,6 +73,7 @@ function baseline() {
       '  <img src="assets/logo.svg" alt="Logotyp">',
       `  <p>${TEAM}</p>`,
       `  <section id="contact">${CONTACT}</section>`,
+      `  ${BEACON}`,
       "</body>",
       "</html>",
       "",
@@ -162,7 +166,7 @@ function assertClean(check, edits = {}, facts = UNLICENSED) {
 }
 
 test("baseline site passes every check", () => {
-  for (const check of [publishing, workers, references, sitemap, markup, surfaces, profile, fonts, formatting]) {
+  for (const check of [publishing, workers, references, sitemap, markup, surfaces, profile, fonts, analytics, formatting]) {
     assertClean(check);
   }
 });
@@ -584,6 +588,40 @@ test("surfaces: the same address is fine once marked as not yet running", () => 
     "index.md": `${baseline()["index.md"]}\n.vote visar riktningen. Snart.\n`,
     "llms.txt": `${baseline()["llms.txt"]}\n.vote visar riktningen. Snart.\n`,
   });
+});
+
+/**
+ * The beacon is the site's only measurement, and it has gone missing once
+ * already without anyone noticing. These are the ways it goes missing.
+ */
+
+/** The baseline homepage with its beacon replaced by `snippet`. */
+function homepageWith(snippet) {
+  return { "index.html": baseline()["index.html"].replace(BEACON, snippet) };
+}
+
+test("analytics: a page without the beacon is a finding", () => {
+  assertFires(analytics, homepageWith(""), "no Cloudflare Web Analytics beacon");
+});
+
+test("analytics: a beacon commented out is gone, not present", () => {
+  assertFires(analytics, homepageWith(`<!-- ${BEACON} -->`), "no Cloudflare Web Analytics beacon");
+});
+
+test("analytics: a beacon carrying another site's token is a finding", () => {
+  assertFires(analytics, homepageWith(BEACON.replace(FACTS.analytics.token, "0000")), 'is "0000", not the site\'s');
+});
+
+test("analytics: a beacon with no configuration reports to nobody, and is a finding", () => {
+  assertFires(analytics, homepageWith(`<script defer src="${FACTS.analytics.script}"></script>`), "no data-cf-beacon");
+});
+
+test("analytics: the beacon loaded twice is a finding", () => {
+  assertFires(analytics, homepageWith(`${BEACON}\n  ${BEACON}`), "appears 2 times");
+});
+
+test("analytics: a file that is not a declared page is not held to it", () => {
+  assertClean(analytics, { "demo.html": "<!doctype html>\n<html lang=\"sv\"><head><title>Demo</title></head><body></body></html>\n" });
 });
 
 test("publishing: a missing required surface is a finding", () => {
