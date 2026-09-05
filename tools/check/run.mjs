@@ -17,6 +17,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import * as analytics from "./checks/analytics.mjs";
 import * as fonts from "./checks/fonts.mjs";
 import * as formatting from "./checks/formatting.mjs";
 import * as markup from "./checks/markup.mjs";
@@ -31,7 +32,7 @@ import { loadSite } from "./lib/site.mjs";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "..", "..");
 
-const CONTENT_CHECKS = [publishing, workers, references, sitemap, markup, surfaces, profile, fonts];
+const CONTENT_CHECKS = [publishing, workers, references, sitemap, markup, surfaces, profile, fonts, analytics];
 const FORMAT_CHECKS = [formatting];
 
 function parseArguments(argv) {

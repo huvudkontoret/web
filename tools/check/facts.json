@@ -4,6 +4,12 @@
 
   "surfaces": ["index.html", "index.md", "llms.txt"],
 
+  "//analytics": "Cloudflare Web Analytics is the only measurement on the site: a cookieless beacon that reports page views, referrers, devices and Core Web Vitals per path, and nothing that identifies a person — which is why no consent banner comes with it. The homepage rebuild (8a67aa5) dropped the snippet and nothing noticed until the numbers were read, so the beacon is a fact here and the analytics check holds every page in pages to it. The token names the RUM site for huvudkontoret.io in the Cloudflare account; it is not a secret, it ships in the page.",
+  "analytics": {
+    "script": "https://static.cloudflareinsights.com/beacon.min.js",
+    "token": "2e066831da72470a8e216a900e41152a"
+  },
+
   "sharedFacts": [
     { "label": "contact address", "match": "hej@huvudkontoret.io" },
     { "label": "Hanna Wikman", "match": "Hanna Wikman" },
