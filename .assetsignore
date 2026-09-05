@@ -11,6 +11,13 @@
 # what survives, so a new file added to the repo root cannot quietly appear on
 # the site — see tools/check/checks/workers.mjs.
 
+# Source, not site. `src/` holds the chrome layer the perspectives will be
+# built from — profile.css is a stylesheet the site never links, because .io
+# carries the same properties inline (ADR 0004). It goes away with this whole
+# file once the asset directory becomes dist/, where only the built site
+# exists in the first place.
+src/
+
 # Repo scaffolding
 .claude/
 .editorconfig
@@ -23,9 +30,6 @@ CONTEXT.md
 README.md
 docs/
 hk.json
-# Source, not site. Both go away with this file once the asset directory
-# becomes dist/, where only the built site exists in the first place.
-src/
 tools/
 tsconfig.json
 worker/
@@ -34,13 +38,6 @@ wrangler.jsonc
 
 # Not linked from anywhere on the site.
 demo-hero.html
-
-# MonoLisa is purchased and the web licence is not confirmed, so the woff2
-# files are gitignored. Wrangler uploads the working directory rather than the
-# git tree, so a local `wrangler deploy` would publish them anyway — this is
-# the only thing that stops it. Remove this together with the .gitignore rule,
-# never on its own. See assets/fonts/README.md.
-assets/fonts/*.woff2
 
 # Never tracked, always present, and uploaded anyway: wrangler publishes the
 # working directory, so the clone's own metadata reaches the site unless it is

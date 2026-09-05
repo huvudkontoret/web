@@ -1,0 +1,53 @@
+/**
+ * The graphic profile, as CSS custom properties.
+ *
+ * This is the contact surface between the design project *Huvudkontoret brand
+ * och grafisk profil* and this repo (ADR 0002). The profile owns typography,
+ * colour and the wordmark; the repo owns markup, layout and delivery. A change
+ * to type or colour starts there and arrives here as a diff someone typed.
+ *
+ * Every property below is declared a second time, in the `:root` block of the
+ * site's own index.html. That duplication is deliberate — `.io` stays
+ * hand-written and byte-exact, and the chrome is lifted out of it rather than
+ * it being fed through a build (ADR 0004). The gate's `profile` check asserts
+ * the two blocks agree, so the drift ADR 0002 could only name as a convention
+ * is now something CI fails on.
+ *
+ * Add a property here and to index.html in the same commit, or the gate stops
+ * the pull request. Nothing is generated from anything.
+ *
+ * The colour names are the profile's own and stay Swedish, like `kl` from
+ * *klockan*: they are product vocabulary, not code written in the wrong
+ * language.
+ */
+
+:root {
+  /* Tonskalan på ljusa ytor */
+  --black: #16150f; /* Bläck */
+  --paper: #f4f2ec; /* Papper */
+  --frame: #3a382f; /* Ram */
+  --stone: #5a574e; /* Sten */
+  --graphite: #8a877d; /* Grafit */
+  --light-graphite: #b5b1a6; /* Ljusgrafit */
+
+  /* Koncernfärgen. 2 %-regeln: den pekar, den dekorerar inte. Nothing in the
+     code can express that constraint — it lives in the design project and in
+     review. */
+  --signal: #d9481c;
+
+  /* POW per lins, i papperston när den står som text på ljus yta. One accent
+     per address .io announces; `src/lib/tld.ts` is the routing side of the
+     same eight. */
+  --pow-ai: #2a7888;
+  --pow-dev: #3e7a4a;
+  --pow-app: #9a6219;
+  --pow-io: #c34119;
+  --pow-cv: #3c7b57;
+  --pow-name: #af5149;
+  --pow-xyz: #a35b20;
+  --pow-vote: #6d5bc7;
+
+  --shell: 1060px;
+  --gut: 48px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}

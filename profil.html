@@ -18,6 +18,13 @@
         <link rel="icon" type="image/svg+xml" href="assets/profil/hk-sigill-black.svg" />
         <link rel="icon" type="image/png" sizes="327x327" href="assets/profil/png/hk-ikon-mork-1x.png" />
 
+        <!-- The MonoLisa blocks this page needs on first view: Latin and Latin-1
+             upright. The rest load on demand through unicode-range. crossorigin
+             is required even same-origin: a font preload without it is fetched
+             twice. -->
+        <link rel="preload" href="assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="assets/fonts/MonoLisa-Variable-0080-00FF.woff2" as="font" type="font/woff2" crossorigin />
+
         <style>
             /* ===================== KONSTANTER ===================== */
             /* The profile as CSS custom properties, one to one against its own
@@ -44,6 +51,9 @@
                 --pow-xyz: #a35b20;
                 --pow-vote: #6d5bc7;
 
+                /* Statusfärg, aldrig dekor: Larm bär [ FEL ] och inget annat. */
+                --larm: #e5484d;
+
                 --shell: 1176px;
                 --gut: clamp(24px, 5vw, 48px);
                 --ease: cubic-bezier(0.2, 0, 0, 1);
@@ -58,13 +68,112 @@
                 scroll-behavior: smooth;
                 scroll-padding-top: 72px;
             }
+            /* ===================== TYPOGRAFI ===================== */
+            /* The same MonoLisa webfont files the homepage loads, one per
+               Unicode block with a matching unicode-range — see
+               assets/fonts/README.md. The marks on this page are files, so
+               they render in the profile's own face regardless. */
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-Variable-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-Variable-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-Variable-0100-017F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0100-017F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-VariableItalic-0100-017F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0100-017F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-Variable-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-VariableItalic-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-Variable-20A0-20CF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+20A0-20CF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-VariableItalic-20A0-20CF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+20A0-20CF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-Variable-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("assets/fonts/MonoLisa-VariableItalic-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+
             body {
                 margin: 0;
                 background: var(--paper);
                 color: var(--black);
-                /* MonoLisa where it is installed; the system monospace stack
-                   otherwise. The marks on this page are files, so they render
-                   in the profile's own face regardless. */
                 font-family: "MonoLisa", ui-monospace, SFMono-Regular, "SF Mono",
                     Menlo, Consolas, monospace;
                 font-weight: 400;
@@ -227,9 +336,6 @@
                 display: flex;
                 gap: 24px;
                 letter-spacing: 0.1em;
-                white-space: nowrap;
-                overflow-x: auto;
-                scrollbar-width: none;
             }
             .chrome nav .now {
                 color: var(--pow-io);
@@ -238,6 +344,84 @@
                 color: var(--graphite);
                 letter-spacing: 0.1em;
                 white-space: nowrap;
+            }
+            .menu-button {
+                display: none;
+                border: 1px solid var(--black);
+                background: transparent;
+                color: inherit;
+                font: inherit;
+                font-size: 12px;
+                font-weight: 600;
+                letter-spacing: 0.1em;
+                padding: 0 14px;
+                min-height: 44px;
+                cursor: pointer;
+            }
+            .no-js .menu-button {
+                display: none;
+            }
+
+            /* ===================== MENY (mobil) ===================== */
+            /* Same menu as the homepage: the chrome swaps nav and state for a
+               button once six sections plus the state line stop fitting. */
+            .menu {
+                position: fixed;
+                inset: 0;
+                z-index: 30;
+                background: var(--black);
+                color: var(--paper);
+                display: flex;
+                flex-direction: column;
+                padding: 96px 20px 32px 20px;
+            }
+            .menu[hidden] {
+                display: none;
+            }
+            .menu nav {
+                display: flex;
+                flex-direction: column;
+                font-size: 20px;
+                font-weight: 600;
+            }
+            .menu nav a {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                padding: 16px 0;
+                border-top: 1px solid var(--stone);
+                min-height: 44px;
+            }
+            .menu nav a:last-child {
+                border-bottom: 1px solid var(--stone);
+                color: var(--signal);
+            }
+            .menu nav a:hover {
+                color: var(--signal);
+                text-decoration: none;
+            }
+            .menu nav a span {
+                font-size: 14px;
+                color: var(--graphite);
+            }
+            .menu .state {
+                margin-top: auto;
+                font-size: 11px;
+                font-weight: 500;
+            }
+            @media (max-width: 1080px) {
+                .chrome nav,
+                .chrome .state {
+                    display: none;
+                }
+                .menu-button {
+                    display: inline-flex;
+                    align-items: center;
+                }
+                .no-js .menu-button {
+                    display: none;
+                }
             }
 
             /* ===================== INGÅNG ===================== */
@@ -355,6 +539,14 @@
                 color: var(--black);
             }
             @media (max-width: 480px) {
+                /* The lockup with its /profil path and the menu button do not
+                   share a phone-width row (361px against 342px available), so
+                   the chrome drops the path here and reads as the homepage's.
+                   The page names itself again in the // PROFIL label right
+                   below. */
+                .wordmark .path {
+                    display: none;
+                }
                 .files {
                     grid-template-columns: 1fr;
                     gap: 2px 0;
@@ -419,7 +611,7 @@
                 gap: 16px;
             }
             .rules .fel {
-                color: #e5484d;
+                color: var(--larm);
                 white-space: nowrap;
             }
 
@@ -486,7 +678,7 @@
             }
         </style>
     </head>
-    <body>
+    <body class="no-js">
         <a class="skip" href="#marke">Hoppa till innehållet</a>
 
         <!-- CHROME -->
@@ -505,6 +697,28 @@
                 <a href="#typsnitt">TYPSNITT</a>
                 <a href="#regler">GÖR INTE</a>
                 <a class="now" href="#kontakt">KONTAKT</a>
+            </nav>
+            <span class="state">GÄLLANDE LÄGE · 2026-09-04</span>
+            <button
+                class="menu-button"
+                type="button"
+                aria-expanded="false"
+                aria-controls="meny"
+            >
+                [ MENY ]
+            </button>
+        </div>
+
+        <!-- MENY (mobil) -->
+        <div class="menu" id="meny" hidden>
+            <span class="label" style="padding-bottom: 14px">// MENY</span>
+            <nav aria-label="Sidsektioner, mobil">
+                <a href="#marke">Märket <span class="g">-&gt;</span></a>
+                <a href="#filer">Filerna <span class="g">-&gt;</span></a>
+                <a href="#farg">Färg <span class="g">-&gt;</span></a>
+                <a href="#typsnitt">Typsnitt <span class="g">-&gt;</span></a>
+                <a href="#regler">Gör inte <span class="g">-&gt;</span></a>
+                <a href="#kontakt">Kontakt <span class="g">-&gt;</span></a>
             </nav>
             <span class="state">GÄLLANDE LÄGE · 2026-09-04</span>
         </div>
@@ -756,5 +970,44 @@
                 </footer>
             </div>
         </section>
+
+        <script>
+            document.body.classList.remove("no-js");
+
+            /* Menyn på smala skärmar — samma som på startsidan. */
+            (function menu() {
+                const button = document.querySelector(".menu-button");
+                const panel = document.getElementById("meny");
+                if (!button || !panel) return;
+
+                function setOpen(open) {
+                    panel.hidden = !open;
+                    button.setAttribute("aria-expanded", String(open));
+                    button.textContent = open ? "[ STÄNG ]" : "[ MENY ]";
+                    document.body.style.overflow = open ? "hidden" : "";
+                }
+
+                button.addEventListener("click", () =>
+                    setOpen(panel.hidden),
+                );
+                panel.addEventListener("click", (event) => {
+                    if (event.target.closest("a")) setOpen(false);
+                });
+                document.addEventListener("keydown", (event) => {
+                    if (event.key === "Escape" && !panel.hidden) {
+                        setOpen(false);
+                        button.focus();
+                    }
+                });
+            })();
+        </script>
+        <!-- Cloudflare Web Analytics: the only measurement on the site. Cookieless,
+             so no consent banner; the token is a fact the gate holds every page to
+             (analytics in tools/check/facts.json). -->
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
+        ></script>
     </body>
 </html>

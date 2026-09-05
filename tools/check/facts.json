@@ -4,6 +4,12 @@
 
   "surfaces": ["index.html", "index.md", "llms.txt"],
 
+  "//analytics": "Cloudflare Web Analytics is the only measurement on the site: a cookieless beacon that reports page views, referrers, devices and Core Web Vitals per path, and nothing that identifies a person — which is why no consent banner comes with it. The homepage rebuild (8a67aa5) dropped the snippet and nothing noticed until the numbers were read, so the beacon is a fact here and the analytics check holds every page in pages to it. The token names the RUM site for huvudkontoret.io in the Cloudflare account; it is not a secret, it ships in the page.",
+  "analytics": {
+    "script": "https://static.cloudflareinsights.com/beacon.min.js",
+    "token": "2e066831da72470a8e216a900e41152a"
+  },
+
   "sharedFacts": [
     { "label": "contact address", "match": "hej@huvudkontoret.io" },
     { "label": "Hanna Wikman", "match": "Hanna Wikman" },
@@ -14,8 +20,28 @@
   "addressesNotInService": [".ai", ".app", ".vote"],
   "inServiceMarkers": ["Snart", "inte i drift", "inte tillgänglig", "ännu inte", "kommer"],
 
+  "//profile": "The graphic profile is declared in two places by decision (ADR 0004). These name them; the profile check asserts they agree. When .io moves into public/, profileContactSurface moves with it.",
+  "profileContactSurface": "index.html",
+  "profileStylesheet": "src/styles/profile.css",
+
+  "//licensedFonts": "MonoLisa is purchased and this repo is public, so the webfont files stay out of git until the licence covers the web. webFontLicence is the one fact that says whether it does, and it turns the fonts, references and workers checks around together — see docs/runbooks/2026-08-26-monolisa-webfont-cutover.md. licensedFontPattern is what counts as a licensed font file; licensedWebFonts is the exact set the site is allowed to carry once it may carry any.",
+  "webFontLicence": true,
   "//licensedFontPattern": "Any font binary under assets/, not just MonoLisa's woff2. Nok.otf and Nok.ttf sat in assets/ for months because the pattern named one directory and one format; a commercial face is a commercial face wherever it lands. A genuinely free font is the exception and has to be argued for here.",
   "licensedFontPattern": "^assets/.+\\.(?:woff2?|otf|ttf|eot)$",
+  "licensedWebFonts": [
+    "assets/fonts/MonoLisa-Variable-0020-007F.woff2",
+    "assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2",
+    "assets/fonts/MonoLisa-Variable-0080-00FF.woff2",
+    "assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2",
+    "assets/fonts/MonoLisa-Variable-0100-017F.woff2",
+    "assets/fonts/MonoLisa-VariableItalic-0100-017F.woff2",
+    "assets/fonts/MonoLisa-Variable-2000-206F.woff2",
+    "assets/fonts/MonoLisa-VariableItalic-2000-206F.woff2",
+    "assets/fonts/MonoLisa-Variable-20A0-20CF.woff2",
+    "assets/fonts/MonoLisa-VariableItalic-20A0-20CF.woff2",
+    "assets/fonts/MonoLisa-Variable-25A0-25FF.woff2",
+    "assets/fonts/MonoLisa-VariableItalic-25A0-25FF.woff2"
+  ],
 
   "requiredFiles": ["index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
 
@@ -27,6 +53,8 @@
     "llms-full.txt",
     "robots.txt",
     "sitemap.xml",
+    "favicon.ico",
+    "apple-touch-icon.png",
     ".well-known/",
     "assets/"
   ],
@@ -59,7 +87,7 @@
 
   "neverPublished": ["^dist/", "^node_modules/", "^\\.astro/", "\\.env$", "^\\.wrangler/"],
 
-  "textFileExtensions": [".html", ".md", ".txt", ".json", ".xml", ".svg", ".mjs", ".js", ".yml", ".yaml", ".jsonc"],
+  "textFileExtensions": [".html", ".md", ".txt", ".json", ".xml", ".svg", ".mjs", ".js", ".css", ".yml", ".yaml", ".jsonc"],
 
   "formattingIgnore": ["^assets/"]
 }

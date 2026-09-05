@@ -443,7 +443,7 @@ interface Env {
  * Preview URLs are a single host — <branch>-web.<subdomain>.workers.dev — and
  * cannot carry ten domains. There they behave like `astro dev`: prefix paths,
  * served directly. Previews therefore do not exercise Host mapping, which is
- * why worker/index.test.mjs is the real guarantee. See ADR 0002.
+ * why worker/index.test.mjs is the real guarantee. See ADR 0003.
  */
 function isPreviewHost(host: string): boolean {
   return host.toLowerCase().split(":")[0].endsWith(".workers.dev");
@@ -1281,7 +1281,7 @@ Expected: PASS — the existing not-in-service cases still fire, now driven by t
   // Every pull request gets a preview at <branch>-web.<subdomain>.workers.dev.
   // Restricted with Cloudflare Access — the previews show unreleased work.
   // A preview is one host and cannot carry ten domains, so the Worker serves
-  // prefix paths there instead of mapping Host. See ADR 0002.
+  // prefix paths there instead of mapping Host. See ADR 0003.
   "preview_urls": true
 }
 ```
@@ -1336,7 +1336,7 @@ git commit -m "feat: serve the build through the Worker and retire .assetsignore
 
 **Files:**
 - Modify: `hk.json`, `.github/workflows/pr.yml`, `CONTEXT.md`
-- Create: `docs/adr/0002-one-worker-many-domains.md`
+- Create: `docs/adr/0003-one-worker-many-domains.md`
 
 **Interfaces:**
 - Consumes: everything above.
@@ -1399,9 +1399,9 @@ Also update the header comment: the site now has a build step and this workflow 
 git add package-lock.json
 ```
 
-- [ ] **Step 4: Write ADR 0002**
+- [ ] **Step 4: Write ADR 0003**
 
-Create `docs/adr/0002-one-worker-many-domains.md` recording, in the shape of ADR 0001 — Context, Decision, Consequences:
+Create `docs/adr/0003-one-worker-many-domains.md` recording, in the shape of ADR 0001 — Context, Decision, Consequences:
 
 - **Context:** ten registered domains, one served; the perspective runtime built on an unmerged branch and deployed nowhere; nothing in the tree naming which domains exist.
 - **Decision:** one build, one Worker, `Host` mapped onto a subtree of `dist/`, with `src/lib/tld.ts` as the single source of truth. Cross-tree requests 404. Rejected: a monorepo of per-domain sites (ten builds, ten previews, and it encodes the opposite of `render(node, perspective)`), and zone-level URL rewrites (no code, but the configuration would live in the dashboard — invisible to the gate, unreviewable in a pull request, and absent from `workers.dev`, so previews would behave differently from production).
