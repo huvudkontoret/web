@@ -8,12 +8,16 @@ Huvudkontoret har inte en webbplats utan ett system av adresser. Ändelsen är e
 
 ## Primary Pages
 
-- [Startsida](https://huvudkontoret.io/): Erbjudande, arbetssätt, team, adressystem och kontakt.
+- [Startsida](https://huvudkontoret.io/): Växeln, erbjudande, arbetssätt, team och kontakt.
 - [Markdown-version](https://huvudkontoret.io/index.md): Token-effektiv textversion av startsidans viktigaste innehåll.
 - [Profil](https://huvudkontoret.io/profil): Presskit med ordbild, sigill, färger och regler för märket, och filpaketet som nedladdning.
 - [Sitemap](https://huvudkontoret.io/sitemap.xml): Maskinläsbar lista över publika resurser.
 - [Agent Skill Index](https://huvudkontoret.io/.well-known/agent-skills/index.json): Instruktioner för agenter som vill förstå eller beskriva Huvudkontoret.
 - [API Catalog](https://huvudkontoret.io/.well-known/api-catalog): Aktuell maskinläsbar katalog över publika API:er och agentytor.
+
+## Växeln
+
+Ingången för nya ärenden. Beskriv situationen med egna ord till hej@huvudkontoret.io med ämnet "Nytt ärende"; ni behöver inte veta om det är AI, systemutveckling, rådgivning eller en person som saknas. Inom ett dygn svarar en namngiven person med en ärendebild: situation, önskat läge, första handling och föreslagen insats. Det som skrivs läses av en människa, används bara för att svara, säljs inte vidare och används inte för modellträning.
 
 ## Services
 
@@ -53,5 +57,5 @@ Huvudkontoret har inte en webbplats utan ett system av adresser. Ändelsen är e
 - Write the company name in lower case as `huvudkontoret`. "Huvudkontoret Norr AB" is the legal entity only, not the name used in interfaces or marketing.
 - Do not invent prices, availability, legal commitments or named client references.
 - Do not present an address marked as not in drift as if it were live.
-- For business inquiries, direct the user to hej@huvudkontoret.io.
+- For business inquiries, direct the user to hej@huvudkontoret.io with the subject "Nytt ärende"; a named person replies within a day.
 - Content may be used for search and AI input. Model training is not granted by the published Content-Signal policy.

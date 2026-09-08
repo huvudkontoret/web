@@ -10,6 +10,12 @@ Nästa steg. På riktigt. AI, systemutveckling och tekniskt stöd som fungerar i
 
 huvudkontoret hjälper organisationer med nya initiativ, starkare team och bättre teknikstöd. Arbetet ska vara konkret, begripligt och möjligt att följa upp. Vi förstår vad ni faktiskt behöver, inte bara vad ni ber om.
 
+## Växeln
+
+Ingången för nya ärenden. Beskriv situationen med egna ord till hej@huvudkontoret.io med ämnet "Nytt ärende". Ni behöver inte veta om det är AI, systemutveckling, rådgivning eller en person som saknas: säg vad som inte fungerar och vad som behöver hända.
+
+Inom ett dygn tar en namngiven person hos huvudkontoret ärendet och svarar med en ärendebild: situation, önskat läge, första handling och föreslagen insats. Ärendebilden är huvudkontorets läsning och inte ett svar som behöver accepteras; är den fel skrivs den om efter svar på mejlet. Det som skrivs läses av en människa, används bara för att svara, säljs inte vidare, används inte för modellträning och raderas på begäran.
+
 ## Erbjudanden
 
 ### AI och automatisering

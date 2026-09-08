@@ -6,6 +6,16 @@ AI, systemutveckling och tekniskt stöd som fungerar i vardagen, inte bara ser b
 
 Huvudkontoret är ett techbolag i Luleå. Kända för vad som händer, inte för slides.
 
+## Växeln
+
+Vad behöver fungera bättre? Du behöver inte veta vilken lösning du behöver. Det är vårt jobb.
+
+Beskriv situationen med egna ord. Ni behöver inte veta om det är AI, systemutveckling, rådgivning eller en person som saknas. Säg vad som inte fungerar och vad som behöver hända. Skriv till hej@huvudkontoret.io med ämnet "Nytt ärende".
+
+Inom ett dygn får ni en ärendebild tillbaka: situation, önskat läge, första handling, föreslagen insats och vem hos oss som tog ärendet. Den är vår läsning och inte ett svar ni behöver acceptera. Har vi förstått fel svarar ni på mejlet, och vi skriver om den.
+
+Det ni skriver läses av en människa hos oss och används bara för att svara. Vi säljer det inte vidare, tränar inga modeller på det, och raderar det på begäran.
+
 ## Vad vi gör
 
 Vi förstår vad ni faktiskt behöver, inte bara vad ni ber om.
@@ -66,7 +76,7 @@ Vi säger inte vilka vi är. Det märks i vad vi gör.
 - Vi provar det nya innan det är tryggt, och säger ärligt vad som var nytta och vad som bara var kul.
 - Vi dokumenterar för nästa person. Varje leverans går att ta över, förvalta och bygga vidare på.
 - Vi säger nej när nej är rätt svar, även när ja hade varit lättare att fakturera.
-- Vi visar arbetet, inte sliderna. Kod, dokumentation och roadmap ligger öppet bakom adresserna nedan.
+- Vi visar arbetet, inte sliderna. Kod, dokumentation och roadmap ligger öppet.
 
 ## Teamet
 
@@ -75,19 +85,6 @@ Grundat i Luleå. Vana att få saker gjorda.
 - Magnus Renholm, CSO. Har suttit på er sida av bordet.
 - Hanna Wikman, VD. Säger det ni behöver höra, inte det ni vill.
 - Sebastian Berglönn, CTO. Bygger hellre en fungerande halvfärdig än en perfekt plan.
-
-## Systemet
-
-Vi har inte en webbplats. Vi har ett system av adresser. En ändelse är en lins: den säger vem ytan är för innan klicket. Du står i `.io`, systemlinsen.
-
-- `.ai` visar intelligensen: agenter och arbetsflöden i drift. Snart.
-- `.dev` visar bygget: dokumentation, arkitektur, projekt.
-- `.app` visar produkterna: testa själv innan du frågar. Snart.
-- `.io` visar systemet: du är här.
-- `.cv` visar kompetensen: bevis, inte pitch.
-- `.name` visar människorna: en adress per person.
-- `.xyz` visar experimenten: vår whiteboard. hk, kl och kull bor där tills de bär.
-- `.vote` visar riktningen: rösta på vad vi bygger härnäst. Snart.
 
 ## Kontakt
 

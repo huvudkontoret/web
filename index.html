@@ -384,9 +384,6 @@
             .tld {
                 color: var(--pow-io);
             }
-            .tld-name {
-                color: var(--pow-name);
-            }
             .chrome nav {
                 display: flex;
                 gap: 24px;
@@ -566,6 +563,91 @@
             .hero .btn.ghost:hover {
                 background: var(--frame);
                 color: var(--paper);
+            }
+
+            /* ===================== VÄXELN ===================== */
+            /* Ingången: beskriv situationen, få en ärendebild tillbaka. */
+            .intake,
+            .reply {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+            }
+            .reply {
+                gap: 16px;
+            }
+            .intake > p {
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 1.8;
+                max-width: 44ch;
+            }
+            .intake .btn {
+                align-self: flex-start;
+                letter-spacing: 0.05em;
+            }
+            .sample {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .sample blockquote {
+                margin: 0;
+                border-left: 2px solid var(--black);
+                padding-left: 16px;
+                font-size: 13px;
+                font-weight: 300;
+                font-style: italic;
+                line-height: 1.7;
+                color: var(--stone);
+            }
+            .fine {
+                font-size: 12px;
+                font-weight: 300;
+                font-style: italic;
+                line-height: 1.7;
+                max-width: 48ch;
+                color: var(--stone);
+            }
+            /* Ärendebilden är en bläckpanel, samma yta som en öppen rad i
+               erbjudandet. */
+            .case {
+                border: 1px solid var(--black);
+                background: var(--black);
+                color: var(--light-graphite);
+                padding: 24px;
+                font-size: 12.5px;
+                line-height: 1.9;
+            }
+            .case-head {
+                display: flex;
+                justify-content: space-between;
+                gap: 16px;
+                color: var(--graphite);
+                border-bottom: 1px solid var(--frame);
+                padding-bottom: 8px;
+                margin-bottom: 16px;
+            }
+            .case-status {
+                color: var(--paper);
+            }
+            .case dl {
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .case dt {
+                color: var(--paper);
+                font-weight: 500;
+            }
+            .case dd {
+                margin: 0;
+                font-weight: 300;
+            }
+            .case .owner {
+                border-top: 1px solid var(--frame);
+                padding-top: 16px;
             }
 
             /* ===================== ERBJUDANDE ===================== */
@@ -794,17 +876,31 @@
             }
 
             /* ===================== TEAMET ===================== */
+            /* Fotokanon: Bläck/Papper. Gråskalan görs här, aldrig i kameran,
+               så filen kan levereras i färg. En bild per yta. */
+            .team-photo {
+                height: clamp(240px, 34vw, 504px);
+                border: 1px solid var(--black);
+                overflow: hidden;
+            }
+            .team-photo img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center 30%;
+                filter: grayscale(100%) contrast(1.05);
+            }
             .team {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 32px;
+                padding-top: 16px;
             }
             .person {
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
-                border-top: 1px solid var(--black);
-                padding-top: 16px;
             }
             .person .top {
                 display: flex;
@@ -828,48 +924,6 @@
                 font-style: italic;
                 line-height: 1.7;
                 color: var(--stone);
-            }
-            .person .addr {
-                font-size: 12.5px;
-                font-weight: 500;
-                padding-top: 6px;
-            }
-            .note {
-                font-size: 13px;
-                font-weight: 300;
-                font-style: italic;
-                color: var(--stone);
-            }
-
-            /* ===================== SYSTEMET ===================== */
-            .lenses {
-                display: flex;
-                flex-direction: column;
-                font-size: 14px;
-            }
-            .lens {
-                display: grid;
-                grid-template-columns: minmax(80px, 120px) 1fr;
-                gap: 20px;
-                padding: 13px 4px;
-                border-top: 1px solid var(--black);
-                align-items: baseline;
-            }
-            .lens:last-of-type {
-                border-bottom: 1px solid var(--black);
-            }
-            .lens .addr {
-                font-weight: 700;
-            }
-            .lens .what {
-                font-weight: 300;
-                line-height: 1.6;
-            }
-            .lens.soon .what {
-                color: var(--stone);
-            }
-            .lens.here .what {
-                font-weight: 400;
             }
 
             /* ===================== KONTAKT ===================== */
@@ -1018,17 +1072,20 @@
                 .card {
                     padding: 22px 20px;
                 }
+                .intake .btn {
+                    align-self: stretch;
+                }
+                .case {
+                    padding: 24px 16px;
+                }
                 .team {
                     grid-template-columns: 1fr;
                     gap: 0;
                 }
-                .lens {
-                    grid-template-columns: 64px 1fr;
-                    gap: 14px;
-                    font-size: 13px;
-                }
-                .lenses {
-                    font-size: 13px;
+                .person + .person {
+                    border-top: 1px solid var(--black);
+                    margin-top: 16px;
+                    padding-top: 16px;
                 }
                 .mark .sigill {
                     width: 120px;
@@ -1069,7 +1126,7 @@
     </head>
 
     <body class="no-js">
-        <a class="skip" href="#erbjudande">Hoppa till innehållet</a>
+        <a class="skip" href="#vaxeln">Hoppa till innehållet</a>
 
         <!-- CHROME -->
         <div class="chrome">
@@ -1080,11 +1137,11 @@
                 >
             </a>
             <nav aria-label="Sidsektioner">
+                <a href="#vaxeln">VÄXELN</a>
                 <a href="#erbjudande">ERBJUDANDE</a>
                 <a href="#arbetssatt">ARBETSSÄTT</a>
                 <a href="#vardeord">SÅ MÄRKS DET</a>
                 <a href="#teamet">TEAMET</a>
-                <a href="#systemet">SYSTEMET</a>
                 <a class="now" href="#kontakt">KONTAKT</a>
             </nav>
             <span class="coords">LULEÅ · 65.5848° N</span>
@@ -1102,11 +1159,11 @@
         <div class="menu" id="meny" hidden>
             <span class="label" style="padding-bottom: 14px">// MENY</span>
             <nav aria-label="Sidsektioner, mobil">
+                <a href="#vaxeln">Växeln <span class="g">-&gt;</span></a>
                 <a href="#erbjudande">Erbjudande <span class="g">-&gt;</span></a>
                 <a href="#arbetssatt">Arbetssätt <span class="g">-&gt;</span></a>
                 <a href="#vardeord">Så märks det <span class="g">-&gt;</span></a>
                 <a href="#teamet">Teamet <span class="g">-&gt;</span></a>
-                <a href="#systemet">Systemet <span class="g">-&gt;</span></a>
                 <a href="#kontakt">Kontakt <span class="g">-&gt;</span></a>
             </nav>
             <span class="coords">LULEÅ · 65.5848° N / 22.1547° E</span>
@@ -1127,8 +1184,8 @@
                         >
                     </p>
                     <div class="actions">
-                        <a class="btn" href="#erbjudande"
-                            ><span class="g">VAD VI GÖR -&gt;</span></a
+                        <a class="btn" href="#vaxeln"
+                            ><span class="g">BERÄTTA -&gt;</span></a
                         >
                         <a class="btn ghost" href="#kontakt">KONTAKT</a>
                     </div>
@@ -1140,6 +1197,106 @@
                 </p>
             </div>
         </header>
+
+        <!-- VÄXELN -->
+        <section class="band" id="vaxeln">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// VÄXELN</span>
+                        <h2 class="h2">Vad behöver fungera bättre?</h2>
+                    </div>
+                    <span class="aside"
+                        >Du behöver inte veta vilken lösning du behöver. Det är
+                        vårt jobb.</span
+                    >
+                </div>
+                <div class="split">
+                    <div class="intake">
+                        <p>
+                            Beskriv situationen med egna ord. Ni behöver inte
+                            veta om det är AI, systemutveckling, rådgivning
+                            eller en person som saknas. Säg vad som inte
+                            fungerar och vad som behöver hända.
+                        </p>
+                        <div class="sample">
+                            <span class="label">// SÅ HÄR KAN DET LÅTA</span>
+                            <blockquote>
+                                Vi har fyra system som inte pratar med varandra,
+                                och nån sitter och flyttar siffror för hand
+                                varje månad.
+                            </blockquote>
+                        </div>
+                        <a
+                            class="btn"
+                            href="mailto:hej@huvudkontoret.io?subject=Nytt%20ärende"
+                            >Skriv till oss</a
+                        >
+                        <p class="fine">
+                            Det ni skriver läses av en människa hos oss och
+                            används bara för att svara. Vi säljer det inte
+                            vidare, tränar inga modeller på det, och raderar det
+                            på begäran.
+                        </p>
+                    </div>
+                    <div class="reply">
+                        <span class="label"
+                            >// DET HÄR FÅR NI TILLBAKA, INOM ETT DYGN</span
+                        >
+                        <div class="case">
+                            <div class="case-head">
+                                <span class="g">// ÄRENDE VX-0142</span>
+                                <span class="g case-status">[ MOTTAGET ]</span>
+                            </div>
+                            <dl>
+                                <div>
+                                    <dt>Situation</dt>
+                                    <dd>
+                                        Fyra system utan integration. Manuell
+                                        överföring varje månad.
+                                    </dd>
+                                </div>
+                                <div>
+                                    <dt>Önskat läge</dt>
+                                    <dd>
+                                        Siffrorna flyttar sig själva, och någon
+                                        hos er äger flödet.
+                                    </dd>
+                                </div>
+                                <div>
+                                    <dt>Första handling</dt>
+                                    <dd>
+                                        En timme där vi tittar på de fyra
+                                        systemen tillsammans.
+                                    </dd>
+                                </div>
+                                <div>
+                                    <dt>Föreslagen insats</dt>
+                                    <dd>
+                                        Rådgivning först, integration sedan.
+                                        Inte ett nytt system.
+                                    </dd>
+                                </div>
+                                <div class="owner">
+                                    <dt>Ansvarig</dt>
+                                    <dd>
+                                        En nod hos oss tar ärendet inom ett dygn
+                                        och svarar med namn.
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <p class="fine">
+                            Ärendebilden kommer som svar på ert mejl, med
+                            ärendenumret i ämnesraden och namnet på den som tog
+                            det. Den är vår läsning och inte ett svar ni behöver
+                            acceptera: har vi förstått fel svarar ni på mejlet,
+                            och vi skriver om den.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- ERBJUDANDE -->
         <section class="band" id="erbjudande">
@@ -1589,8 +1746,7 @@
                     <div class="card">
                         <b>Vi visar arbetet, inte sliderna.</b>
                         <span
-                            >Kod, dokumentation och roadmap ligger öppet bakom
-                            adresserna nedan.</span
+                            >Kod, dokumentation och roadmap ligger öppet.</span
                         >
                     </div>
                 </div>
@@ -1609,150 +1765,50 @@
                         >Grundat i Luleå. Vana att få saker gjorda.</span
                     >
                 </div>
-                <div class="team">
-                    <div class="person">
-                        <span class="top"
-                            ><span class="name">Magnus Renholm</span
-                            ><span class="role">CSO</span></span
-                        >
-                        <span class="line"
-                            >Har suttit på er sida av bordet. Vet hur det låter
-                            när konsulter säljer.</span
-                        >
-                        <a class="addr g" href="#systemet"
-                            >-&gt; huvudkontoret<span class="tld-name">.name</span
-                            >/magnus</a
-                        >
-                    </div>
-                    <div class="person">
-                        <span class="top"
-                            ><span class="name">Hanna Wikman</span
-                            ><span class="role">VD</span></span
-                        >
-                        <span class="line"
-                            >Säger det ni behöver höra, inte det ni vill. Svarar
-                            själv i telefon.</span
-                        >
-                        <a class="addr g" href="#systemet"
-                            >-&gt; huvudkontoret<span class="tld-name">.name</span
-                            >/hanna</a
-                        >
-                    </div>
-                    <div class="person">
-                        <span class="top"
-                            ><span class="name">Sebastian Berglönn</span
-                            ><span class="role">CTO</span></span
-                        >
-                        <span class="line"
-                            >Bygger hellre en fungerande halvfärdig än en
-                            perfekt plan. Visar koden.</span
-                        >
-                        <a class="addr g" href="#systemet"
-                            >-&gt; huvudkontoret<span class="tld-name">.name</span
-                            >/sebastian</a
-                        >
+                <div>
+                    <figure class="team-photo">
+                        <img
+                            src="assets/teamet.webp"
+                            width="1200"
+                            height="801"
+                            alt="Teamet på huvudkontoret: Magnus Renholm, Hanna Wikman och Sebastian Berglönn"
+                            loading="lazy"
+                            decoding="async"
+                        />
+                    </figure>
+                    <div class="team">
+                        <div class="person">
+                            <span class="top"
+                                ><span class="name">Magnus Renholm</span
+                                ><span class="role">CSO</span></span
+                            >
+                            <span class="line"
+                                >Har suttit på er sida av bordet. Vet hur det
+                                låter när konsulter säljer.</span
+                            >
+                        </div>
+                        <div class="person">
+                            <span class="top"
+                                ><span class="name">Hanna Wikman</span
+                                ><span class="role">VD</span></span
+                            >
+                            <span class="line"
+                                >Säger det ni behöver höra, inte det ni vill.
+                                Svarar själv i telefon.</span
+                            >
+                        </div>
+                        <div class="person">
+                            <span class="top"
+                                ><span class="name">Sebastian Berglönn</span
+                                ><span class="role">CTO</span></span
+                            >
+                            <span class="line"
+                                >Bygger hellre en fungerande halvfärdig än en
+                                perfekt plan. Visar koden.</span
+                            >
+                        </div>
                     </div>
                 </div>
-                <span class="note"
-                    ><span class="g">-&gt;</span> hela nätverket bor bakom
-                    <a href="#systemet">.name</a>, en adress per person.</span
-                >
-            </div>
-        </section>
-
-        <!-- SYSTEMET -->
-        <section class="band" id="systemet">
-            <div class="shell stack">
-                <div class="head">
-                    <div>
-                        <span class="label">// SYSTEMET</span>
-                        <h2 class="h2">Ett huvudkontor. Många dörrar.</h2>
-                    </div>
-                    <span class="aside"
-                        >Vi har inte en webbplats. Vi har ett system av
-                        adresser. Du står i
-                        <span style="font-weight: 600">.io</span>,
-                        systemlinsen.</span
-                    >
-                </div>
-                <div class="lenses">
-                    <span class="lens soon"
-                        ><span class="addr"
-                            ><span style="color: var(--pow-ai)">.</span>ai</span
-                        ><span class="what"
-                            >visar intelligensen: agenter och arbetsflöden i
-                            drift <span class="status g">[ SNART ]</span></span
-                        ></span
-                    >
-                    <span class="lens"
-                        ><span class="addr"
-                            ><span style="color: var(--pow-dev)">.</span
-                            >dev</span
-                        ><span class="what"
-                            >visar bygget: dokumentation, arkitektur,
-                            projekt</span
-                        ></span
-                    >
-                    <span class="lens soon"
-                        ><span class="addr"
-                            ><span style="color: var(--pow-app)">.</span
-                            >app</span
-                        ><span class="what"
-                            >visar produkterna: testa själv innan du frågar
-                            <span class="status g">[ SNART ]</span></span
-                        ></span
-                    >
-                    <span class="lens here"
-                        ><span class="addr"
-                            ><span style="color: var(--pow-io)">.</span>io</span
-                        ><span class="what"
-                            >visar systemet: du är här
-                            <span class="g" style="color: var(--stone)"
-                                >&lt;-</span
-                            ></span
-                        ></span
-                    >
-                    <span class="lens"
-                        ><span class="addr"
-                            ><span style="color: var(--pow-cv)">.</span>cv</span
-                        ><span class="what"
-                            >visar kompetensen: bevis, inte pitch</span
-                        ></span
-                    >
-                    <span class="lens"
-                        ><span class="addr"
-                            ><span style="color: var(--pow-name)">.</span
-                            >name</span
-                        ><span class="what"
-                            >visar människorna: en adress per person</span
-                        ></span
-                    >
-                    <span class="lens"
-                        ><span class="addr"
-                            ><span style="color: var(--pow-xyz)">.</span
-                            >xyz</span
-                        ><span class="what"
-                            >visar experimenten: vår whiteboard. hk, kl och kull
-                            bor här tills de bär</span
-                        ></span
-                    >
-                    <span class="lens soon"
-                        ><span class="addr"
-                            ><span style="color: var(--pow-vote)">.</span
-                            >vote</span
-                        ><span class="what"
-                            >visar riktningen: rösta på vad vi bygger härnäst
-                            <span class="status g">[ SNART ]</span></span
-                        ></span
-                    >
-                </div>
-                <span
-                    class="note"
-                    style="font-size: 12px; font-style: italic"
-                    >I listan bär punkten linsens färg. I ordbilden tar hela
-                    adressen den, i papperston på ljus yta. Inne i linsen lyser
-                    färgen fullt ut.</span
-                >
             </div>
         </section>
 
