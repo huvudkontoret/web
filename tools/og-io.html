@@ -5,8 +5,10 @@
         <title>OG-mall · huvudkontoret.io</title>
         <!--
           OG-regeln: bilden genereras, den designas aldrig. Mallen tar adress,
-          lins och statusrad; Papper som grund, all text i MonoLisa, aldrig
-          foto, och -> renderas som två tecken.
+          hero-metans rad och statusrad; Papper som grund, all text i MonoLisa,
+          aldrig foto, och -> renderas som två tecken. Linsnamnet stod här
+          uppe till höger tills Systemet doldes i v1: ett ord sidan inte
+          förklarar hör inte hemma i delningsbilden.
 
           Rendera om:
             python3 -m http.server 8788 --directory .
@@ -82,12 +84,12 @@
                 font-size: 2.6cqw;
                 font-weight: 600;
             }
-            .lens {
+            .meta {
                 font-size: 1.9cqw;
-                font-weight: 600;
+                font-weight: 500;
                 letter-spacing: 0.14em;
                 white-space: nowrap;
-                color: #c34119;
+                color: #8a877d;
             }
             .mid {
                 display: flex;
@@ -126,7 +128,9 @@
                     <div class="sigill"></div>
                     <span>huvudkontoret</span>
                 </div>
-                <span class="lens">[ SYSTEMLINSEN ]</span>
+                <span class="meta"
+                    >KÄNDA FÖR VAD SOM HÄNDER, INTE FÖR SLIDES</span
+                >
             </div>
             <div class="mid">
                 <span class="addr">huvudkontoret<i>.io</i></span>
