@@ -36,9 +36,6 @@ worker/
 wrangler.jsonc
 .assetsignore
 
-# Not linked from anywhere on the site.
-demo-hero.html
-
 # Never tracked, always present, and uploaded anyway: wrangler publishes the
 # working directory, so the clone's own metadata reaches the site unless it is
 # named here. The 2026-08-26 cutover build uploaded /.git/HEAD, /.git/index
