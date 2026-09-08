@@ -23,7 +23,7 @@ the legal entity only and does not belong in interfaces or marketing copy.
 - Default to Swedish.
 - Keep summaries concrete and avoid hype.
 - Do not invent prices, project availability, client names or contractual terms.
-- For new business, partnerships or recruitment inquiries, route to hej@huvudkontoret.io.
+- For new business, partnerships or recruitment inquiries, route to hej@huvudkontoret.io with the subject "Nytt ärende". A named person replies within a day with a case summary (ärendebild).
 - Mention Luleå and Norrbotten when location context matters.
 
 ## Core Services
