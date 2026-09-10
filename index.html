@@ -293,7 +293,7 @@
                 font-size: 12px;
                 font-weight: 500;
                 letter-spacing: 0.14em;
-                color: var(--graphite);
+                color: var(--stone);
             }
             .h2 {
                 font-size: clamp(24px, 3.2vw, 34px);
@@ -302,7 +302,7 @@
             }
             .aside {
                 font-size: 13px;
-                font-weight: 300;
+                font-weight: 400;
                 font-style: italic;
                 line-height: 1.6;
                 max-width: 40ch;
@@ -394,7 +394,7 @@
                 color: var(--signal);
             }
             .coords {
-                color: var(--graphite);
+                color: var(--stone);
                 letter-spacing: 0.1em;
             }
             .menu-button {
@@ -452,6 +452,10 @@
                 font-size: 14px;
                 color: var(--graphite);
             }
+            .menu .label,
+            .menu .coords {
+                color: var(--graphite);
+            }
             .menu .coords {
                 margin-top: auto;
                 font-size: 11px;
@@ -465,6 +469,9 @@
                 border-bottom: 1px solid var(--black);
                 background: var(--black);
                 color: var(--paper);
+            }
+            .hero .label {
+                color: var(--graphite);
             }
             .hero .meta {
                 display: flex;
@@ -508,7 +515,7 @@
             }
             .hero .ingress {
                 font-size: 14px;
-                font-weight: 300;
+                font-weight: 400;
                 font-style: italic;
                 line-height: 1.8;
                 max-width: 56ch;
@@ -565,7 +572,7 @@
                 color: var(--paper);
             }
 
-            /* ===================== VÄXELN ===================== */
+            /* ===================== INTAKE ===================== */
             /* Ingången: beskriv situationen, få en ärendebild tillbaka. */
             .intake,
             .reply {
@@ -578,7 +585,7 @@
             }
             .intake > p {
                 font-size: 14px;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 1.8;
                 max-width: 44ch;
             }
@@ -596,14 +603,14 @@
                 border-left: 2px solid var(--black);
                 padding-left: 16px;
                 font-size: 13px;
-                font-weight: 300;
+                font-weight: 400;
                 font-style: italic;
                 line-height: 1.7;
                 color: var(--stone);
             }
             .fine {
                 font-size: 12px;
-                font-weight: 300;
+                font-weight: 400;
                 font-style: italic;
                 line-height: 1.7;
                 max-width: 48ch;
@@ -643,7 +650,7 @@
             }
             .case dd {
                 margin: 0;
-                font-weight: 300;
+                font-weight: 400;
             }
             .case .owner {
                 border-top: 1px solid var(--frame);
@@ -710,7 +717,7 @@
             }
             .offer-lead {
                 font-size: 13px;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 1.7;
                 max-width: 62ch;
                 opacity: var(--dim);
@@ -769,7 +776,7 @@
             }
             .offer-inner p {
                 font-size: 13px;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 1.85;
             }
             .offer-inner p.dim {
@@ -838,7 +845,7 @@
                 font-weight: 600;
             }
             .steps em {
-                font-weight: 300;
+                font-weight: 400;
                 font-style: normal;
             }
 
@@ -870,7 +877,7 @@
             }
             .card span {
                 font-size: 13px;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 1.7;
                 color: var(--light-graphite);
             }
@@ -888,7 +895,7 @@
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                object-position: center 30%;
+                object-position: center 25%;
                 filter: grayscale(100%) contrast(1.05);
             }
             .team {
@@ -920,7 +927,7 @@
             }
             .person .line {
                 font-size: 13px;
-                font-weight: 300;
+                font-weight: 400;
                 font-style: italic;
                 line-height: 1.7;
                 color: var(--stone);
@@ -940,7 +947,7 @@
             }
             .contact p {
                 font-size: 14px;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 1.8;
                 max-width: 44ch;
             }
@@ -972,7 +979,7 @@
                 letter-spacing: 0.1em;
             }
             .foot .where {
-                font-weight: 300;
+                font-weight: 400;
                 font-style: italic;
                 color: var(--stone);
             }
@@ -1137,7 +1144,7 @@
                 >
             </a>
             <nav aria-label="Sidsektioner">
-                <a href="#vaxeln">VÄXELN</a>
+                <a href="#vaxeln">VÄGEN IN</a>
                 <a href="#erbjudande">ERBJUDANDE</a>
                 <a href="#arbetssatt">ARBETSSÄTT</a>
                 <a href="#vardeord">SÅ MÄRKS DET</a>
@@ -1159,7 +1166,7 @@
         <div class="menu" id="meny" hidden>
             <span class="label" style="padding-bottom: 14px">// MENY</span>
             <nav aria-label="Sidsektioner, mobil">
-                <a href="#vaxeln">Växeln <span class="g">-&gt;</span></a>
+                <a href="#vaxeln">Vägen in <span class="g">-&gt;</span></a>
                 <a href="#erbjudande">Erbjudande <span class="g">-&gt;</span></a>
                 <a href="#arbetssatt">Arbetssätt <span class="g">-&gt;</span></a>
                 <a href="#vardeord">Så märks det <span class="g">-&gt;</span></a>
@@ -1198,12 +1205,12 @@
             </div>
         </header>
 
-        <!-- VÄXELN -->
+        <!-- INTAKE -->
         <section class="band" id="vaxeln">
             <div class="shell stack">
                 <div class="head">
                     <div>
-                        <span class="label">// VÄXELN</span>
+                        <span class="label">// VÄGEN IN</span>
                         <h2 class="h2">Vad behöver fungera bättre?</h2>
                     </div>
                     <span class="aside"
@@ -1241,7 +1248,7 @@
                     </div>
                     <div class="reply">
                         <span class="label"
-                            >// DET HÄR FÅR NI TILLBAKA, INOM ETT DYGN</span
+                            >// EXEMPEL PÅ VÅRT FÖRSTA SVAR</span
                         >
                         <div class="case">
                             <div class="case-head">
@@ -1288,9 +1295,9 @@
                         </div>
                         <p class="fine">
                             Ärendebilden kommer som svar på ert mejl, med
-                            namnet på den som tog det. Den är vår läsning och
-                            inte ett svar ni behöver acceptera: har vi förstått
-                            fel svarar ni på mejlet, och vi skriver om den.
+                            namnet på den som tog det, inom ett dygn. Så här har
+                            vi förstått er situation. Har vi missförstått något
+                            svarar ni på mejlet, så rättar vi till det.
                         </p>
                     </div>
                 </div>
@@ -1634,13 +1641,15 @@
                 <div class="callout">
                     <span
                         ><b>// AI i praktiken</b>
-                        <span style="font-weight: 300"
+                        <span style="font-weight: 400"
                             >utbildningar och workshops som gör ert team
                             självgående på AI i vardagen.</span
                         ></span
                     >
-                    <a href="#kontakt" style="font-weight: 600"
-                        ><span class="g">-&gt;</span> boka ett pass</a
+                    <a
+                        href="mailto:hej@huvudkontoret.io?subject=AI%20i%20praktiken"
+                        style="font-weight: 600"
+                        ><span class="g">-&gt;</span> Fråga om ett pass</a
                     >
                 </div>
             </div>
@@ -1655,7 +1664,7 @@
                     <p
                         style="
                             font-size: 14px;
-                            font-weight: 300;
+                            font-weight: 400;
                             line-height: 1.8;
                             max-width: 44ch;
                         "
@@ -1768,8 +1777,8 @@
                     <figure class="team-photo">
                         <img
                             src="assets/teamet.webp"
-                            width="1200"
-                            height="801"
+                            width="2400"
+                            height="1601"
                             alt="Teamet på huvudkontoret: Magnus Renholm, Hanna Wikman och Sebastian Berglönn"
                             loading="lazy"
                             decoding="async"

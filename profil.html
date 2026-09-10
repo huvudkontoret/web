@@ -227,7 +227,18 @@
                 font-size: 12px;
                 font-weight: 500;
                 letter-spacing: 0.14em;
-                color: var(--graphite);
+                color: var(--stone);
+            }
+            .return-nav {
+                padding: 12px var(--gut);
+                border-bottom: 1px solid var(--black);
+                font-size: 12px;
+                font-weight: 500;
+            }
+            .return-nav a {
+                display: inline-flex;
+                align-items: center;
+                min-height: 44px;
             }
             .head {
                 display: flex;
@@ -238,7 +249,7 @@
             }
             .head .note {
                 font-size: 12px;
-                font-weight: 300;
+                font-weight: 400;
                 color: var(--stone);
             }
             .h2 {
@@ -249,7 +260,7 @@
             }
             .prose {
                 font-size: 13.5px;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 1.8;
                 color: var(--frame);
                 max-width: 48ch;
@@ -330,7 +341,7 @@
                 color: var(--pow-io);
             }
             .path {
-                color: var(--graphite);
+                color: var(--stone);
             }
             .chrome nav {
                 display: flex;
@@ -341,7 +352,7 @@
                 color: var(--pow-io);
             }
             .state {
-                color: var(--graphite);
+                color: var(--stone);
                 letter-spacing: 0.1em;
                 white-space: nowrap;
             }
@@ -405,7 +416,11 @@
                 font-size: 14px;
                 color: var(--graphite);
             }
+            .menu .label {
+                color: var(--graphite);
+            }
             .menu .state {
+                color: var(--graphite);
                 margin-top: auto;
                 font-size: 11px;
                 font-weight: 500;
@@ -470,7 +485,7 @@
             }
             .filemeta {
                 font-size: 12px;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 1.7;
                 color: var(--stone);
                 max-width: 44ch;
@@ -506,7 +521,7 @@
             }
             .marks figcaption span {
                 font-size: 12.5px;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 1.7;
                 color: var(--frame);
             }
@@ -525,7 +540,7 @@
                 white-space: nowrap;
             }
             .files span {
-                font-weight: 300;
+                font-weight: 400;
                 color: var(--frame);
             }
             .files .naming {
@@ -579,7 +594,7 @@
             }
             .swatch span {
                 font-size: 12px;
-                font-weight: 300;
+                font-weight: 400;
                 color: var(--stone);
             }
 
@@ -601,7 +616,7 @@
                 grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
                 gap: 14px 48px;
                 font-size: 13px;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 1.7;
                 color: var(--frame);
             }
@@ -647,7 +662,7 @@
             }
             .links .mirror {
                 font-size: 12px;
-                font-weight: 300;
+                font-weight: 400;
                 color: var(--stone);
                 line-height: 1.7;
             }
@@ -662,7 +677,7 @@
                 font-size: 12px;
             }
             .foot .where {
-                font-weight: 300;
+                font-weight: 400;
                 font-style: italic;
                 color: var(--stone);
             }
@@ -713,6 +728,7 @@
         <div class="menu" id="meny" hidden>
             <span class="label" style="padding-bottom: 14px">// MENY</span>
             <nav aria-label="Sidsektioner, mobil">
+                <a href="/">Till startsidan <span class="g">&lt;-</span></a>
                 <a href="#marke">Märket <span class="g">-&gt;</span></a>
                 <a href="#filer">Filerna <span class="g">-&gt;</span></a>
                 <a href="#farg">Färg <span class="g">-&gt;</span></a>
@@ -722,6 +738,12 @@
             </nav>
             <span class="state">GÄLLANDE LÄGE · 2026-09-04</span>
         </div>
+
+        <nav class="return-nav" aria-label="Huvudnavigation">
+            <div class="shell">
+                <a href="/">← Till startsidan</a>
+            </div>
+        </nav>
 
         <!-- INGÅNG -->
         <header class="band">

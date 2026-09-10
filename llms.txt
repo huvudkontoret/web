@@ -8,14 +8,14 @@ Huvudkontoret har inte en webbplats utan ett system av adresser. Ändelsen är e
 
 ## Primary Pages
 
-- [Startsida](https://huvudkontoret.io/): Växeln, erbjudande, arbetssätt, team och kontakt.
+- [Startsida](https://huvudkontoret.io/): Vägen in, erbjudande, arbetssätt, team och kontakt.
 - [Markdown-version](https://huvudkontoret.io/index.md): Token-effektiv textversion av startsidans viktigaste innehåll.
 - [Profil](https://huvudkontoret.io/profil): Presskit med ordbild, sigill, färger och regler för märket, och filpaketet som nedladdning.
 - [Sitemap](https://huvudkontoret.io/sitemap.xml): Maskinläsbar lista över publika resurser.
 - [Agent Skill Index](https://huvudkontoret.io/.well-known/agent-skills/index.json): Instruktioner för agenter som vill förstå eller beskriva Huvudkontoret.
 - [API Catalog](https://huvudkontoret.io/.well-known/api-catalog): Aktuell maskinläsbar katalog över publika API:er och agentytor.
 
-## Växeln
+## Vägen in
 
 Ingången för nya ärenden. Beskriv situationen med egna ord till hej@huvudkontoret.io med ämnet "Nytt ärende"; ni behöver inte veta om det är AI, systemutveckling, rådgivning eller en person som saknas. Inom ett dygn svarar en namngiven person med en ärendebild: situation, önskat läge, första handling och föreslagen insats. Det som skrivs läses av en människa, används bara för att svara, säljs inte vidare och används inte för modellträning.
 
