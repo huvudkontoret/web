@@ -6,13 +6,13 @@ AI, systemutveckling och tekniskt stöd som fungerar i vardagen, inte bara ser b
 
 Huvudkontoret är ett techbolag i Luleå. Kända för vad som händer, inte för slides.
 
-## Växeln
+## Vägen in
 
 Vad behöver fungera bättre? Du behöver inte veta vilken lösning du behöver. Det är vårt jobb.
 
 Beskriv situationen med egna ord. Ni behöver inte veta om det är AI, systemutveckling, rådgivning eller en person som saknas. Säg vad som inte fungerar och vad som behöver hända. Skriv till hej@huvudkontoret.io med ämnet "Nytt ärende".
 
-Inom ett dygn får ni en ärendebild tillbaka: situation, önskat läge, första handling, föreslagen insats och vem hos oss som tog ärendet. Den är vår läsning och inte ett svar ni behöver acceptera. Har vi förstått fel svarar ni på mejlet, och vi skriver om den.
+Inom ett dygn får ni en ärendebild tillbaka: situation, önskat läge, första handling, föreslagen insats och vem hos oss som tog ärendet. Så här har vi förstått er situation. Har vi missförstått något svarar ni på mejlet, så rättar vi till det.
 
 Det ni skriver läses av en människa hos oss och används bara för att svara. Vi säljer det inte vidare, tränar inga modeller på det, och raderar det på begäran.
 
