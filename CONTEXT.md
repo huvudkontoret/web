@@ -3,9 +3,9 @@
 > This repo is huvudkontoret.io. It holds two things at once, and knowing
 > which one you are touching is the whole point of this file. **The live
 > site** is a hand-written static page — `index.html` plus a set of
-> machine-readable surfaces (`index.md`, `llms.txt`, `sitemap.xml`,
-> `.well-known/`) that exist so agents can read the company as easily as
-> people can. **The identity runtime** is not in this repo. It was an Astro
+> machine-readable surfaces (`index.md`, `llms.txt`, `llms-full.txt`,
+> `sitemap.xml`, `.well-known/`) that exist so agents can read the company as
+> easily as people can. **The identity runtime** is not in this repo. It was an Astro
 > MVP of `render(node, perspective)`, where the URL
 > `huvudkontoret.<tld>/<slug>` means "render this node through that
 > perspective"; it left `main` in `bf21a0b`, and the `identity-runtime` branch
@@ -43,9 +43,12 @@ terms that describe the live site — static site, published set, agent surface
   color, emphasis, layout and tone. It may not change the facts, and a node
   must never carry presentation.
 - **Agents are a first-class audience.** Anything that changes what
-  Huvudkontoret *is* — services, contact, positioning — changes `index.html`,
-  `index.md` and `llms.txt` together. A stale `llms.txt` is a wrong answer
-  given confidently by someone else's agent.
+  huvudkontoret *is* — services, contact, positioning — changes `index.html`,
+  `index.md`, `llms.txt`, `llms-full.txt` and
+  `.well-known/agent-skills/understand-huvudkontoret/SKILL.md` **together**.
+  A stale surface is a wrong answer given confidently by someone else's
+  agent, and the one most easily forgotten is `llms-full.txt`, because
+  nothing links to it.
 - **Swedish for content, English for code and artifacts.** The published tone
   is practical, plain, locally grounded — no hype, no invented prices,
   availability, client names or commitments.
@@ -57,11 +60,24 @@ terms that describe the live site — static site, published set, agent surface
   set exactly.
 - **A pull request can be looked at before it is published.** Every PR gets a
   preview URL from the Worker, restricted with Cloudflare Access. It is built
-  from the repo, so it renders with fallback monospace rather than MonoLisa —
-  previews settle layout, content and behaviour, never typography.
+  from the repo, fonts included, so it renders as designed.
 
 ## Pointers
 
+- The visual profile is not decided in this repo. It is locked in the design
+  project *Huvudkontoret brand och grafisk profil* on claude.ai/design, whose
+  `CLAUDE.md` is the rule source and whose `Huvudkontoret.io.dc.html` is the
+  canonical mockup for this page. Read those before changing type, colour or
+  the wordmark — `index.html` follows them, it does not define them.
+- MonoLisa carries all typography, as variable files committed under the
+  web licence — one upright and one italic per Unicode block the site uses,
+  loaded through `unicode-range`. `webFontLicence` in `tools/check/facts.json` is the
+  fact that allows them, and the gate holds `assets/fonts/` to exactly that
+  set. See `assets/fonts/README.md` for what the licence covers and
+  `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md` for how the files
+  got here — the publication has no rollback.
+- The OG image is generated, never designed: `tools/og-io.html` is the
+  template and `assets/og-io.jpg` its current render.
 - The identity runtime and its original brief (`PROMPT.md`) are not here. They
   left `main` in `bf21a0b` and the branch meant to carry them was deleted, so
   history is the only copy: `git show bf21a0b^:src/lib/tokens.ts` for the
@@ -71,8 +87,8 @@ terms that describe the live site — static site, published set, agent surface
   its role and where its DNS answers) · `worker/index.ts` (routes a host to
   its tree) · `tools/check/` (the gate)
 - Live site: `index.html` · `profil.html` (the press kit at `/profil`,
-  ADR 0005) · `index.md` · `llms.txt` · `sitemap.xml` · `.well-known/` ·
-  `assets/` — served by the Worker, domain in `wrangler.jsonc`
+  ADR 0005) · `index.md` · `llms.txt` · `llms-full.txt` · `sitemap.xml` ·
+  `.well-known/` · `assets/` — served by the Worker, domain in `wrangler.jsonc`
 - Run: `hk dev web` runs `npx wrangler dev` at <http://127.0.0.1:8787> — the
   same Worker production runs, so `.assetsignore` decides what exists locally
   too and `/CLAUDE.md` answers 404 here exactly as it does on the apex. The
