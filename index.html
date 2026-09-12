@@ -65,7 +65,7 @@
                     "availableLanguage": ["sv", "en"]
                 },
                 "employee": [
-                    { "@type": "Person", "name": "Hanna Wikman", "jobTitle": "VD" },
+                    { "@type": "Person", "name": "Hanna Wikman", "jobTitle": "CEO" },
                     { "@type": "Person", "name": "Magnus Renholm", "jobTitle": "CSO" },
                     { "@type": "Person", "name": "Sebastian Berglönn", "jobTitle": "CTO" }
                 ]
@@ -421,8 +421,36 @@
                 display: flex;
                 flex-direction: column;
                 padding: 96px 20px 32px 20px;
+                /* Closed, the panel stays in the flow but invisible and out of
+                   the tab order, so opening can animate: the ink surface fades
+                   in and the rows follow, on the offering's own timing.
+                   Visibility waits for the fade to end before hiding. */
+                visibility: hidden;
+                opacity: 0;
+                transition:
+                    opacity 200ms var(--ease),
+                    visibility 0s linear 200ms;
             }
-            .menu[hidden] {
+            .menu.open {
+                visibility: visible;
+                opacity: 1;
+                transition: opacity 200ms var(--ease);
+            }
+            .menu > * {
+                opacity: 0;
+                transform: translateY(8px);
+                transition:
+                    opacity 120ms var(--ease),
+                    transform 0ms 120ms;
+            }
+            .menu.open > * {
+                opacity: 1;
+                transform: translateY(0);
+                transition:
+                    opacity 200ms var(--ease) 40ms,
+                    transform 200ms var(--ease) 40ms;
+            }
+            .no-js .menu {
                 display: none;
             }
             .menu nav {
@@ -1097,9 +1125,25 @@
                 .mark .sigill {
                     width: 120px;
                 }
+                /* The footer is a stack here: address block first, then the
+                   link and the claim as their own group. The place and the
+                   coordinates take one line each rather than wrapping
+                   mid-coordinate. */
                 .foot {
                     flex-direction: column;
-                    gap: 8px;
+                    align-items: flex-start;
+                    gap: 12px;
+                }
+                .foot .where {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                }
+                .foot .where .sep {
+                    display: none;
+                }
+                .foot a.claim {
+                    margin-top: 8px;
                 }
             }
 
@@ -1163,7 +1207,7 @@
         </div>
 
         <!-- MENY (mobil) -->
-        <div class="menu" id="meny" hidden>
+        <div class="menu" id="meny">
             <span class="label" style="padding-bottom: 14px">// MENY</span>
             <nav aria-label="Sidsektioner, mobil">
                 <a href="#vaxeln">Vägen in <span class="g">-&gt;</span></a>
@@ -1798,7 +1842,7 @@
                         <div class="person">
                             <span class="top"
                                 ><span class="name">Hanna Wikman</span
-                                ><span class="role">VD</span></span
+                                ><span class="role">CEO</span></span
                             >
                             <span class="line"
                                 >Säger det ni behöver höra, inte det ni vill.
@@ -1853,7 +1897,9 @@
                         >huvudkontoret<span class="tld">.io</span></span
                     >
                     <span class="where"
-                        >huvudkontoret · Luleå · 65.5848° N / 22.1547° E</span
+                        ><span>huvudkontoret · Luleå</span
+                        ><span class="sep"> · </span
+                        ><span>65.5848° N / 22.1547° E</span></span
                     >
                     <a class="claim" href="/profil">/PROFIL</a>
                     <span class="claim">VI LEVERERAR DET VI LOVAR</span>
@@ -1902,21 +1948,21 @@
                 const panel = document.getElementById("meny");
                 if (!button || !panel) return;
 
+                const isOpen = () => panel.classList.contains("open");
+
                 function setOpen(open) {
-                    panel.hidden = !open;
+                    panel.classList.toggle("open", open);
                     button.setAttribute("aria-expanded", String(open));
                     button.textContent = open ? "[ STÄNG ]" : "[ MENY ]";
                     document.body.style.overflow = open ? "hidden" : "";
                 }
 
-                button.addEventListener("click", () =>
-                    setOpen(panel.hidden),
-                );
+                button.addEventListener("click", () => setOpen(!isOpen()));
                 panel.addEventListener("click", (event) => {
                     if (event.target.closest("a")) setOpen(false);
                 });
                 document.addEventListener("keydown", (event) => {
-                    if (event.key === "Escape" && !panel.hidden) {
+                    if (event.key === "Escape" && isOpen()) {
                         setOpen(false);
                         button.focus();
                     }

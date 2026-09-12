@@ -83,7 +83,7 @@ Vi säger inte vilka vi är. Det märks i vad vi gör.
 Grundat i Luleå. Vana att få saker gjorda.
 
 - Magnus Renholm, CSO. Har suttit på er sida av bordet.
-- Hanna Wikman, VD. Säger det ni behöver höra, inte det ni vill.
+- Hanna Wikman, CEO. Säger det ni behöver höra, inte det ni vill.
 - Sebastian Berglönn, CTO. Bygger hellre en fungerande halvfärdig än en perfekt plan.
 
 ## Kontakt
