@@ -17,9 +17,11 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { after, test } from "node:test";
 
+import * as analytics from "./checks/analytics.mjs";
 import * as fonts from "./checks/fonts.mjs";
 import * as formatting from "./checks/formatting.mjs";
 import * as markup from "./checks/markup.mjs";
+import * as profile from "./checks/profile.mjs";
 import * as publishing from "./checks/publishing.mjs";
 import * as references from "./checks/references.mjs";
 import * as sitemap from "./checks/sitemap.mjs";
@@ -31,7 +33,18 @@ import { loadSite } from "./lib/site.mjs";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const FACTS = JSON.parse(readFileSync(join(HERE, "facts.json"), "utf8"));
 
+/**
+ * The baseline fixture below is the site before the fonts shipped: no font
+ * file carried, both ignore rules intact. facts.json has since flipped
+ * webFontLicence, so the fixture's own reading of it is pinned here and the
+ * licensed cases say LICENSED explicitly — both halves of the rule stay
+ * tested whichever way the real fact points.
+ */
+const UNLICENSED = { ...FACTS, webFontLicence: false };
+
 const TEAM = "Hanna Wikman, Magnus Renholm, Sebastian Berglönn";
+/** The beacon as the real pages carry it, built from the fact so the fixture follows it. */
+const BEACON = `<script defer src="${FACTS.analytics.script}" data-cf-beacon='${JSON.stringify({ token: FACTS.analytics.token })}'></script>`;
 const CONTACT = "hej@huvudkontoret.io";
 
 /** A sitemap advertising exactly `paths`, each rooted at the fixture's origin. */
@@ -47,12 +60,20 @@ function baseline() {
     "index.html": [
       "<!doctype html>",
       '<html lang="sv">',
-      "<head><title>Huvudkontoret</title></head>",
+      "<head><title>Huvudkontoret</title>",
+      "<style>",
+      ":root { --black: #16150f; --signal: #d9481c; }",
+      // A responsive override is not a disagreement about the profile, and
+      // the real index.html has one. The check must look past it.
+      "@media (max-width: 640px) { :root { --gut: 20px; } }",
+      "</style>",
+      "</head>",
       "<body>",
       '  <nav><a href="#contact">Kontakt</a></nav>',
       '  <img src="assets/logo.svg" alt="Logotyp">',
       `  <p>${TEAM}</p>`,
       `  <section id="contact">${CONTACT}</section>`,
+      `  ${BEACON}`,
       "</body>",
       "</html>",
       "",
@@ -64,6 +85,7 @@ function baseline() {
     // pages the sitemap check expects it to advertise.
     "sitemap.xml": sitemapListing(["/", "/index.md", "/llms.txt"]),
     "assets/logo.svg": '<svg xmlns="http://www.w3.org/2000/svg"></svg>\n',
+    "src/styles/profile.css": ":root {\n  --black: #16150f;\n  --signal: #d9481c;\n}\n",
     "wrangler.jsonc": [
       "{",
       '  // The site is the repo root; https://example.com/ in a comment must not confuse the parser.',
@@ -74,7 +96,7 @@ function baseline() {
       "}",
       "",
     ].join("\n"),
-    ".assetsignore": ".assetsignore\n.gitignore\nwrangler.jsonc\nassets/fonts/*.woff2\n.git/\n.wrangler/\nnode_modules/\n",
+    ".assetsignore": ".assetsignore\n.gitignore\nwrangler.jsonc\nsrc/\nassets/fonts/*.woff2\n.git/\n.wrangler/\nnode_modules/\n",
   };
 }
 
@@ -100,7 +122,7 @@ function fixtureRoot(files) {
 }
 
 /** Findings from one check against a site built from `files`. */
-function findings(check, files, facts = FACTS) {
+function findings(check, files, facts = UNLICENSED) {
   const collected = [];
   check.run(loadSite(fixtureRoot(files)), facts, {
     fail: (where, message) => collected.push({ where, message }),
@@ -113,23 +135,98 @@ function withEdits(edits) {
   return { ...baseline(), ...edits };
 }
 
-function assertFires(check, edits, needle) {
-  const found = findings(check, withEdits(edits));
+/** The facts as they read once the web licence is confirmed. */
+const LICENSED = { ...FACTS, webFontLicence: true };
+
+/**
+ * The edits that ship the fonts: both ignore rules gone, both licensed files
+ * carried. Every licensed-mode case starts here and breaks one thing.
+ */
+function shipped(edits = {}) {
+  const fonts = Object.fromEntries(FACTS.licensedWebFonts.map((file) => [file, "not really a font"]));
+  return {
+    ".gitignore": "node_modules/\n",
+    ".assetsignore": baseline()[".assetsignore"].replace("assets/fonts/*.woff2\n", ""),
+    ...fonts,
+    ...edits,
+  };
+}
+
+function assertFires(check, edits, needle, facts = UNLICENSED) {
+  const found = findings(check, withEdits(edits), facts);
   assert.ok(
     found.some((finding) => `${finding.where} ${finding.message}`.includes(needle)),
     `expected a finding mentioning "${needle}", got: ${JSON.stringify(found, null, 2)}`,
   );
 }
 
-function assertClean(check, edits = {}) {
-  const found = findings(check, withEdits(edits));
+function assertClean(check, edits = {}, facts = UNLICENSED) {
+  const found = findings(check, withEdits(edits), facts);
   assert.deepEqual(found, [], `expected no findings, got: ${JSON.stringify(found, null, 2)}`);
 }
 
 test("baseline site passes every check", () => {
-  for (const check of [publishing, workers, references, sitemap, markup, surfaces, fonts, formatting]) {
+  for (const check of [publishing, workers, references, sitemap, markup, surfaces, profile, fonts, analytics, formatting]) {
     assertClean(check);
   }
+});
+
+/**
+ * The profile is declared twice by decision (ADR 0004), so these are the cases
+ * that make the duplication safe. A check that only ever agreed with itself
+ * would be worth nothing.
+ */
+
+test("profile: a property with a different value in each place is a finding", () => {
+  assertFires(
+    profile,
+    { "src/styles/profile.css": ":root {\n  --black: #16150f;\n  --signal: #ff0000;\n}\n" },
+    'is "#ff0000" here and "#d9481c" in index.html',
+  );
+});
+
+test("profile: a property the page declares and the stylesheet does not is a finding", () => {
+  assertFires(
+    profile,
+    { "src/styles/profile.css": ":root {\n  --black: #16150f;\n}\n" },
+    "--signal is declared in index.html but not here",
+  );
+});
+
+test("profile: a property invented in the stylesheet is a finding", () => {
+  assertFires(
+    profile,
+    { "src/styles/profile.css": ":root {\n  --black: #16150f;\n  --signal: #d9481c;\n  --invented: 1px;\n}\n" },
+    "--invented is declared here but not in index.html",
+  );
+});
+
+test("profile: deleting the stylesheet does not silently switch the check off", () => {
+  assertFires(profile, { "src/styles/profile.css": null }, "the shared profile stylesheet is missing");
+});
+
+test("profile: a page with no :root block at all is a finding, not a pass", () => {
+  assertFires(
+    profile,
+    { "index.html": baseline()["index.html"].replace(/<style>[\s\S]*?<\/style>/, "") },
+    "no top-level :root block found",
+  );
+});
+
+/**
+ * The two that must NOT fire. `--gut` lives only inside a media query in the
+ * baseline page; treating that as a missing property would make the check fire
+ * on every responsive rule the profile has, which is how a check gets switched
+ * off rather than fixed.
+ */
+test("profile: a :root inside a media query is not part of the contact surface", () => {
+  assertClean(profile);
+});
+
+test("profile: reformatting a value does not count as disagreement", () => {
+  assertClean(profile, {
+    "src/styles/profile.css": ":root {\n  --black:   #16150f;\n  --signal:\n    #d9481c;\n}\n",
+  });
 });
 
 test("workers: a file that is neither ignored nor part of the site is a finding", () => {
@@ -214,7 +311,7 @@ test("workers: a wrangler config that does not parse is a finding", () => {
   assertFires(workers, { "wrangler.jsonc": "{ oops\n" }, "does not parse");
 });
 
-test("workers: the licensed fonts must be excluded from upload while they are gitignored", () => {
+test("workers: the licensed fonts must be excluded from upload while the licence is unconfirmed", () => {
   // wrangler uploads the working directory, so .gitignore alone does not stop
   // a local deploy from publishing MonoLisa. Dropping only the .assetsignore
   // half quietly reopens that path.
@@ -226,10 +323,19 @@ test("workers: the licensed fonts must be excluded from upload while they are gi
 });
 
 test("workers: once the licence lands, dropping both rules together is fine", () => {
-  assertClean(workers, {
-    ".gitignore": "node_modules/\n",
-    ".assetsignore": baseline()[".assetsignore"].replace("assets/fonts/*.woff2\n", ""),
-  });
+  assertClean(workers, shipped(), LICENSED);
+});
+
+test("workers: keeping the .assetsignore rule after the licence lands is a finding", () => {
+  // The quiet half of the flip: the fonts are committed and the page names
+  // them, but the Worker never uploads them, so production silently falls
+  // back to system monospace while every local preview looks right.
+  assertFires(
+    workers,
+    shipped({ ".assetsignore": baseline()[".assetsignore"] }),
+    "would serve a page whose fonts 404",
+    LICENSED,
+  );
 });
 
 /** The subject line that lands on main, since the repo squash-merges. */
@@ -373,19 +479,30 @@ test("sitemap: a declared page absent from this checkout is not a finding", () =
   assertClean(sitemap);
 });
 
+/** A page that loads one webfont by name, whatever the licence says today. */
+function pageLoading(file) {
+  return baseline()["index.html"].replace("<head>", `<head><style>@font-face{src:url("${file}")}</style>`);
+}
+
 test("references: the licensed fonts may be referenced while untracked", () => {
   // The whole point of the exception — index.html loads MonoLisa, git does not
   // carry it, and that combination has to stay green.
-  assertClean(references, {
-    "index.html": baseline()["index.html"].replace(
-      "<head>",
-      '<head><style>@font-face{src:url("assets/fonts/MonoLisa-Light.woff2")}</style>',
-    ),
-  });
+  assertClean(references, { "index.html": pageLoading("assets/fonts/MonoLisa-Variable-0020-007F.woff2") });
+});
+
+test("references: once the licence lands, a font the page names has to exist", () => {
+  // The exception ends with the licence. A typo in a filename is otherwise
+  // invisible: the page renders, just not in MonoLisa.
+  assertFires(
+    references,
+    { "index.html": pageLoading("assets/fonts/MonoLisa-Varaible.woff2") },
+    "MonoLisa-Varaible.woff2 is not tracked by git",
+    LICENSED,
+  );
 });
 
 test("fonts: a committed licensed font is a finding", () => {
-  assertFires(fonts, { "assets/fonts/MonoLisa-Light.woff2": "not really a font" }, "would publish it");
+  assertFires(fonts, { "assets/fonts/MonoLisa-Variable-0020-007F.woff2": "not really a font" }, "would publish it");
 });
 
 // The regression: Nok.otf and Nok.ttf sat directly in assets/ and the check
@@ -401,6 +518,35 @@ test("fonts: losing the ignore rule is a finding once the font directory exists"
     { "assets/fonts/README.md": "notes\n", ".gitignore": "node_modules/\n" },
     "nothing prevents the licensed fonts",
   );
+});
+
+test("fonts: the licensed set, committed with both rules lifted, is what the flip looks like", () => {
+  assertClean(fonts, shipped(), LICENSED);
+});
+
+test("fonts: a licensed file that never arrived is a finding", () => {
+  assertFires(
+    fonts,
+    shipped({ "assets/fonts/MonoLisa-VariableItalic-25A0-25FF.woff2": null }),
+    "is not tracked",
+    LICENSED,
+  );
+});
+
+test("fonts: a font outside the licensed set is a finding even after the licence lands", () => {
+  // The licence is per file. An eighth weight dropped into the directory is
+  // published without being covered — the failure the old rule could not see,
+  // because it only ever asked whether any font was committed.
+  assertFires(
+    fonts,
+    shipped({ "assets/fonts/MonoLisa-Bold.woff2": "not really a font" }),
+    "not one of the licensed files",
+    LICENSED,
+  );
+});
+
+test("fonts: keeping the .gitignore rule after the licence lands is a finding", () => {
+  assertFires(fonts, shipped({ ".gitignore": baseline()[".gitignore"] }), "cannot be committed at all", LICENSED);
 });
 
 test("surfaces: a fact on some surfaces but not all is drift", () => {
@@ -442,6 +588,40 @@ test("surfaces: the same address is fine once marked as not yet running", () => 
     "index.md": `${baseline()["index.md"]}\n.vote visar riktningen. Snart.\n`,
     "llms.txt": `${baseline()["llms.txt"]}\n.vote visar riktningen. Snart.\n`,
   });
+});
+
+/**
+ * The beacon is the site's only measurement, and it has gone missing once
+ * already without anyone noticing. These are the ways it goes missing.
+ */
+
+/** The baseline homepage with its beacon replaced by `snippet`. */
+function homepageWith(snippet) {
+  return { "index.html": baseline()["index.html"].replace(BEACON, snippet) };
+}
+
+test("analytics: a page without the beacon is a finding", () => {
+  assertFires(analytics, homepageWith(""), "no Cloudflare Web Analytics beacon");
+});
+
+test("analytics: a beacon commented out is gone, not present", () => {
+  assertFires(analytics, homepageWith(`<!-- ${BEACON} -->`), "no Cloudflare Web Analytics beacon");
+});
+
+test("analytics: a beacon carrying another site's token is a finding", () => {
+  assertFires(analytics, homepageWith(BEACON.replace(FACTS.analytics.token, "0000")), 'is "0000", not the site\'s');
+});
+
+test("analytics: a beacon with no configuration reports to nobody, and is a finding", () => {
+  assertFires(analytics, homepageWith(`<script defer src="${FACTS.analytics.script}"></script>`), "no data-cf-beacon");
+});
+
+test("analytics: the beacon loaded twice is a finding", () => {
+  assertFires(analytics, homepageWith(`${BEACON}\n  ${BEACON}`), "appears 2 times");
+});
+
+test("analytics: a file that is not a declared page is not held to it", () => {
+  assertClean(analytics, { "demo.html": "<!doctype html>\n<html lang=\"sv\"><head><title>Demo</title></head><body></body></html>\n" });
 });
 
 test("publishing: a missing required surface is a finding", () => {

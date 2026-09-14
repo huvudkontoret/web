@@ -1,56 +1,94 @@
 # Huvudkontoret
 
-## Nästa steg, på riktigt.
+## Nästa steg. På riktigt.
 
-AI, systemutveckling och tekniskt stöd som fungerar i vardagen.
+AI, systemutveckling och tekniskt stöd som fungerar i vardagen, inte bara ser bra ut på papper. Framkant. Lokalt förankrat. Globalt relevant.
 
-Det händer väldigt mycket just nu. Nya möjligheter, nya krav och många beslut som behöver tas. Huvudkontoret arbetar nära teamet och verksamheten, med fokus på att få saker att fungera, inte bara se bra ut på papper.
+Huvudkontoret är ett techbolag i Luleå. Kända för vad som händer, inte för slides.
 
-## Om oss
+## Vägen in
 
-Huvudkontoret är ett konsultbolag i Luleå med fokus på AI, systemutveckling och teknisk rådgivning.
+Vad behöver fungera bättre? Du behöver inte veta vilken lösning du behöver. Det är vårt jobb.
 
-Vi är tre grundare med erfarenhet från både stora organisationer och mindre bolag. Vi arbetar nära verksamhet och teknik, med ansvar hela vägen från beslut till leverans.
+Beskriv situationen med egna ord. Ni behöver inte veta om det är AI, systemutveckling, rådgivning eller en person som saknas. Säg vad som inte fungerar och vad som behöver hända. Skriv till hej@huvudkontoret.io med ämnet "Nytt ärende".
 
-Huvudkontoret startades utifrån övertygelsen att det finns ett bättre sätt att arbeta: färre omvägar, tydligare ansvar och mer fokus på det som faktiskt ska bli klart.
+Inom ett dygn får ni en ärendebild tillbaka: situation, önskat läge, första handling, föreslagen insats och vem hos oss som tog ärendet. Så här har vi förstått er situation. Har vi missförstått något svarar ni på mejlet, så rättar vi till det.
 
-## Vad vi erbjuder
+Det ni skriver läses av en människa hos oss och används bara för att svara. Vi säljer det inte vidare, tränar inga modeller på det, och raderar det på begäran.
 
-### AI och automatisering
+## Vad vi gör
 
-AI som fungerar i vardagen, från riktlinjer och policies till automatiserade arbetsflöden. AI gör nytta först när det används i riktiga system och arbetsflöden.
+Vi förstår vad ni faktiskt behöver, inte bara vad ni ber om.
 
-### Teknisk utveckling
+### 01 AI och automatisering
 
-Webbtjänster, appar, API:er, integrationer och moderna system byggda för att hålla. Målet är hög kvalitet och tydlig leverans.
+AI där det gör verklig nytta. Vi automatiserar det som tar tid och bygger in AI i era faktiska flöden, inte i demos.
 
-### Teknisk rådgivning
+AI gör nytta först när det används i riktiga system och arbetsflöden. Potentialen är stor, men effekten kommer när användningen är tydlig och genomförandet rätt. Automatisera manuella processer, bygga AI-stöd i befintliga system, skapa interna verktyg. Även språkmodeller, AI-assistenter och automatiserade flöden ingår.
 
-Arkitektur, teknikval och beslut som genomförs i verklighet och med säkerhet. Rådgivningen är tydlig, praktisk och förankrad i verkligheten.
+### 02 Teknisk utveckling
 
-### Teamförstärkning
+Robusta system byggda för att hålla. Från idé till produktion, återanvändbart och förvaltningsbart.
 
-Seniora utvecklare, tech leads och teknisk kompetens som träder fram dag ett.
+Digitala lösningar ska fungera i vardagen, inte bara se bra ut i en presentation. Därför byggs kundportaler, interna system, appar och integrationer med fokus på stabilitet. Nyutveckling, vidareutveckling eller modernisering av äldre system: målet är detsamma, hög kvalitet och tydlig leverans.
 
-### Rekrytering och kvalitetssäkring
+### 03 Teknisk rådgivning
 
-Stöd i kravprofil, search, urval, teknisk screening och slutbedömning. Huvudkontoret kan också kvalitetssäkra kandidater med kodtester, arbetsprov och tekniska intervjuer.
+Second opinion, arkitektur och vägval. Vi säger ifrån när vi ser en bättre väg.
 
-### Produkt- och innovationsstöd
+Rätt beslut sparar tid, pengar och onödiga omtag. Arkitektur, teknikval, integrationer och produktutveckling kräver erfarenhet från flera miljöer. I vissa lägen behövs en second opinion, i andra någon som snabbt reder ut nuläget och visar vägen framåt.
 
-Från idé till MVP: proof of concept och nya digitala tjänster. Först bevisa det viktigaste, sedan bygga vidare.
+### 04 Teamförstärkning
 
-## AI i praktiken
+Rätt kompetens in i ert team, snabbt. Bedömd på hur den arbetar, inte vad som står i CV:t.
 
-Potentialen finns redan i befintliga system, processer och arbetssätt. Det viktiga är att börja med nyttan redan idag.
+Seniora utvecklare, tech leads, systemarkitekter, apputvecklare och teknisk projektledning för både kortare och längre uppdrag. Kort startsträcka är standard.
 
-## Team
+### 05 Rekrytering och kvalitetssäkring
 
-- Hanna Wikman, VD
-- Magnus Renholm, CSO
-- Sebastian Berglönn, CTO
+Vi hittar och kvalitetssäkrar människorna. Vem vi tar in är vår viktigaste kvalitetssäkring.
+
+Vi stöttar hela processen: kravprofil, search, urval, teknisk screening och slutbedömning. Har ni redan kandidater i process kvalitetssäkrar vi med kodtester och tekniska intervjuer.
+
+### 06 Produkt- och innovationsstöd
+
+Från koncept till PoC och MVP. Snabbt och utan onödigt krångel.
+
+Proof of concept, MVP-utveckling och tekniska valideringar tas fram stegvis. Först bevisa det viktigaste, sedan bygga vidare.
+
+### AI i praktiken
+
+Utbildningar och workshops som gör ert team självgående på AI i vardagen.
+
+## Arbetssätt
+
+Vi säger ifrån när vi ser en bättre väg. Det är därför ni anlitar oss. Inga fasader, inga halvmesyrer.
+
+- Förstå. Vad som faktiskt behövs, inte bara vad som beställs.
+- Ifrågasätt. Vi utmanar och säger ifrån när vi ser en bättre väg.
+- Bygg. Smart från start. Lösningar som håller och kan förvaltas.
+- Leverera. Det vi lovar håller vi. Sen levererar vi igen.
+
+## Så märks det
+
+Vi säger inte vilka vi är. Det märks i vad vi gör.
+
+- Vi provar det nya innan det är tryggt, och säger ärligt vad som var nytta och vad som bara var kul.
+- Vi dokumenterar för nästa person. Varje leverans går att ta över, förvalta och bygga vidare på.
+- Vi säger nej när nej är rätt svar, även när ja hade varit lättare att fakturera.
+- Vi visar arbetet, inte sliderna. Kod, dokumentation och roadmap ligger öppet.
+
+## Teamet
+
+Grundat i Luleå. Vana att få saker gjorda.
+
+- Magnus Renholm, CSO. Har suttit på er sida av bordet.
+- Hanna Wikman, CEO. Säger det ni behöver höra, inte det ni vill.
+- Sebastian Berglönn, CTO. Bygger hellre en fungerande halvfärdig än en perfekt plan.
 
 ## Kontakt
+
+Har ni ett problem värt att lösa? Hör av er. Vi säger vad vi tycker, även om svaret är att ni inte behöver oss.
 
 - E-post: hej@huvudkontoret.io
 - Webb: https://huvudkontoret.io

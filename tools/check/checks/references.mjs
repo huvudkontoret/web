@@ -11,7 +11,10 @@ export const name = "references";
 export const summary = "local links, assets and anchors resolve";
 
 export function run(site, facts, report) {
-  const licensedFont = new RegExp(facts.licensedFontPattern);
+  // The licensed fonts are exempt from having to exist only while they may not
+  // be committed. Once webFontLicence is set they are assets like any other,
+  // and a name the page gets wrong is a silent fallback to system monospace.
+  const exemptFont = facts.webFontLicence ? null : new RegExp(facts.licensedFontPattern);
 
   for (const surface of facts.pages) {
     const html = site.read(surface);
@@ -26,19 +29,19 @@ export function run(site, facts, report) {
     }
     const markup = stripRawText(html);
 
-    checkReferences(site, facts, surface, html, markup, licensedFont, report);
+    checkReferences(site, facts, surface, html, markup, exemptFont, report);
     checkAnchors(surface, html, markup, report);
   }
 }
 
-function checkReferences(site, facts, surface, html, markup, licensedFont, report) {
+function checkReferences(site, facts, surface, html, markup, exemptFont, report) {
   // References are read from the full source: CSS url() lives inside <style>,
   // which stripRawText blanks out.
   for (const reference of references(html)) {
     const path = toRepoPath(reference.url, site, facts);
     if (path === null) continue;
 
-    if (licensedFont.test(path)) {
+    if (exemptFont?.test(path)) {
       // Deliberately untracked until the web licence is confirmed; the fonts
       // check owns the other half of this rule.
       continue;
