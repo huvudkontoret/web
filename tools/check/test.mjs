@@ -90,7 +90,8 @@ function baseline() {
       "{",
       '  // The site is the repo root; https://example.com/ in a comment must not confuse the parser.',
       '  "name": "web",',
-      '  "assets": { "directory": "." },',
+      '  "main": "worker/index.ts",',
+      '  "assets": { "directory": ".", "binding": "ASSETS", "run_worker_first": ["/", "/index.html"] },',
       '  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],',
       '  "preview_urls": true,',
       "}",
@@ -231,6 +232,27 @@ test("profile: reformatting a value does not count as disagreement", () => {
 
 test("workers: a file that is neither ignored nor part of the site is a finding", () => {
   assertFires(workers, { "NOTES.md": "internal\n" }, "would be served from the site but is not part of it");
+});
+
+test("workers: root _headers is Cloudflare configuration, not a published asset", () => {
+  assertClean(workers, { "_headers": '/\n  Link: </.well-known/api-catalog>; rel="api-catalog"\n' });
+});
+
+test("workers: the _headers exception does not hide other root files", () => {
+  assertFires(workers, { "_headers.txt": "configuration\n" }, "would be served from the site but is not part of it");
+});
+
+test("workers: homepage negotiation cannot be bypassed by static asset routing", () => {
+  for (const [before, after] of [
+    ['"main": "worker/index.ts"', '"main": "worker/other.ts"'],
+    ['"binding": "ASSETS"', '"binding": "OTHER"'],
+    ['"run_worker_first": ["/", "/index.html"]', '"run_worker_first": false'],
+    ['"run_worker_first": ["/", "/index.html"]', '"run_worker_first": ["/"]'],
+  ]) {
+    assertFires(workers, {
+      "wrangler.jsonc": baseline()["wrangler.jsonc"].replace(before, after),
+    }, "homepage negotiation requires");
+  }
 });
 
 test("workers: excluding a surface the agents depend on is a finding", () => {

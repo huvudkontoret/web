@@ -35,6 +35,12 @@ function readConfig(site, report) {
 }
 
 function checkConfig(config, facts, report) {
+  if (config.main !== "worker/index.ts" || config.assets?.binding !== "ASSETS" ||
+      !Array.isArray(config.assets?.run_worker_first) ||
+      !["/", "/index.html"].every((path) => config.assets.run_worker_first.includes(path))) {
+    report.fail("wrangler.jsonc", "homepage negotiation requires worker/index.ts, the ASSETS binding and run_worker_first for / and /index.html");
+  }
+
   if (config.assets?.directory !== ".") {
     report.fail(
       "wrangler.jsonc",
@@ -93,7 +99,8 @@ function checkPublishedSet(site, facts, report) {
     );
   }
 
-  const published = [...site.tracked].filter((file) => !matchesAny(patterns, file)).sort();
+  // Cloudflare parses the root _headers file as configuration and never serves it.
+  const published = [...site.tracked].filter((file) => file !== "_headers" && !matchesAny(patterns, file)).sort();
   const allowed = facts.publishedPaths;
 
   for (const file of published) {

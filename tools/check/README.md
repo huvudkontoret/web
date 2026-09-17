@@ -97,6 +97,12 @@ file everyone believed was excluded.
 
 ## Changing what is asserted
 
+Cloudflare consumes the root `_headers` file as configuration, so `workers`
+excludes it from the published asset set. It sets `Content-Signal` on static
+responses; the Worker sets the same policy on its own responses.
+The gate also requires the Worker entry point, asset binding and homepage
+routing rules, so static serving cannot silently bypass content negotiation.
+
 The facts live in `facts.json`, not in code — the shared facts across the agent
 surfaces, the addresses not yet in service, the required files, the ignore
 patterns. Adding a person or an address is an edit to that file.

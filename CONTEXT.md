@@ -106,3 +106,31 @@ terms that describe the live site — static site, published set, agent surface
   verify it, what gets published, and where the work that is not on `main`
   lives. This file stays the deeper one: domain language and the rules.
 - Workspace brief: `hk context web`
+
+## Homepage content negotiation
+
+`worker/index.ts` serves the existing `index.md` at `/` and `/index.html` when
+a GET or HEAD request explicitly accepts `text/markdown` with a nonzero quality
+at least as high as HTML. Browsers and wildcard-only requests keep HTML.
+Both variants carry `Vary: Accept` and discovery links to the API catalog
+(`api-catalog`) and `llms.txt` (`describedby`). The asset binding supplies the
+body and its validators; Markdown responses use `text/markdown; charset=utf-8`.
+There is no automatic HTML conversion or token counting. Other pages, including
+`/profil`, keep their existing representation.
+
+Only the homepage paths use `assets.run_worker_first`; other existing assets
+keep Cloudflare's direct static serving path. `_headers` sets
+`Content-Signal: search=yes, ai-input=yes, ai-train=no` for static responses,
+and the Worker sets the same policy for responses it handles. Keep those values
+consistent with `robots.txt`.
+
+Run `hk dev web`, then compare:
+
+```sh
+curl -i -H 'Accept: text/html' http://127.0.0.1:8787/
+curl -i -H 'Accept: text/markdown' http://127.0.0.1:8787/
+```
+
+Worker tests cover negotiation, quality preferences, HEAD, validators,
+discovery links and the content policy. Also verify responses through Wrangler
+when changing routing or `_headers`, since the Node tests stub the asset binding.
