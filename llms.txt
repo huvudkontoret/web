@@ -13,7 +13,7 @@ Huvudkontoret har inte en webbplats utan ett system av adresser. Ändelsen är e
 - [Profil](https://huvudkontoret.io/profil): Presskit med ordbild, sigill, färger och regler för märket, och filpaketet som nedladdning.
 - [Sitemap](https://huvudkontoret.io/sitemap.xml): Maskinläsbar lista över publika resurser.
 - [Agent Skill Index](https://huvudkontoret.io/.well-known/agent-skills/index.json): Instruktioner för agenter som vill förstå eller beskriva Huvudkontoret.
-- [API Catalog](https://huvudkontoret.io/.well-known/api-catalog): Aktuell maskinläsbar katalog över publika API:er och agentytor.
+- [API Catalog](https://huvudkontoret.io/.well-known/api-catalog): Maskinläsbar länksamling över publika agentytor. Vi har inget publikt transaktionellt API.
 
 ## Vägen in
 

@@ -33,6 +33,7 @@ one.
 | `sitemap` | `sitemap.xml` advertises every public page and only pages: each `<loc>` points at something real, each declared page has an entry, and each entry uses the page's canonical URL |
 | `markup` | Each page is structurally sound: balanced structural tags, one non-empty `<title>`, `lang` set, unique ids, `alt` on images, a doctype |
 | `surfaces` | `index.html`, `index.md` and `llms.txt` agree on the declared facts, and an address that is announced but not running is never presented as live |
+| `catalog` | The API catalog and its JSON copy agree, use Linkset JSON with declared relation arrays, and point at tracked, published local resources |
 | `profile` | The graphic profile's custom properties are identical in `index.html`'s top-level `:root` block and in `src/styles/profile.css` — the two places ADR 0004 keeps them |
 | `fonts` | The licensed fonts are carried exactly as licensed: none committed while the web licence is unconfirmed, exactly `licensedWebFonts` once it is |
 | `analytics` | Every declared page carries the Cloudflare Web Analytics beacon, once, with the site's token (`analytics` in `facts.json`) — a page without it is published unmeasured, which is how the homepage rebuild shipped |

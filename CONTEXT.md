@@ -109,6 +109,17 @@ terms that describe the live site — static site, published set, agent surface
 
 ## Homepage content negotiation
 
+The API catalog at `/.well-known/api-catalog` and its `.json` copy use the
+RFC 9264 Linkset structure. `_headers` serves both as `application/linkset+json`
+with the RFC 9727 profile and an `api-catalog` discovery link, including on HEAD.
+The current entries describe website discovery resources only: the Markdown
+homepage (`alternate`), `llms.txt` (`describedby`) and the agent skill index
+(`related`). There is no public transactional API, OpenAPI specification or
+health endpoint to advertise. Add `service-desc`, `service-doc` and `status`
+links when the corresponding public resources exist. The `catalog` gate checks
+structure, local targets and consistency between the two files; verify actual
+HTTP headers through Wrangler when changing `_headers`.
+
 `worker/index.ts` serves the existing `index.md` at `/` and `/index.html` when
 a GET or HEAD request explicitly accepts `text/markdown` with a nonzero quality
 at least as high as HTML. Browsers and wildcard-only requests keep HTML.
