@@ -15,6 +15,10 @@ Huvudkontoret har inte en webbplats utan ett system av adresser. Ändelsen är e
 - [Agent Skill Index](https://huvudkontoret.io/.well-known/agent-skills/index.json): Instruktioner för agenter som vill förstå eller beskriva Huvudkontoret.
 - [API Catalog](https://huvudkontoret.io/.well-known/api-catalog): Maskinläsbar länksamling över publika agentytor. Vi har inget publikt transaktionellt API.
 
+## Åtkomst och autentisering
+
+De publika resurserna på https://huvudkontoret.io/ kan läsas utan inloggning, API-nyckel eller OAuth-token. Webbplatsen exponerar inga skyddade API:er och är inte en OAuth/OIDC-utfärdare. Agenter behöver inte hämta autentiseringsuppgifter för att läsa webbplatsen eller dess agentytor.
+
 ## Vägen in
 
 Ingången för nya ärenden. Beskriv situationen med egna ord till hej@huvudkontoret.io med ämnet "Nytt ärende"; ni behöver inte veta om det är AI, systemutveckling, rådgivning eller en person som saknas. Inom ett dygn svarar en namngiven person med en ärendebild: situation, önskat läge, första handling och föreslagen insats. Det som skrivs läses av en människa, används bara för att svara, säljs inte vidare och används inte för modellträning.
