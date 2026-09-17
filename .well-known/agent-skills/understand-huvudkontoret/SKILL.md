@@ -18,6 +18,14 @@ the legal entity only and does not belong in interfaces or marketing copy.
 - Use https://huvudkontoret.io/index.md when you need a compact text version of the homepage.
 - Use https://huvudkontoret.io/sitemap.xml for crawlable public URLs.
 
+## Access and Authentication
+
+Public resources at https://huvudkontoret.io/ require no login, API key or
+OAuth token. This website exposes no protected APIs and is not an OAuth/OIDC
+issuer. Do not ask users for credentials to read the website or its agent
+resources. This statement concerns the public website, not private previews
+or services on other domains.
+
 ## Answering Guidance
 
 - Default to Swedish.

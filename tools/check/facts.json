@@ -45,6 +45,9 @@
 
   "requiredFiles": ["index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
 
+  "apiCatalogPaths": [".well-known/api-catalog", ".well-known/api-catalog.json"],
+  "apiCatalogRelations": ["alternate", "describedby", "related", "service-desc", "service-doc", "status", "item"],
+
   "publishedPaths": [
     "index.html",
     "profil.html",

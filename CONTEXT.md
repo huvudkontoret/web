@@ -106,3 +106,42 @@ terms that describe the live site — static site, published set, agent surface
   verify it, what gets published, and where the work that is not on `main`
   lives. This file stays the deeper one: domain language and the rules.
 - Workspace brief: `hk context web`
+
+## Homepage content negotiation
+
+The API catalog at `/.well-known/api-catalog` and its `.json` copy use the
+RFC 9264 Linkset structure. `_headers` serves both as `application/linkset+json`
+with the RFC 9727 profile and an `api-catalog` discovery link, including on HEAD.
+The current entries describe website discovery resources only: the Markdown
+homepage (`alternate`), `llms.txt` (`describedby`) and the agent skill index
+(`related`). There is no public transactional API, OpenAPI specification or
+health endpoint to advertise. Add `service-desc`, `service-doc` and `status`
+links when the corresponding public resources exist. The `catalog` gate checks
+structure, local targets and consistency between the two files; verify actual
+HTTP headers through Wrangler when changing `_headers`.
+
+`worker/index.ts` serves the existing `index.md` at `/` and `/index.html` when
+a GET or HEAD request explicitly accepts `text/markdown` with a nonzero quality
+at least as high as HTML. Browsers and wildcard-only requests keep HTML.
+Both variants carry `Vary: Accept` and discovery links to the API catalog
+(`api-catalog`) and `llms.txt` (`describedby`). The asset binding supplies the
+body and its validators; Markdown responses use `text/markdown; charset=utf-8`.
+There is no automatic HTML conversion or token counting. Other pages, including
+`/profil`, keep their existing representation.
+
+Only the homepage paths use `assets.run_worker_first`; other existing assets
+keep Cloudflare's direct static serving path. `_headers` sets
+`Content-Signal: search=yes, ai-input=yes, ai-train=no` for static responses,
+and the Worker sets the same policy for responses it handles. Keep those values
+consistent with `robots.txt`.
+
+Run `hk dev web`, then compare:
+
+```sh
+curl -i -H 'Accept: text/html' http://127.0.0.1:8787/
+curl -i -H 'Accept: text/markdown' http://127.0.0.1:8787/
+```
+
+Worker tests cover negotiation, quality preferences, HEAD, validators,
+discovery links and the content policy. Also verify responses through Wrangler
+when changing routing or `_headers`, since the Node tests stub the asset binding.

@@ -80,6 +80,10 @@ huvudkontoret har inte en webbplats utan ett system av adresser. Ändelsen är e
 - Webb: https://huvudkontoret.io/
 - Ort: Luleå, Norrbotten
 
+## Åtkomst och autentisering
+
+De publika resurserna på https://huvudkontoret.io/ kan läsas utan inloggning, API-nyckel eller OAuth-token. Webbplatsen exponerar inga skyddade API:er och är inte en OAuth/OIDC-utfärdare. Agenter behöver inte hämta autentiseringsuppgifter för att läsa webbplatsen eller dess agentytor.
+
 ## Villkor för användning
 
 Innehållet får användas för sökning och som indata till AI. Modellträning medges inte av den publicerade Content-Signal-policyn. Hitta inte på priser, tillgänglighet, juridiska åtaganden eller namngivna kundreferenser.

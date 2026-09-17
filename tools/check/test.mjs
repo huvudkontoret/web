@@ -18,6 +18,7 @@ import { fileURLToPath } from "node:url";
 import { after, test } from "node:test";
 
 import * as analytics from "./checks/analytics.mjs";
+import * as catalog from "./checks/catalog.mjs";
 import * as fonts from "./checks/fonts.mjs";
 import * as formatting from "./checks/formatting.mjs";
 import * as markup from "./checks/markup.mjs";
@@ -90,7 +91,8 @@ function baseline() {
       "{",
       '  // The site is the repo root; https://example.com/ in a comment must not confuse the parser.',
       '  "name": "web",',
-      '  "assets": { "directory": "." },',
+      '  "main": "worker/index.ts",',
+      '  "assets": { "directory": ".", "binding": "ASSETS", "run_worker_first": ["/", "/index.html"] },',
       '  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],',
       '  "preview_urls": true,',
       "}",
@@ -165,10 +167,69 @@ function assertClean(check, edits = {}, facts = UNLICENSED) {
   assert.deepEqual(found, [], `expected no findings, got: ${JSON.stringify(found, null, 2)}`);
 }
 
+/** Catalog fixtures reuse the baseline's existing public website resources. */
+function catalogFiles(value = { linkset: [{
+  anchor: "https://huvudkontoret.io/",
+  describedby: [{ href: "https://huvudkontoret.io/llms.txt", type: "text/plain" }],
+}] }) {
+  const text = typeof value === "string" ? value : `${JSON.stringify(value)}\n`;
+  return Object.fromEntries(FACTS.apiCatalogPaths.map((path) => [path, text]));
+}
+
 test("baseline site passes every check", () => {
   for (const check of [publishing, workers, references, sitemap, markup, surfaces, profile, fonts, analytics, formatting]) {
     assertClean(check);
   }
+  assertClean(catalog, catalogFiles());
+});
+
+test("catalog: malformed JSON and non-Linkset formats are findings", () => {
+  assertFires(catalog, catalogFiles("{ broken"), "invalid JSON");
+  for (const value of [null, [], { resources: [] }, { linkset: {} }, { linkset: [], name: "custom" }]) {
+    assertFires(catalog, catalogFiles(value), "top-level linkset array");
+  }
+});
+
+test("catalog: no APIs or a discovery-only linkset does not require invented service endpoints", () => {
+  assertClean(catalog, catalogFiles({ linkset: [] }));
+  assertClean(catalog, catalogFiles());
+});
+
+test("catalog: missing files and a drifting JSON alias are findings", () => {
+  assertFires(catalog, {}, "missing tracked API catalog");
+  assertFires(catalog, { ...catalogFiles(), ".well-known/api-catalog.json": null }, "must match");
+  assertFires(catalog, { ...catalogFiles(), ".well-known/api-catalog.json": '{"linkset": []}\n' }, "must match");
+});
+
+test("catalog: anchors and targets must be absolute URLs pointing at published resources", () => {
+  for (const anchor of [undefined, "/", "invalid", "http://huvudkontoret.io/"]) {
+    assertFires(catalog, catalogFiles({ linkset: [{ anchor, describedby: [{ href: "https://huvudkontoret.io/llms.txt" }] }] }), "absolute HTTPS URLs");
+  }
+  for (const href of [undefined, "/llms.txt", 42]) {
+    assertFires(catalog, catalogFiles({ linkset: [{ anchor: "https://huvudkontoret.io/", describedby: [{ href }] }] }), "absolute HTTPS URLs");
+  }
+  for (const path of ["missing.txt", "src/styles/profile.css", "wrangler.jsonc"]) {
+    assertFires(catalog, catalogFiles({ linkset: [{ anchor: "https://huvudkontoret.io/", describedby: [{ href: `https://huvudkontoret.io/${path}` }] }] }), "tracked, published resource");
+  }
+});
+
+test("catalog: relation arrays and link target objects are required", () => {
+  assertFires(catalog, catalogFiles({ linkset: [null] }), "entry must be an object");
+  for (const targets of [null, [], { href: "https://huvudkontoret.io/llms.txt" }]) {
+    assertFires(catalog, catalogFiles({ linkset: [{ anchor: "https://huvudkontoret.io/", describedby: targets }] }), "array of link targets");
+  }
+  assertFires(catalog, catalogFiles({ linkset: [{ anchor: "https://huvudkontoret.io/", resources: [{ href: "https://huvudkontoret.io/llms.txt" }] }] }), "undeclared relation resources");
+  assertFires(catalog, catalogFiles({ linkset: [{ anchor: "https://huvudkontoret.io/", describedby: [null] }] }), "absolute HTTPS URLs");
+  assertFires(catalog, catalogFiles({ linkset: [{ anchor: "https://huvudkontoret.io/", describedby: [{ href: "https://huvudkontoret.io/llms.txt", type: [] }] }] }), "type must be a string");
+});
+
+test("catalog: external API endpoints and their registered relations are allowed", () => {
+  assertClean(catalog, catalogFiles({ linkset: [{
+    anchor: "https://api.example.com/",
+    "service-desc": [{ href: "https://api.example.com/openapi.json", type: "application/json" }],
+    "service-doc": [{ href: "https://api.example.com/docs", type: "text/html" }],
+    status: [{ href: "https://api.example.com/health" }],
+  }] }));
 });
 
 /**
@@ -231,6 +292,27 @@ test("profile: reformatting a value does not count as disagreement", () => {
 
 test("workers: a file that is neither ignored nor part of the site is a finding", () => {
   assertFires(workers, { "NOTES.md": "internal\n" }, "would be served from the site but is not part of it");
+});
+
+test("workers: root _headers is Cloudflare configuration, not a published asset", () => {
+  assertClean(workers, { "_headers": '/\n  Link: </.well-known/api-catalog>; rel="api-catalog"\n' });
+});
+
+test("workers: the _headers exception does not hide other root files", () => {
+  assertFires(workers, { "_headers.txt": "configuration\n" }, "would be served from the site but is not part of it");
+});
+
+test("workers: homepage negotiation cannot be bypassed by static asset routing", () => {
+  for (const [before, after] of [
+    ['"main": "worker/index.ts"', '"main": "worker/other.ts"'],
+    ['"binding": "ASSETS"', '"binding": "OTHER"'],
+    ['"run_worker_first": ["/", "/index.html"]', '"run_worker_first": false'],
+    ['"run_worker_first": ["/", "/index.html"]', '"run_worker_first": ["/"]'],
+  ]) {
+    assertFires(workers, {
+      "wrangler.jsonc": baseline()["wrangler.jsonc"].replace(before, after),
+    }, "homepage negotiation requires");
+  }
 });
 
 test("workers: excluding a surface the agents depend on is a finding", () => {
