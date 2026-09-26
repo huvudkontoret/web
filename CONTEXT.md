@@ -65,10 +65,12 @@ terms that describe the live site — static site, published set, agent surface
 ## Pointers
 
 - The visual profile is not decided in this repo. It is locked in the design
-  project *Huvudkontoret brand och grafisk profil* on claude.ai/design, whose
-  `CLAUDE.md` is the rule source and whose `Huvudkontoret.io.dc.html` is the
-  canonical mockup for this page. Read those before changing type, colour or
-  the wordmark — `index.html` follows them, it does not define them.
+  project *huvudkontoret // kanon* on claude.ai/design, whose `CLAUDE.md` is
+  the rule source and whose `Huvudkontoret.io.dc.html` is the canonical mockup
+  for this page. Read those before changing type, colour or the wordmark —
+  `index.html` follows them, it does not define them. The project is readable
+  from a session through DesignSync's read methods by its id; ADR 0002 has the
+  id and the rule.
 - MonoLisa carries all typography, as variable files committed under the
   web licence — one upright and one italic per Unicode block the site uses,
   loaded through `unicode-range`. `webFontLicence` in `tools/check/facts.json` is the
