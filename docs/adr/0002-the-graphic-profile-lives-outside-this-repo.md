@@ -79,11 +79,20 @@ product vocabulary, not code written in the wrong language.
 is the bug. That is a convention, not a check — nothing enforces it, because
 the two live on branches that are not merged into one another.
 
-**MonoLisa remains the one gate between this page and the profile as
-designed.** The `.woff2` files stay gitignored and `.assetsignore`d until the
-web licence is confirmed, so both production and PR previews render in fallback
-monospace. The design survives it — the profile is monospace-native — but it is
-not the profile. See `assets/fonts/README.md`.
+**MonoLisa is published, and the licence is the gate.** When this was written
+the `.woff2` files were gitignored and `.assetsignore`d pending the web
+licence, so production and previews rendered in fallback monospace. The
+licence was confirmed, the files were cut over on 2026-08-26
+(`docs/runbooks/2026-08-26-monolisa-webfont-cutover.md`) and published with
+the rebuilt page on 2026-09-14: twelve variable files under `assets/fonts/`,
+one upright and one italic per Unicode block, loaded through `unicode-range`.
+Production and PR previews now render as designed. What guards the page is
+`webFontLicence` in `tools/check/facts.json`, the fact that allows exactly
+that set; the gate fails on any font binary under `assets/` that is not in
+it. Should a file go missing, the page falls back to the system monospace
+stack — the design survives that, the profile is monospace-native, but it is
+not the profile, and the gate catches it before it is published. The
+publication itself has no rollback. See `assets/fonts/README.md`.
 
 **The 2 % rule is a rule, not a token.** `--signal` points; it does not
 decorate. Nothing in the code can express that constraint, so it lives in the
