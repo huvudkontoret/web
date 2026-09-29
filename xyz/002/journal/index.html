@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>hk · labbjournalen · huvudkontoret.xyz/002</title>
+        <meta
+            name="description"
+            content="Labbjournalen för hk: hypotes, tretton beslut, utanför scope och install. XYZ-0002 på whiteboarden."
+        />
+        <meta name="theme-color" content="#F4F2EC" />
+        <link rel="canonical" href="https://huvudkontoret.xyz/002/journal" />
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0080-00FF.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-2000-206F.woff2" as="font" type="font/woff2" crossorigin />
+
+        <style>
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+
+            :root {
+                --black: #16150f;
+                --paper: #f4f2ec;
+                --ink: #f4f2ec;
+                --muted: #8a877d;
+                --frame: #3a382f;
+                --panel: #1c1b16;
+                --signal: #d9481c;
+                --xyz: #e05a1a;
+                --pen: #6fcf5a;
+                --shell: 920px;
+                --gut: 28px;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+                scroll-padding-top: 24px;
+            }
+            body {
+                margin: 0;
+                background: var(--paper);
+                color: var(--black);
+                font-family: "MonoLisa", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+                font-weight: 400;
+                font-feature-settings: "calt" 0, "liga" 0, "dlig" 0;
+                -webkit-font-smoothing: antialiased;
+                line-height: 1.5;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            a:hover {
+                color: var(--xyz);
+            }
+            .wrap {
+                max-width: var(--shell);
+                margin: 0 auto;
+                padding: 40px var(--gut) 80px;
+            }
+            .chrome {
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+                flex-wrap: wrap;
+                font-size: 12px;
+                color: var(--muted);
+                margin: 0 0 24px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #d8d4c8;
+            }
+            .chrome .xyz {
+                color: var(--xyz);
+            }
+            .switch {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin: 0 0 20px;
+                font-size: 12px;
+            }
+            .switch a,
+            .switch span {
+                display: inline-block;
+                padding: 6px 10px;
+                border: 1px solid var(--black);
+            }
+            .switch .on {
+                background: var(--black);
+                color: var(--paper);
+            }
+            .badge-row {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin: 0 0 16px;
+            }
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 2.2em;
+                height: 2.2em;
+                padding: 0 8px;
+                background: var(--black);
+                color: var(--paper);
+                font-size: 13px;
+                font-weight: 700;
+            }
+            .badge-label {
+                font-size: 16px;
+                font-weight: 700;
+            }
+
+            .journal {
+                border: 1px solid var(--black);
+                background: var(--black);
+                color: var(--ink);
+                overflow: hidden;
+            }
+            .journal-nav {
+                display: flex;
+                justify-content: space-between;
+                gap: 16px;
+                flex-wrap: wrap;
+                align-items: center;
+                padding: 12px 16px;
+                background: var(--paper);
+                color: var(--black);
+                font-size: 13px;
+                font-weight: 700;
+                border-bottom: 1px solid var(--black);
+            }
+            .journal-nav .xyz {
+                color: var(--xyz);
+            }
+            .journal-nav nav {
+                display: flex;
+                gap: 18px;
+                flex-wrap: wrap;
+                font-size: 12px;
+                letter-spacing: 0.04em;
+            }
+            .journal-nav nav a:hover {
+                color: var(--xyz);
+            }
+            .journal-body {
+                padding: 24px 16px 32px;
+            }
+
+            .hyp-meta {
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+                flex-wrap: wrap;
+                font-size: 12px;
+                margin: 0 0 18px;
+            }
+            .hyp-meta .pen {
+                color: var(--pen);
+            }
+            .hyp-meta .dim {
+                color: var(--muted);
+            }
+            .hyp-title {
+                font-size: clamp(28px, 5vw, 46px);
+                font-weight: 700;
+                line-height: 1.1;
+                margin: 0 0 18px;
+                max-width: 16ch;
+            }
+            .hyp-title .cursor {
+                display: inline-block;
+                width: 0.45em;
+                height: 0.45em;
+                background: var(--pen);
+                margin-left: 4px;
+                vertical-align: 0.15em;
+            }
+            .hyp-copy {
+                max-width: 62ch;
+                font-size: 14px;
+                color: #cfcabf;
+                margin: 0 0 28px;
+            }
+
+            .tri {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1px;
+                background: #2a2924;
+                border: 1px solid #2a2924;
+                margin: 0 0 40px;
+            }
+            @media (max-width: 780px) {
+                .tri {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .tri > div {
+                background: var(--panel);
+                padding: 16px;
+            }
+            .tri h3 {
+                margin: 0 0 10px;
+                font-size: 12px;
+                color: var(--muted);
+                font-weight: 400;
+            }
+            .tri p {
+                margin: 0;
+                font-size: 13px;
+                color: #d8d4c8;
+            }
+            .tri strong {
+                color: var(--ink);
+            }
+            .tri em {
+                font-style: italic;
+                color: #b5b1a6;
+            }
+
+            .section {
+                margin: 0 0 40px;
+            }
+            .section-label {
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+                flex-wrap: wrap;
+                font-size: 12px;
+                color: var(--muted);
+                margin: 0 0 10px;
+            }
+            .section h2 {
+                margin: 0 0 18px;
+                font-size: clamp(22px, 3.2vw, 32px);
+                font-weight: 700;
+                line-height: 1.2;
+            }
+            .section h2 .accent {
+                color: var(--xyz);
+            }
+
+            .adrs {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                border-top: 1px solid #2a2924;
+            }
+            .adrs li {
+                display: grid;
+                grid-template-columns: 4.2em 1fr auto;
+                gap: 14px;
+                padding: 10px 0;
+                border-bottom: 1px solid #2a2924;
+                font-size: 13px;
+                color: #d8d4c8;
+            }
+            @media (max-width: 640px) {
+                .adrs li {
+                    grid-template-columns: 4.2em 1fr;
+                }
+                .adrs .tag {
+                    grid-column: 2;
+                }
+            }
+            .adrs .id {
+                color: var(--muted);
+            }
+            .adrs .tag {
+                color: var(--muted);
+                white-space: nowrap;
+            }
+            .adrs .rule {
+                color: var(--pen);
+            }
+            .adrs .rule .id,
+            .adrs .rule .tag {
+                color: var(--pen);
+            }
+
+            .scope {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                border-top: 1px solid #2a2924;
+            }
+            .scope li {
+                display: grid;
+                grid-template-columns: 11em 1fr;
+                gap: 16px;
+                padding: 12px 0;
+                border-bottom: 1px solid #2a2924;
+                font-size: 13px;
+            }
+            @media (max-width: 640px) {
+                .scope li {
+                    grid-template-columns: 1fr;
+                    gap: 4px;
+                }
+            }
+            .scope .key {
+                color: var(--ink);
+                font-weight: 700;
+            }
+            .scope .key s {
+                color: var(--muted);
+                text-decoration: line-through;
+            }
+            .scope .val {
+                color: #cfcabf;
+            }
+
+            .install {
+                border: 1px solid #4a4840;
+                padding: 16px;
+                display: grid;
+                grid-template-columns: 1.4fr 1fr;
+                gap: 20px;
+            }
+            @media (max-width: 780px) {
+                .install {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .install-label {
+                grid-column: 1 / -1;
+                font-size: 12px;
+                color: var(--muted);
+                margin: 0 0 4px;
+            }
+            .cmds {
+                font-size: 13px;
+                line-height: 1.7;
+            }
+            .cmds .prompt {
+                color: var(--xyz);
+            }
+            .links {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                font-size: 13px;
+            }
+            .links li {
+                margin: 0 0 8px;
+            }
+            .links .arrow {
+                color: var(--pen);
+            }
+            .links a:hover {
+                color: var(--xyz);
+            }
+            .links .soon {
+                color: var(--muted);
+            }
+        </style>
+    </head>
+    <body>
+        <main class="wrap">
+            <div class="chrome">
+                <span>huvudkontoret<span class="xyz">.xyz</span>/002</span>
+                <span>resident på whiteboarden. flyttar när den bär.</span>
+                <span>&lt;- .xyz&nbsp;&nbsp;nästa resident: /001 -&gt;</span>
+            </div>
+
+            <nav class="switch" aria-label="Upplägg">
+                <a href="../">2a RESIDENT</a>
+                <span class="on">2b LABBJOURNAL</span>
+            </nav>
+
+            <div class="badge-row">
+                <span class="badge">2b</span>
+                <span class="badge-label">Labbjournalen</span>
+            </div>
+
+            <article class="journal" aria-label="Labbjournalen">
+                <header class="journal-nav">
+                    <span># huvudkontoret<span class="xyz">.xyz</span>/002</span>
+                    <nav aria-label="Sektioner">
+                        <a href="#hypotes">HYPOTES</a>
+                        <a href="#journal">JOURNAL</a>
+                        <a href="#utanfor">UTANFÖR</a>
+                        <a href="#install">INSTALL</a>
+                    </nav>
+                </header>
+
+                <div class="journal-body">
+                    <section id="hypotes" class="section" aria-label="Hypotes">
+                        <div class="hyp-meta">
+                            <span class="pen">XYZ-0002 · hk · SEDAN 2026-07-26</span>
+                            <span class="dim">13 BESLUT · 16 KOMMANDON</span>
+                        </div>
+                        <h1 class="hyp-title">
+                            Läser allt.<br />
+                            Skriver bara form.<br />
+                            Kör bara genom<br />
+                            delegering.<span class="cursor" aria-hidden="true"></span>
+                        </h1>
+                        <p class="hyp-copy">
+                            hk är skalet för arbetsytan på ~/Developer/huvudkontoret. Regeln ovan är beslut 0008, och den avgör vad som hör hemma i verktyget. Allt annat hör i projektet, i gh eller hos Claude.
+                        </p>
+
+                        <div class="tri" aria-label="Varför, vad, hur">
+                            <div>
+                                <h3>// VARFÖR</h3>
+                                <p>Arbetsytan är syskonrepon utan gemensamt sätt att se läget, köra ett projekt eller ge en agent den kontext den behöver.</p>
+                            </div>
+                            <div>
+                                <h3>// VAD</h3>
+                                <p><strong>**/hk**</strong> En CLI, samma för människa och agent. TypeScript direkt på Node, noll beroenden.</p>
+                            </div>
+                            <div>
+                                <h3>// HUR</h3>
+                                <p>Hypotesen är att ett kommando räcker för att komma igång. <em>mätvillkor: agent produktiv efter hk context, människa efter hk ls, scopefråga avgjord på under en minut</em></p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="journal" class="section" aria-label="Journal">
+                        <div class="section-label">
+                            <span>// JOURNAL · DOCS/ADR</span>
+                            <span>titlarna står som i repot.</span>
+                        </div>
+                        <h2>Beslut, i ordning</h2>
+                        <ol class="adrs">
+                            <li>
+                                <span class="id">0001</span>
+                                <span>per-project documentation standard</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0002</span>
+                                <span>zero-dependency TypeScript on Node</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0003</span>
+                                <span>respect XDG base directories</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0004</span>
+                                <span>layered sanity defaults</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0005</span>
+                                <span>hand-rolled MCP server</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0006</span>
+                                <span>umbrella worktree layout</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0007</span>
+                                <span>goals as issues, loops as runbooks</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li class="rule">
+                                <span class="id">0008</span>
+                                <span>read everything, write only form</span>
+                                <span class="tag">[ REGELN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0009</span>
+                                <span>execution loops mutate only ephemeral worktrees</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0010</span>
+                                <span>the workspace root is recorded, not inferred</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0011</span>
+                                <span>commit identity is routed, not inherited</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0012</span>
+                                <span>a workspace is a single owner</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                            <li>
+                                <span class="id">0013</span>
+                                <span>agent worktrees are umbrella worktrees</span>
+                                <span class="tag">[ ANTAGEN ]</span>
+                            </li>
+                        </ol>
+                    </section>
+
+                    <section id="utanfor" class="section" aria-label="Utanför">
+                        <p class="section-label"><span>// UTANFÖR, MEDVETET</span></p>
+                        <h2>Det hk inte gör, <span class="accent">och vem som gör det</span></h2>
+                        <ul class="scope">
+                            <li>
+                                <span class="key">orkestrering</span>
+                                <span class="val">Claude Code äger schemaläggning och utskick. hk ger loopen bara verify.</span>
+                            </li>
+                            <li>
+                                <span class="key">ärendehantering</span>
+                                <span class="val">gh äger issues. hk goals läser, öppnar och stänger aldrig.</span>
+                            </li>
+                            <li>
+                                <span class="key">produktfunktioner</span>
+                                <span class="val">hq-spåret är nedlagt och förblir det.</span>
+                            </li>
+                            <li>
+                                <span class="key"><s>ci/cd</s></span>
+                                <span class="val">Exitkoder gör hk användbart i kontroller. hk kör inga pipelines.</span>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section id="install" class="section" aria-label="Install">
+                        <div class="install">
+                            <p class="install-label">// INSTALL</p>
+                            <div class="cmds">
+                                <div><span class="prompt">$</span> brew install huvudkontoret/tap/hk</div>
+                                <div><span class="prompt">$</span> hk init ~/Developer/huvudkontoret</div>
+                            </div>
+                            <ul class="links">
+                                <li><span class="arrow">-&gt;</span> <a href="https://github.com/huvudkontoret/hk">github.com/huvudkontoret/hk</a></li>
+                                <li><span class="arrow">-&gt;</span> huvudkontoret.dev/hk <span class="soon">[ SNART ]</span></li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </article>
+        </main>
+
+        <!-- Cloudflare Web Analytics: the only measurement on the site. Cookieless,
+             so no consent banner; the token is a fact the gate holds every page to
+             (analytics in tools/check/facts.json). -->
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
+        ></script>
+    </body>
+</html>

@@ -1,6 +1,6 @@
 {
   "//pages": "The hand-written HTML pages. references and markup read each of them; a page left out here is published unchecked.",
-  "pages": ["index.html", "profil.html"],
+  "pages": ["index.html", "profil.html", "xyz/002/index.html", "xyz/002/journal/index.html"],
 
   "surfaces": ["index.html", "index.md", "llms.txt"],
 
@@ -59,7 +59,8 @@
     "favicon.ico",
     "apple-touch-icon.png",
     ".well-known/",
-    "assets/"
+    "assets/",
+    "xyz/"
   ],
   "requiredPublished": ["index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
 

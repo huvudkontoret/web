@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>hk · ett skal för hela arbetsytan · huvudkontoret.xyz/002</title>
+        <meta
+            name="description"
+            content="hk är skalet för arbetsytan. Ett kommando där utvecklaren och agenten ser samma sanning. XYZ-0002 på whiteboarden."
+        />
+        <meta name="theme-color" content="#F4F2EC" />
+        <link rel="canonical" href="https://huvudkontoret.xyz/002" />
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0080-00FF.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-2000-206F.woff2" as="font" type="font/woff2" crossorigin />
+
+        <style>
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+
+            :root {
+                --black: #16150f;
+                --paper: #f4f2ec;
+                --ink: #f4f2ec;
+                --muted: #8a877d;
+                --frame: #3a382f;
+                --signal: #d9481c;
+                --xyz: #e05a1a;
+                --pen: #6fcf5a;
+                --shell: 920px;
+                --gut: 28px;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background: var(--paper);
+                color: var(--black);
+                font-family: "MonoLisa", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+                font-weight: 400;
+                font-feature-settings: "calt" 0, "liga" 0, "dlig" 0;
+                -webkit-font-smoothing: antialiased;
+                line-height: 1.5;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            a:hover {
+                color: var(--xyz);
+            }
+            .wrap {
+                max-width: var(--shell);
+                margin: 0 auto;
+                padding: 40px var(--gut) 80px;
+            }
+            .meta {
+                font-size: 12px;
+                color: var(--muted);
+                letter-spacing: 0.02em;
+                margin: 0 0 18px;
+            }
+            .switch {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin: 0 0 28px;
+                font-size: 12px;
+            }
+            .switch a,
+            .switch span {
+                display: inline-block;
+                padding: 6px 10px;
+                border: 1px solid var(--black);
+            }
+            .switch .on {
+                background: var(--black);
+                color: var(--paper);
+            }
+            .title {
+                font-size: clamp(22px, 3.2vw, 34px);
+                font-weight: 700;
+                line-height: 1.2;
+                margin: 0 0 16px;
+            }
+            .title .xyz {
+                color: var(--xyz);
+            }
+            .title .dot {
+                display: inline-block;
+                width: 0.55em;
+                height: 0.55em;
+                background: var(--xyz);
+                margin-left: 2px;
+                vertical-align: 0.12em;
+            }
+            .lede {
+                max-width: 62ch;
+                font-size: 14px;
+                margin: 0 0 36px;
+                color: var(--frame);
+            }
+            .badge-row {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin: 0 0 16px;
+            }
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 2.2em;
+                height: 2.2em;
+                padding: 0 8px;
+                background: var(--black);
+                color: var(--paper);
+                font-size: 13px;
+                font-weight: 700;
+            }
+            .badge-label {
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            .resident {
+                border: 1px solid var(--black);
+                background: var(--black);
+                color: var(--ink);
+                overflow: hidden;
+            }
+            .resident-top {
+                display: flex;
+                justify-content: space-between;
+                gap: 16px;
+                flex-wrap: wrap;
+                padding: 12px 16px;
+                background: var(--paper);
+                color: var(--black);
+                font-size: 13px;
+                font-weight: 700;
+            }
+            .resident-top .xyz {
+                color: var(--xyz);
+            }
+            .resident-bar {
+                display: flex;
+                justify-content: space-between;
+                gap: 16px;
+                flex-wrap: wrap;
+                padding: 10px 16px;
+                background: var(--xyz);
+                color: var(--black);
+                font-size: 12px;
+                font-weight: 600;
+            }
+            .resident-body {
+                padding: 20px 16px 28px;
+            }
+            .resident-meta {
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+                flex-wrap: wrap;
+                font-size: 12px;
+                color: var(--muted);
+                margin: 0 0 22px;
+            }
+            .resident-meta .pen {
+                color: var(--pen);
+            }
+            .hero {
+                font-size: clamp(28px, 5vw, 48px);
+                font-weight: 700;
+                line-height: 1.1;
+                margin: 0 0 18px;
+                max-width: 14ch;
+            }
+            .hero-copy {
+                max-width: 58ch;
+                font-size: 14px;
+                color: #cfcabf;
+                margin: 0 0 32px;
+            }
+            .hero-copy strong {
+                color: var(--ink);
+                font-weight: 700;
+            }
+
+            .jobs {
+                margin: 0 0 36px;
+            }
+            .jobs-label {
+                font-size: 12px;
+                color: var(--muted);
+                margin: 0 0 14px;
+            }
+            .jobs-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+            }
+            @media (max-width: 780px) {
+                .jobs-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .job h3 {
+                margin: 0 0 8px;
+                font-size: 16px;
+                font-weight: 700;
+            }
+            .job p {
+                margin: 0 0 12px;
+                font-size: 12px;
+                color: #b5b1a6;
+            }
+            .job ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                font-size: 13px;
+                color: var(--pen);
+            }
+            .job li {
+                margin: 0 0 4px;
+            }
+
+            .term {
+                border: 1px solid #3a382f;
+                background: #0f0e0b;
+                margin: 0 0 36px;
+                overflow: hidden;
+            }
+            .term-head {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 12px;
+                font-size: 11px;
+                color: var(--muted);
+                border-bottom: 1px solid #2a2924;
+            }
+            .term-body {
+                padding: 14px 12px 18px;
+                font-size: 12px;
+                line-height: 1.55;
+                color: #d8d4c8;
+                white-space: pre-wrap;
+            }
+            .term-body .prompt {
+                color: var(--pen);
+            }
+            .term-body .dim {
+                color: var(--muted);
+            }
+
+            .move {
+                display: grid;
+                grid-template-columns: 1.1fr 1.2fr;
+                gap: 24px;
+                margin: 0 0 28px;
+                padding-top: 8px;
+                border-top: 1px solid #2a2924;
+            }
+            @media (max-width: 780px) {
+                .move {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .move-label {
+                font-size: 12px;
+                color: var(--muted);
+                margin: 0 0 10px;
+            }
+            .move h2 {
+                margin: 0 0 12px;
+                font-size: clamp(20px, 3vw, 28px);
+                font-weight: 700;
+                line-height: 1.2;
+                max-width: 16ch;
+            }
+            .move-copy {
+                font-size: 13px;
+                color: #cfcabf;
+                max-width: 36ch;
+            }
+            .move-copy a {
+                color: var(--xyz);
+            }
+            .conds {
+                list-style: none;
+                margin: 8px 0 0;
+                padding: 0;
+                font-size: 13px;
+            }
+            .conds li {
+                display: grid;
+                grid-template-columns: 1.5em 1fr;
+                gap: 8px;
+                margin: 0 0 12px;
+                color: #d8d4c8;
+            }
+            .conds .arrow {
+                color: var(--pen);
+            }
+            .conds code {
+                color: var(--ink);
+                font-family: inherit;
+            }
+
+            .resident-foot {
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+                flex-wrap: wrap;
+                padding: 14px 16px;
+                border-top: 1px solid #2a2924;
+                font-size: 12px;
+                color: var(--muted);
+            }
+            .resident-foot .xyz {
+                color: var(--xyz);
+            }
+            .resident-foot em {
+                font-style: italic;
+                color: #b5b1a6;
+            }
+        </style>
+    </head>
+    <body>
+        <main class="wrap">
+            <p class="meta">// XYZ-0002 · HK · RESIDENTSIDA · 2026-09-23</p>
+
+            <nav class="switch" aria-label="Upplägg">
+                <span class="on">2a RESIDENT</span>
+                <a href="journal/">2b LABBJOURNAL</a>
+            </nav>
+
+            <h1 class="title">
+                huvudkontoret<span class="xyz">.xyz</span>/002
+                <span class="dot" aria-hidden="true"></span>
+            </h1>
+            <p class="lede">
+                Nuvarande sida beskriver hk som dash, env och dotfiles. Repot säger något annat: ett skal för arbetsytan, där hk sync bygger projektfiler ur fyra lager. Båda upplägg utgår från repot. 2a följer residentmallen. 2b är en labbjournal byggd på de tretton besluten.
+            </p>
+
+            <div class="badge-row">
+                <span class="badge">2a</span>
+                <span class="badge-label">Residentmallen, med repots innehåll</span>
+            </div>
+
+            <article class="resident" aria-label="Residentmallen">
+                <header class="resident-top">
+                    <span># huvudkontoret<span class="xyz">.xyz</span>/002</span>
+                    <span>WHITEBOARDEN · RESIDENT</span>
+                </header>
+                <div class="resident-bar">
+                    <span>&lt;— .xyz // bor här nu: /001 · /002 · /kl · /kull</span>
+                    <span>[ BOR HÄR ] —&gt; drift när den bär</span>
+                </div>
+
+                <div class="resident-body">
+                    <div class="resident-meta">
+                        <span>// XYZ-0002 · RESIDENT · <span class="pen">GRÖN PENNA</span></span>
+                        <span>v0.15.0 · NODE &gt;= 24</span>
+                    </div>
+
+                    <h2 class="hero">hk ett skal för hela arbetsytan</h2>
+                    <p class="hero-copy">
+                        Ett kommando där utvecklaren och agenten ser samma sanning om syskonprojekten: vad som finns, hur det körs och vilken form det ska ha. Hypotesen: en agent är produktiv efter ett kommando, <strong>hk context</strong>. En människa efter ett, <strong>hk ls</strong>.
+                    </p>
+
+                    <section class="jobs" aria-label="Tre jobb">
+                        <p class="jobs-label">// TRE JOBB</p>
+                        <div class="jobs-grid">
+                            <div class="job">
+                                <h3>läsbar</h3>
+                                <p>Vad finns, i vilket skick, och vad pågår.</p>
+                                <ul>
+                                    <li>hk ls</li>
+                                    <li>hk status</li>
+                                    <li>hk context</li>
+                                    <li>hk goals</li>
+                                    <li>hk mcp</li>
+                                </ul>
+                            </div>
+                            <div class="job">
+                                <h3>körbar</h3>
+                                <p>Projektets egna verktyg, alltid samma ingång.</p>
+                                <ul>
+                                    <li>hk dev</li>
+                                    <li>hk build</li>
+                                    <li>hk test</li>
+                                    <li>hk verify</li>
+                                </ul>
+                            </div>
+                            <div class="job">
+                                <h3>konsekvent</h3>
+                                <p>Samma form i varje repo. Projektet har sista ordet.</p>
+                                <ul>
+                                    <li>hk new</li>
+                                    <li>hk sync</li>
+                                    <li>hk migrate</li>
+                                    <li>hk doctor</li>
+                                    <li>hk worktree</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="term" aria-label="hk context exempel">
+                        <div class="term-head">
+                            <span>// HK CONTEXT</span>
+                            <span>EXIT 0</span>
+                        </div>
+                        <pre class="term-body"><span class="prompt">$</span> hk context
+
+<span class="dim"># huvudkontoret workspace</span>
+
+hk läser allt, skriver bara form, kör bara
+genom delegering. Syskonrepon under samma rot.
+
+## Projects
+
+### brian (swift)
+- dir: ~/Developer/huvudkontoret/brian
+- commands: dev · build · test
+
+### hk (node)
+- dir: ~/Developer/huvudkontoret/hk
+- commands: test
+
+### web (other)
+- dir: ~/Developer/huvudkontoret/web
+- commands: dev · test · lint
+
+## Conventions
+- Trunk-based on main · conventional commits
+- Run via hk: hk dev|build|test|verify &lt;project&gt;
+- --json on every command</pre>
+                    </div>
+
+                    <section class="move" aria-label="Villkor för att flytta ut">
+                        <div>
+                            <p class="move-label">// VILLKOR FÖR ATT FLYTTA UT</p>
+                            <h2>Residenter bor gratis. Men inte för evigt.</h2>
+                            <p class="move-copy">
+                                När hk bär flyttar den till
+                                <a href="https://huvudkontoret.dev/hk">huvudkontoret.dev/hk</a>
+                                och den här adressen pekar vidare med -&gt;.
+                            </p>
+                        </div>
+                        <ul class="conds">
+                            <li>
+                                <span class="arrow">-&gt;</span>
+                                <span>Ett kommando till produktiv. <code>hk context</code> för agenten, <code>hk ls</code> för människan.</span>
+                            </li>
+                            <li>
+                                <span class="arrow">-&gt;</span>
+                                <span>Scopefrågor dör på en minut. Läser den? In. Skriver den? Bara form. Kör den? Bara genom delegering.</span>
+                            </li>
+                            <li>
+                                <span class="arrow">-&gt;</span>
+                                <span>Ett eget lager. Länka <code>~/.config/hk/defaults</code> från ditt dotfiles-repo så delar <code>hk sync</code> ut filerna till varje projekt.</span>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+
+                <footer class="resident-foot">
+                    <span>huvudkontoret<span class="xyz">.xyz</span>/002</span>
+                    <em>resident på whiteboarden. flyttar när den bär.</em>
+                    <span>&lt;- .xyz&nbsp;&nbsp;nästa resident: /001 -&gt;</span>
+                </footer>
+            </article>
+        </main>
+
+        <!-- Cloudflare Web Analytics: the only measurement on the site. Cookieless,
+             so no consent banner; the token is a fact the gate holds every page to
+             (analytics in tools/check/facts.json). -->
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
+        ></script>
+    </body>
+</html>
