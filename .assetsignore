@@ -6,8 +6,9 @@
 # answers 200 text/markdown. Everything listed here stops being part of the
 # site. Nothing is hidden by it; the repo stays public on GitHub.
 #
-# Published: index.html, index.md, llms.txt, llms-full.txt, robots.txt,
-# sitemap.xml, .well-known/ and assets/. The gate asserts that list is exactly
+# Published: index.html, profil.html, index.md, llms.txt, llms-full.txt,
+# robots.txt, sitemap.xml, .well-known/, assets/ and xyz/ (the whiteboard's
+# tree, served only on its own host). The gate asserts that list is exactly
 # what survives, so a new file added to the repo root cannot quietly appear on
 # the site — see tools/check/checks/workers.mjs.
 

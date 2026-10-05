@@ -536,6 +536,24 @@ test("references: an extensionless link resolves to the page the Worker serves t
   assertFires(references, { "index.html": link }, "om is not tracked");
 });
 
+test("references: a relative URL resolves against the page that carries it, not the repo root", () => {
+  // The lenses live in subtrees. From xyz/index.html, `001/` is the resident
+  // page and `/assets/...` is the shared asset directory; from the resident
+  // page, `../` is the wall. Root-relative reading would fail every one.
+  const facts = { ...UNLICENSED, pages: ["index.html", "xyz/index.html", "xyz/001/index.html"] };
+  const page = (body) => `<!doctype html>\n<html lang="sv"><head><title>xyz</title></head><body>${body}</body></html>\n`;
+  assertClean(
+    references,
+    {
+      "xyz/index.html": page('<a href="001/">001</a><img src="/assets/logo.svg" alt="">'),
+      "xyz/001/index.html": page('<a href="../">tillbaka</a><a href="../#labb">labb</a><a href="./">hit</a>'),
+    },
+    facts,
+  );
+  assertFires(references, { "xyz/index.html": page('<a href="002/">002</a>') }, "xyz/002/index.html is not tracked", facts);
+  assertFires(references, { "xyz/index.html": page('<img src="logo.svg" alt="">') }, "xyz/logo.svg is not tracked", facts);
+});
+
 test("markup and references: every declared page is checked, and an absent one is skipped", () => {
   const facts = { ...FACTS, pages: ["index.html", "om.html"] };
   const broken = findings(markup, withEdits({ "om.html": "<!doctype html>\n<html lang=\"sv\"><head><title>Om</title></head><body><div></body></html>\n" }), facts);

@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>huvudkontoret.xyz · whiteboarden</title>
+        <meta
+            name="description"
+            content="Vår whiteboard och experimentvägg. Här bor hypoteser och prototyper tills de bär eller dör. Allt kan gå sönder, med flit."
+        />
+        <meta name="theme-color" content="#F0862B" />
+        <meta property="og:title" content="huvudkontoret.xyz" />
+        <meta property="og:description" content="Inte färdigt. Med flit. Vår whiteboard: hypoteser, inte löften." />
+        <meta property="og:url" content="https://huvudkontoret.xyz/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="sv_SE" />
+        <link rel="canonical" href="https://huvudkontoret.xyz/" />
+        <!-- Only /assets/ is shared across the hosts (SHARED_PATHS in
+             src/lib/tld.ts), so every asset here is root-absolute and lives
+             there. Links between the lens's own pages are relative: the browser
+             resolves them against the page, which is right both on the real
+             host and on the prefix-path preview. -->
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+
+        <!-- The MonoLisa blocks the first view needs: Latin upright and italic,
+             Latin-1 for å ä ö and the middle dot. The rest load on demand
+             through unicode-range. crossorigin is required even same-origin. -->
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0080-00FF.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+            rel="stylesheet"
+        />
+
+        <style>
+            /* ===================== TYPOGRAFI ===================== */
+            /* MonoLisa carries all typography; Permanent Marker is the hero-only
+               accent. Same files and rule as the homepage: assets/fonts/README.md. */
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+
+            /* ===================== KONSTANTER ===================== */
+            /* The profile's constants, as the homepage carries them, plus the
+               one thing only .xyz has: the day cycle (locked 2026-07-29).
+               Morning is Glöd, dusk is burnt, the evening shift is Bläck with
+               the residents' pens as the only accent. The lens has no accent of
+               its own. Canon: Färgsystem § 4B. */
+            :root {
+                --black: #16150f; /* Bläck */
+                --paper: #f4f2ec; /* Papper */
+                --frame: #3a382f; /* Ram */
+                --stone: #5a574e; /* Sten */
+                --graphite: #8a877d; /* Grafit */
+                --light-graphite: #b5b1a6; /* Ljusgrafit */
+                --signal: #d9481c;
+
+                --glow: #f0862b; /* Glöd: morgonytan */
+                --glow-text: #8c4d14; /* Glöd som text på ljus yta */
+                --dusk: #3a2417; /* skymningen */
+                --dusk-text: #e8d9cc;
+                --dusk-label: #c98a5e;
+                --dusk-rule: #5a4030;
+
+                --shell: 1060px;
+                --gut: 48px;
+                --ease: cubic-bezier(0.2, 0, 0, 1);
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+                scroll-padding-top: 72px;
+            }
+            body {
+                margin: 0;
+                background: var(--black);
+                color: var(--black);
+                font-family: "MonoLisa", ui-monospace, SFMono-Regular, "SF Mono",
+                    Menlo, Consolas, monospace;
+                font-weight: 400;
+                font-feature-settings: "calt" 0, "liga" 0, "dlig" 0;
+                -webkit-font-smoothing: antialiased;
+                text-rendering: optimizeLegibility;
+            }
+            h1,
+            h2,
+            p {
+                margin: 0;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            :focus-visible {
+                outline: 2px solid var(--signal);
+                outline-offset: 3px;
+            }
+
+            /* Grammatiken bryter aldrig rad: -> <- [ STATUS ] */
+            .g {
+                white-space: nowrap;
+            }
+
+            .shell {
+                max-width: var(--shell);
+                margin: 0 auto;
+            }
+            .stack {
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+            }
+            .label {
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+            }
+            .h2 {
+                font-size: clamp(24px, 3.2vw, 34px);
+                font-weight: 600;
+                line-height: 1.25;
+            }
+            .head {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+            .head > div {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .aside {
+                font-size: 13px;
+                font-weight: 300;
+                font-style: italic;
+                line-height: 1.6;
+                max-width: 40ch;
+                color: var(--graphite);
+            }
+
+            .skip {
+                position: absolute;
+                left: -9999px;
+                top: 0;
+                z-index: 100;
+                background: var(--black);
+                color: var(--paper);
+                padding: 12px 20px;
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .skip:focus {
+                left: 0;
+            }
+
+            /* ===================== CHROME ===================== */
+            .chrome {
+                position: sticky;
+                top: 0;
+                z-index: 40;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                padding: 16px var(--gut);
+                border-bottom: 1px solid var(--black);
+                background: var(--paper);
+                font-size: 12px;
+                font-weight: 500;
+                flex-wrap: wrap;
+            }
+            .lockup {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                min-height: 44px;
+            }
+            .lockup:hover {
+                text-decoration: none;
+            }
+            /* Sigillet färgas via mask, originalfilen ritas aldrig om. */
+            .sigill {
+                width: 22px;
+                aspect-ratio: 100.1 / 98.2;
+                background: currentColor;
+                -webkit-mask: url("/assets/hk-sigill.svg") center / contain
+                    no-repeat;
+                mask: url("/assets/hk-sigill.svg") center / contain no-repeat;
+                flex-shrink: 0;
+            }
+            .wordmark {
+                font-size: 14px;
+                font-weight: 600;
+            }
+            /* Punkten ägs av adressen. På ljus yta tas Glöd som text. */
+            .tld {
+                color: var(--glow-text);
+            }
+            .chrome nav {
+                display: flex;
+                gap: 24px;
+                letter-spacing: 0.1em;
+                flex-wrap: wrap;
+            }
+            .chrome nav a:hover {
+                color: var(--glow-text);
+            }
+            .coords {
+                color: var(--stone);
+                letter-spacing: 0.1em;
+                white-space: nowrap;
+            }
+
+            /* ===================== HERO · MORGON ===================== */
+            .hero {
+                padding: 104px var(--gut) 88px var(--gut);
+                border-bottom: 1px solid var(--black);
+                background: var(--glow);
+                color: var(--black);
+            }
+            .hero .meta {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .hero h1 {
+                font-family: "Permanent Marker", cursive;
+                font-size: clamp(48px, 8vw, 96px);
+                font-weight: 400;
+                line-height: 0.95;
+            }
+            .hero .ingress {
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 1.8;
+                max-width: 56ch;
+                color: var(--dusk);
+            }
+            .hero .ingress b {
+                font-weight: 600;
+            }
+            .residents {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                align-items: center;
+            }
+            .residents .label {
+                font-size: 11px;
+                white-space: nowrap;
+            }
+            .chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: var(--black);
+                color: var(--paper);
+                padding: 8px 16px;
+                font-size: 12.5px;
+                font-weight: 600;
+                white-space: nowrap;
+                min-height: 36px;
+            }
+            .chip span {
+                font-weight: 300;
+                color: var(--light-graphite);
+            }
+            .chip:hover {
+                background: var(--frame);
+                text-decoration: none;
+            }
+            .obs {
+                border: 1px dashed var(--black);
+                padding: 16px 24px;
+                font-size: 12.5px;
+                font-weight: 400;
+                line-height: 1.7;
+                max-width: 640px;
+                color: var(--dusk);
+            }
+            .obs b {
+                font-weight: 700;
+            }
+
+            /* ===================== REGLER · SKYMNING ===================== */
+            .dusk {
+                padding: 88px var(--gut);
+                border-bottom: 1px solid var(--black);
+                background: var(--dusk);
+                color: var(--paper);
+            }
+            .dusk .label {
+                color: var(--dusk-label);
+            }
+            .dusk .split {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 56px;
+                align-items: start;
+            }
+            .dusk .split > div {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .dusk .lead {
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 1.8;
+                max-width: 44ch;
+                color: var(--dusk-text);
+            }
+            .rules {
+                display: flex;
+                flex-direction: column;
+                font-size: 14px;
+                border-bottom: 1px solid var(--dusk-rule);
+            }
+            .rules p {
+                display: flex;
+                gap: 16px;
+                padding: 16px 0;
+                border-top: 1px solid var(--dusk-rule);
+                line-height: 1.6;
+            }
+            .rules .arrow {
+                font-weight: 700;
+                color: var(--dusk-label);
+                flex-shrink: 0;
+            }
+            .rules b {
+                font-weight: 600;
+            }
+            .rules span:not(.arrow) {
+                font-weight: 300;
+                color: var(--dusk-text);
+            }
+            .rules span:not(.arrow) b {
+                color: var(--paper);
+            }
+
+            /* ===================== KVÄLLSSKIFTET ===================== */
+            .ink {
+                padding: 88px var(--gut);
+                border-bottom: 1px solid var(--frame);
+                background: var(--black);
+                color: var(--paper);
+            }
+            .ink .label {
+                color: var(--graphite);
+            }
+            .ink .stack {
+                gap: 48px;
+            }
+            .lab {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 24px;
+            }
+            .card {
+                border: 1px solid var(--frame);
+                padding: 32px;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .card-head {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 12px;
+            }
+            /* Ett experiment tar sin residents penna. Utan tilldelad penna
+               står numret i Ljusgrafit. */
+            .xid {
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--light-graphite);
+            }
+            .status {
+                font-size: 10px;
+                font-weight: 600;
+                letter-spacing: 0.08em;
+                background: var(--frame);
+                color: var(--light-graphite);
+                padding: 3px 8px;
+                white-space: nowrap;
+            }
+            .card p {
+                font-size: 13px;
+                font-weight: 300;
+                line-height: 1.7;
+                color: var(--light-graphite);
+            }
+            .card .q {
+                display: block;
+                font-size: 10.5px;
+                font-weight: 500;
+                font-style: normal;
+                letter-spacing: 0.14em;
+                color: var(--graphite);
+                margin-bottom: 5px;
+            }
+            .card .what {
+                font-size: 16px;
+                font-weight: 600;
+                color: var(--paper);
+            }
+            .card .what span:not(.q) {
+                font-weight: 300;
+                color: var(--light-graphite);
+                font-size: 13px;
+            }
+            .card .what a:hover {
+                color: var(--glow);
+            }
+            .measure {
+                display: block;
+                font-style: italic;
+                color: var(--graphite);
+                margin-top: 6px;
+            }
+
+            .gone {
+                display: flex;
+                flex-direction: column;
+                font-size: 14px;
+                border-bottom: 1px solid var(--frame);
+            }
+            .gone p {
+                display: grid;
+                grid-template-columns: minmax(90px, 140px) 1fr;
+                gap: 24px;
+                padding: 16px 4px;
+                border-top: 1px solid var(--frame);
+                align-items: baseline;
+                line-height: 1.6;
+            }
+            .gone .name {
+                font-weight: 700;
+                color: var(--graphite);
+                text-decoration: line-through;
+            }
+            .gone .why {
+                font-weight: 300;
+                color: var(--light-graphite);
+            }
+            .gone .why b {
+                font-weight: 600;
+                color: var(--paper);
+            }
+            .ink .h2 em {
+                font-style: normal;
+                color: var(--glow);
+            }
+
+            /* ===================== FUND / FOOTER ===================== */
+            .end {
+                padding: 64px var(--gut) 48px var(--gut);
+                background: var(--black);
+                color: var(--paper);
+            }
+            .end .stack {
+                gap: 32px;
+            }
+            .fund {
+                border: 1px solid var(--frame);
+                padding: 32px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 24px;
+                flex-wrap: wrap;
+            }
+            .fund > div {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+            .fund .title {
+                font-size: 15px;
+                font-weight: 600;
+            }
+            .fund .sub {
+                font-size: 13px;
+                font-weight: 300;
+                color: var(--light-graphite);
+            }
+            /* Ingen länk förrän .vote är i drift: adressen står som löfte. */
+            .fund .soon {
+                border: 1px solid var(--frame);
+                color: var(--light-graphite);
+                padding: 14px 24px;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.05em;
+                white-space: nowrap;
+            }
+            .foot {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 16px;
+                border-top: 1px solid var(--frame);
+                padding-top: 24px;
+                font-size: 12px;
+            }
+            .foot .mark {
+                font-weight: 600;
+            }
+            /* I mörker tar adressen fullt Glöd. */
+            .foot .tld {
+                color: var(--glow);
+            }
+            .foot .tag {
+                font-weight: 300;
+                font-style: italic;
+                color: var(--graphite);
+            }
+            .foot a:hover {
+                color: var(--glow);
+            }
+
+            @media (max-width: 640px) {
+                :root {
+                    --gut: 20px;
+                }
+                .hero {
+                    padding: 72px var(--gut) 56px var(--gut);
+                }
+                .dusk,
+                .ink {
+                    padding: 64px var(--gut);
+                }
+                .card {
+                    padding: 24px;
+                }
+                .gone p {
+                    grid-template-columns: 1fr;
+                    gap: 6px;
+                }
+                .foot {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 12px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <a class="skip" href="#labb">Hoppa till innehållet</a>
+
+        <!-- CHROME -->
+        <div class="chrome">
+            <a class="lockup" href="#top">
+                <span class="sigill" aria-hidden="true"></span>
+                <span class="wordmark"
+                    >huvudkontoret<span class="tld">.xyz</span></span
+                >
+            </a>
+            <nav aria-label="Sidsektioner">
+                <a href="#regler">REGLER</a>
+                <a href="#labb">LABB</a>
+                <a href="#bortgallrat">BORTGALLRAT</a>
+                <a href="#fund">FUND</a>
+            </nav>
+            <span class="coords">WHITEBOARDEN · ALLT KAN GÅ SÖNDER</span>
+        </div>
+
+        <!-- HERO · MORGON -->
+        <header class="hero" id="top">
+            <div class="shell stack">
+                <div class="meta label">
+                    <span>// EXPERIMENTLINSEN · VÅR WHITEBOARD</span>
+                    <span>HYPOTESER, INTE LÖFTEN</span>
+                </div>
+                <h1>Inte färdigt.<br />Med flit.</h1>
+                <p class="ingress">
+                    Det här är vår whiteboard och experimentvägg. Här bor det
+                    som ännu inte förtjänat en adress i <b>.app</b> eller
+                    <b>.dev</b>: hypoteser, prototyper och sådant som är lite
+                    kul men kanske rätt värdelöst. Vi vet snart.
+                </p>
+                <div class="residents">
+                    <span class="label">BOR HÄR NU</span>
+                    <a class="chip" href="001/"
+                        >/001 brian <span>hjärnkontoret</span></a
+                    >
+                </div>
+                <p class="obs">
+                    <b>obs:</b> allt på .xyz kan gå sönder, ändras eller
+                    försvinna utan förvarning. Det är hela poängen. När något
+                    bär flyttar det ut, och den gamla adressen pekar vidare med
+                    <span class="g">-&gt;</span>.
+                </p>
+            </div>
+        </header>
+
+        <!-- REGLER · SKYMNING -->
+        <section class="dusk" id="regler">
+            <div class="shell split">
+                <div>
+                    <span class="label">// REGLER</span>
+                    <h2 class="h2">Labbet har en grind<br />även det</h2>
+                    <p class="lead">
+                        Frihet i utförandet, disciplin i villkoren. Det är
+                        skillnaden mellan ett labb och en kyrkogård av
+                        halvfärdigt.
+                    </p>
+                </div>
+                <div class="rules">
+                    <p>
+                        <span class="arrow g">-&gt;</span
+                        ><span
+                            ><b>Hypotes krävs.</b> Ingen hypotes, inget
+                            experiment, bara en hobby.</span
+                        >
+                    </p>
+                    <p>
+                        <span class="arrow g">-&gt;</span
+                        ><span
+                            ><b>Mäts eller dör.</b> Varje experiment bär sitt
+                            mätvillkor från dag ett.</span
+                        >
+                    </p>
+                    <p>
+                        <span class="arrow g">-&gt;</span
+                        ><span
+                            ><b>Vägen ut är FUND.</b> Ett experiment som håller
+                            blir kandidat i .vote/fund, aldrig direkt till
+                            .app.</span
+                        >
+                    </p>
+                    <p>
+                        <span class="arrow g">-&gt;</span
+                        ><span
+                            ><b>Döden dokumenteras.</b> Bortgallrade experiment
+                            behåller sin sida, lärdomen är leveransen.</span
+                        >
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LABB · KVÄLLSSKIFTET -->
+        <section class="ink" id="labb">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// LABB · KVÄLLSSKIFTET</span>
+                        <h2 class="h2">Pågående experiment</h2>
+                    </div>
+                    <span class="aside"
+                        >Varje experiment svarar på samma tre frågor som allt
+                        annat vi gör: varför, vad, hur. Hur bär alltid
+                        mätvillkoret. Numret är ett födelsenummer: xyz-001 fick
+                        sitt när adressen kom upp, xp-001 är projektets första
+                        fråga.</span
+                    >
+                </div>
+                <div class="lab">
+                    <article class="card">
+                        <div class="card-head">
+                            <span class="xid">xyz-001/xp-001</span>
+                            <span class="status g">[ SKISS ]</span>
+                        </div>
+                        <p>
+                            <span class="q">// VARFÖR</span>Tankar fångas överallt
+                            och följs upp ingenstans. Varje verktyg som lovade
+                            att hjälpa blev en hög till.
+                        </p>
+                        <p class="what">
+                            <span class="q">// VAD</span
+                            ><a href="001/">/001 brian</a>
+                            <span
+                                >hjärnkontoret: där tanken lämnar huvudet och
+                                tas om hand.</span
+                            >
+                        </p>
+                        <p>
+                            <span class="q">// HUR</span>Originalet rörs
+                            aldrig. Verktygen skriver bredvid, och inget blir
+                            ett åtagande utan ditt ja.<span class="measure"
+                                >mätvillkor: sätts före öppning</span
+                            >
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- BORTGALLRAT -->
+        <section class="ink" id="bortgallrat">
+            <div class="shell stack">
+                <div class="head">
+                    <div>
+                        <span class="label">// BORTGALLRAT, MEDVETET</span>
+                        <h2 class="h2">
+                            Det vi valde bort<em>, och varför</em>
+                        </h2>
+                    </div>
+                    <span class="aside"
+                        >De här dog innan väggen fanns och har inget nummer.
+                        Lärdomen står kvar ändå.</span
+                    >
+                </div>
+                <div class="gone">
+                    <p>
+                        <span class="name">kortlänk</span
+                        ><span class="why"
+                            ><b>En kort adress att dela länkar med.</b>
+                            hk.link är premiumdomän och huvudkontoret.link är
+                            tjugoen tecken, så ingen av dem gör
+                            kortlänksjobbet. Nedlagd 2026-08-05. Lärdom: länkar
+                            delas som hela adresser, ingen kant går genom en
+                            mellannod.</span
+                        >
+                    </p>
+                    <p>
+                        <span class="name">ask</span
+                        ><span class="why"
+                            ><b>Chattgränssnitt för ask.</b> Svar utan källa är
+                            brus, och chatt bjuder in brus. Lärdom: CLI med
+                            källkrav, aldrig chatt.</span
+                        >
+                    </p>
+                </div>
+                <span class="aside"
+                    >Att gallra bort är inte att misslyckas. Det är samma
+                    tangent som i kull: X, och vidare.</span
+                >
+            </div>
+        </section>
+
+        <!-- FUND / FOOTER -->
+        <section class="end" id="fund">
+            <div class="shell stack">
+                <div class="fund">
+                    <div>
+                        <span class="title"
+                            >Vill du att ett experiment blir verklighet?</span
+                        >
+                        <span class="sub"
+                            >Rösta och backa i den gemensamma byggkassan.</span
+                        >
+                    </div>
+                    <span class="soon g">-&gt; .vote/fund [ SNART ]</span>
+                </div>
+                <footer class="foot">
+                    <span class="mark"
+                        >huvudkontoret<span class="tld">.xyz</span></span
+                    >
+                    <span class="tag"
+                        >experimentlinsen. lite kul, kanske rätt värdelöst. vi
+                        vet snart.</span
+                    >
+                    <a href="https://huvudkontoret.io/"
+                        ><span class="g">&lt;-</span> tillbaka till nätverket</a
+                    >
+                </footer>
+            </div>
+        </section>
+
+        <!-- Cloudflare Web Analytics: the only measurement on the site. Cookieless,
+             so no consent banner; the token is a fact the gate holds every page to
+             (analytics in tools/check/facts.json). -->
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
+        ></script>
+    </body>
+</html>
