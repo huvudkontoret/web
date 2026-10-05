@@ -11,30 +11,35 @@ comments, docs, pull requests — is in English.
 
 ## The one thing to know
 
-**A push to `main` is a publish.** The apex is served straight from the repo
-root with nothing in between, so no build, no bundler and no review
-environment stands between a commit and huvudkontoret.io. Nothing downstream
-catches a mistake, which makes the pull request the last place anything can
-be caught — and `tools/check` is what catches it.
+**A push to `main` is a publish.** Cloudflare Workers Builds deploys the
+Worker from `main` to `huvudkontoret.io` with no site build in between — the
+repo root, narrowed by `.assetsignore`, is what goes live. The pull request
+is still the last place a mistake can be caught before that happens:
+`tools/check` is the gate, and every PR also gets an Access-restricted Worker
+preview so you can look before you merge.
 
 ## Run it
 
 ```sh
-hk dev web       # serve the repo root at http://127.0.0.1:8787
+hk dev web       # same Worker as production, at http://127.0.0.1:8787
 hk verify web    # the gate: self-tests, content checks, formatting
 ```
 
-Exactly the files that get published, with no build step in between. Without
-the workspace harness, the same two commands are:
+`hk dev web` runs `npx wrangler dev`, so `.assetsignore` decides what exists
+locally too — `/CLAUDE.md` answers 404 here exactly as it does on the apex.
+Without the workspace harness, the same two commands are:
 
 ```sh
-python3 -m http.server 8787 --bind 127.0.0.1
-node --test tools/check/test.mjs && node tools/check/run.mjs && node tools/check/run.mjs --format
+npx wrangler dev
+node --test tools/check/test.mjs src/lib/tld.test.mjs worker/index.test.mjs \
+  && node tools/check/run.mjs && node tools/check/run.mjs --format
 ```
 
-Node 22 and `python3` are the whole toolchain. There is no `npm install`, no
-lockfile, and the gate has no dependencies — the site has no build step and
-the tooling must not give it one.
+Node 24 is the toolchain for the gate (it imports TypeScript directly). There
+is no `npm install`, no lockfile, and the gate has no dependencies — the site
+has no build step and the tooling must not give it one. Wrangler is pulled
+ephemerally by `npx` for local serve and by Cloudflare Workers Builds for
+deploy.
 
 ## What is in here
 
@@ -46,8 +51,7 @@ the tooling must not give it one.
 | `robots.txt` · `sitemap.xml` · `.well-known/` | Crawl policy, resource list, API catalog and an installable agent skill |
 | `assets/` | Images, icons and fonts |
 | `.assetsignore` | What the repo root narrows down to before it is served |
-| `wrangler.jsonc` | The Cloudflare Worker that will serve the apex |
-| `CNAME` · `.nojekyll` | GitHub Pages, which still serves it today |
+| `wrangler.jsonc` · `worker/` | The Cloudflare Worker that serves the apex |
 | `tools/check/` | The gate — see its own README |
 | `docs/` | `adr/` decisions · `specs/` designs · `runbooks/` operations |
 | `CONTEXT.md` | Domain language and the rules that hold everywhere. Read this one |
@@ -64,24 +68,36 @@ on the site.
 Nothing is hidden by this. The repo is public; excluding a file stops it from
 being part of the website, not from being read on GitHub.
 
-## Hosting, mid-migration
+## Hosting
 
-As of 2026-08-12 the apex still answers `server: GitHub.com`. That is correct,
-not a bug. ADR 0001 decided to retire GitHub Pages and serve the site from the
-Cloudflare Worker in `wrangler.jsonc`, but `wrangler deploy` creates the
-custom domains it finds in that file — writing the apex route into it *is* the
-cutover. The route is therefore held back and lands in its own pull request,
-together with `expectCustomDomain` in the gate's facts; the gate fails if
-either appears without the other.
+Production is the Cloudflare Worker named `web` on `huvudkontoret.io`
+(ADR 0001). Cut over from GitHub Pages on 2026-08-26; `server: cloudflare` on
+the apex is the correct answer. `www` keeps a 301 to the apex through a zone
+redirect rule.
 
-Every pull request already gets a preview at
-`<branch>-web.<subdomain>.workers.dev`, restricted with Cloudflare Access
-because previews show unreleased work. They are built from the repo, fonts
-included, so a preview renders as designed.
+Publish path:
+
+1. Open a pull request against `main`.
+2. `.github/workflows/pr.yml` runs the gate (self-tests, title, content,
+   formatting) — the same commands as `hk verify web`.
+3. Cloudflare Workers Builds deploys a preview at
+   `<branch>-web.<subdomain>.workers.dev`, restricted with Cloudflare Access
+   because previews show unreleased work. Fonts are in the repo, so a preview
+   renders as designed.
+4. Merge to `main`. Workers Builds deploys production. The custom domain in
+   `wrangler.jsonc` is what the Worker serves; GitHub Actions does not deploy.
+
+There is no long-lived `dev` / `stage` environment. The per-PR preview is the
+staging environment.
 
 - Decision: `docs/adr/0001-serve-the-site-from-cloudflare-workers.md`
-- Cutover, including the rollback:
+- Cutover record and rollback:
   `docs/runbooks/2026-08-12-pages-to-workers-cutover.md`
+
+A dynamic `pages-build-deployment` workflow may still appear in the Actions
+list from the old GitHub Pages connection. Pages itself is off; it is not part
+of the publish path. Leave it alone unless someone is explicitly cleaning up
+repository settings.
 
 ## Working here
 
@@ -101,15 +117,12 @@ included, so a preview renders as designed.
   rollback; `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md` is how it
   was done.
 
-## Work that lives off `main`
+## Work that is not on `main`
 
-Two things belong to this repo without being on the trunk:
-
-- **`io-profile`** (PR #2) — the page rebuilt on the locked graphic
-  profile, with MonoLisa shipped as a webfont.
-- **`identity-runtime`** — the Astro MVP of `render(node, perspective)`,
-  where `huvudkontoret.<tld>/<slug>` means "render this node through that
-  perspective". Still an experiment, deliberately not deployed and not gated.
+The Astro identity-runtime experiment (`render(node, perspective)`) left
+`main` in `bf21a0b` and its branch was deleted — history is the only copy.
+See `CONTEXT.md`. Open feature work for other TLDs lives on ordinary PRs
+against `main`.
 
 ## Read next
 

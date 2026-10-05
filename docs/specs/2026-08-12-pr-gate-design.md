@@ -4,14 +4,16 @@ Status: implemented · 2026-08-12
 
 ## Why
 
-The deploy is the repo root and a push to `main` is a publish. GitHub Pages
-serves `main:/` behind the `huvudkontoret.io` CNAME with `build_type: legacy` —
-no build, no staging, nothing between the merge button and the live site. Until
-now nothing checked anything: `hk verify web` answered *"project 'web' (other)
-has no verifiable commands"*, and the repo had no CI at all.
+The deploy is the repo root and a push to `main` is a publish. Cloudflare
+Workers Builds deploys the Worker from `main` to `huvudkontoret.io` with no
+site build in between — the repo root, narrowed by `.assetsignore`, is what
+goes live. When this design was written, GitHub Pages was still production and
+nothing checked anything: `hk verify web` answered *"project 'web' (other) has
+no verifiable commands"*, and the repo had no CI at all.
 
-So the pull request is the only place a mistake can still be caught, and this
-is what catches it.
+The cutover to Workers (2026-08-26) added Access-restricted PR previews, but
+the gate is still what catches content mistakes before merge. This is that
+gate.
 
 ## Scope
 
@@ -46,10 +48,11 @@ tools/check/test.mjs         the gate's own tests
 
 ### The checks
 
-- **publishing** — the repo root is safe to serve: `CNAME` is the expected
-  host, `.nojekyll` is present so Jekyll does not silently drop `.well-known/`,
-  robots keeps its `Content-Signal` and `Sitemap` lines, no build output is
-  committed.
+- **publishing** — the repo root is safe to serve: every required surface is
+  present, robots keeps its `Content-Signal` and `Sitemap` lines, and no build
+  output is committed. (The original Pages checks for `CNAME` / `.nojekyll`
+  left with the cutover; `workers` now holds the Worker config and
+  `.assetsignore` contract.)
 - **references** — every local link, asset and anchor in `index.html` resolves,
   and every sitemap `<loc>` points at something real.
 - **markup** — `index.html` is structurally sound: balanced structural tags,
@@ -57,8 +60,8 @@ tools/check/test.mjs         the gate's own tests
 - **surfaces** — `index.html`, `index.md` and `llms.txt` agree on the declared
   facts, and an address that is announced but not running is never presented as
   live.
-- **fonts** — no licensed font file is committed, and the ignore rule that
-  keeps it that way is intact.
+- **fonts** — licensed fonts are carried exactly as licensed: none while
+  `webFontLicence` is false; exactly `licensedWebFonts` once it is true.
 - **formatting** — `.editorconfig` is respected in hand-written files.
 
 ## Decisions

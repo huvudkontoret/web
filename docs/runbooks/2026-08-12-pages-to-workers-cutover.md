@@ -172,20 +172,17 @@ the rollback failed.
 
 ## After the cutover
 
-Run on 2026-08-26 and done, listed here because the procedure is what a rerun
-would follow, not because anything is outstanding.
+Run on 2026-08-26 and done. The checklist below was the follow-up work; all of
+it is complete. Kept here so a rerun knows what "done" looked like.
 
-
-- Update the `static site` row in `CONTEXT.md` — it describes Pages as what
-  serves the apex.
-- Point the dev loop at the Worker: `hk dev web` runs
-  `python3 -m http.server` from `hk.json`, which hands out the whole checkout.
-  That matches Pages exactly and is precisely what the Worker stops doing —
-  `.assetsignore` decides what the site is, so `/CLAUDE.md` answers 200
-  locally and 404 on the apex from step 5 onward. Switch the command to
-  `npx wrangler dev` and update the `Run:` pointer in `CONTEXT.md` with it.
-- Open the follow-up PR that drops `CNAME`, `.nojekyll` and the
-  `publishing` check's Pages-specific assertions.
-- If the MonoLisa web licence is later confirmed, remove the `.gitignore` and
-  `.assetsignore` rules for `assets/fonts/*.woff2` **together**. The gate fails
-  if only one goes.
+- [x] Update the `static site` row in `CONTEXT.md` — Worker owns the apex;
+  `server: cloudflare` is the correct answer.
+- [x] Point the dev loop at the Worker: `hk.json` runs `npx wrangler dev`, so
+  `.assetsignore` decides what exists locally too.
+- [x] Drop `CNAME`, `.nojekyll` and the `publishing` check's Pages-specific
+  assertions.
+- [x] MonoLisa web licence confirmed; variable files are committed and gated
+  by `webFontLicence` / `licensedWebFonts` (see
+  `docs/runbooks/2026-08-26-monolisa-webfont-cutover.md`).
+- [x] User-facing docs (README and related) describe Workers-only hosting, not
+  the mid-migration Pages state.

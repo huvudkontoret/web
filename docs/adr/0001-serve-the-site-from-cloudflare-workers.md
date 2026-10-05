@@ -1,6 +1,16 @@
 # 0001 — Serve the site from Cloudflare Workers
 
-Status: accepted · 2026-08-12
+Status: accepted · 2026-08-12 · cut over 2026-08-26
+
+## Outcome
+
+The cutover ran on 2026-08-26. Production is the `web` Worker on
+`huvudkontoret.io`; GitHub Pages is off; `CNAME` and `.nojekyll` are gone.
+Workers Builds deploys previews on pull requests and production on `main`.
+`server: cloudflare` on the apex is the correct answer. The Context and
+Consequences below keep the reasoning as written at acceptance; the runbook
+records the steps and rollback.
+
 
 ## Context
 

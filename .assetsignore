@@ -2,9 +2,10 @@
 #
 # The asset directory is the repo root, so without this file the whole
 # checkout is served — agent instructions, design docs, the gate's own source.
-# That is what GitHub Pages does today: https://huvudkontoret.io/CLAUDE.md
-# answers 200 text/markdown. Everything listed here stops being part of the
-# site. Nothing is hidden by it; the repo stays public on GitHub.
+# GitHub Pages used to do exactly that; the Worker respects this file instead,
+# so https://huvudkontoret.io/CLAUDE.md answers 404. Everything listed here
+# stops being part of the site. Nothing is hidden by it; the repo stays public
+# on GitHub.
 #
 # Published: index.html, index.md, llms.txt, llms-full.txt, robots.txt,
 # sitemap.xml, .well-known/ and assets/. The gate asserts that list is exactly

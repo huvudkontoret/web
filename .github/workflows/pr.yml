@@ -1,8 +1,9 @@
 # Gate for pull requests against main.
 #
-# A push to `main` is a publish: GitHub Pages serves the repo root behind the
-# huvudkontoret.io CNAME with no build step in between, so the pull request is
-# the last place anything can be caught.
+# A push to `main` is a publish: Cloudflare Workers Builds deploys the Worker
+# from main to huvudkontoret.io with no site build in between, so the pull
+# request is the last place the gate can catch a mistake before production.
+# (Deploy itself is Workers Builds, not this workflow.)
 #
 # The steps are the same commands `hk verify web` runs locally — deliberately,
 # so a green tick here means what a developer saw before pushing. The site has
