@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>brian · hjärnkontoret · huvudkontoret.xyz/001</title>
+        <meta
+            name="description"
+            content="brian, hjärnkontoret: där tanken lämnar huvudet och tas om hand. Resident xyz-001 på whiteboarden. Flyttar till hjarnkontoret.app när den bär."
+        />
+        <meta name="theme-color" content="#16150F" />
+        <meta property="og:title" content="brian · hjärnkontoret · huvudkontoret.xyz/001" />
+        <meta property="og:description" content="Där tanken lämnar huvudet och tas om hand. Inte en hög till som ingen följer upp." />
+        <meta property="og:url" content="https://huvudkontoret.xyz/001/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="sv_SE" />
+        <link rel="canonical" href="https://huvudkontoret.xyz/001/" />
+        <!-- Assets are root-absolute and shared across hosts; links to the
+             lens's own pages are relative. See xyz/index.html. -->
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0080-00FF.woff2" as="font" type="font/woff2" crossorigin />
+
+        <style>
+            /* ===================== TYPOGRAFI ===================== */
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+
+            /* ===================== KONSTANTER ===================== */
+            /* A resident page lives on the evening shift: Bläck, with the
+               resident's pen as accent. brian has no pen yet, so the page
+               stays in the tone scale. Canon: Färgsystem § 4B. */
+            :root {
+                --black: #16150f; /* Bläck */
+                --paper: #f4f2ec; /* Papper */
+                --frame: #3a382f; /* Ram */
+                --stone: #5a574e; /* Sten */
+                --graphite: #8a877d; /* Grafit */
+                --light-graphite: #b5b1a6; /* Ljusgrafit */
+                --signal: #d9481c;
+
+                --glow: #f0862b; /* Glöd: morgonytan */
+                --glow-text: #8c4d14; /* Glöd som text på ljus yta */
+                --dusk: #3a2417;
+                --dusk-label: #c98a5e;
+
+                --shell: 1060px;
+                --gut: 48px;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                background: var(--black);
+                color: var(--paper);
+                font-family: "MonoLisa", ui-monospace, SFMono-Regular, "SF Mono",
+                    Menlo, Consolas, monospace;
+                font-weight: 400;
+                font-feature-settings: "calt" 0, "liga" 0, "dlig" 0;
+                -webkit-font-smoothing: antialiased;
+                text-rendering: optimizeLegibility;
+            }
+            h1,
+            h2,
+            p {
+                margin: 0;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            :focus-visible {
+                outline: 2px solid var(--signal);
+                outline-offset: 3px;
+            }
+            .g {
+                white-space: nowrap;
+            }
+            .shell {
+                max-width: var(--shell);
+                margin: 0 auto;
+            }
+            .label {
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--graphite);
+            }
+            .skip {
+                position: absolute;
+                left: -9999px;
+                top: 0;
+                z-index: 100;
+                background: var(--black);
+                color: var(--paper);
+                padding: 12px 20px;
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .skip:focus {
+                left: 0;
+            }
+
+            /* ===================== CHROME ===================== */
+            .chrome {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                padding: 16px var(--gut);
+                border-bottom: 1px solid var(--black);
+                background: var(--paper);
+                color: var(--black);
+                font-size: 12px;
+                font-weight: 500;
+                flex-wrap: wrap;
+            }
+            .lockup {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                min-height: 44px;
+            }
+            .lockup:hover {
+                text-decoration: none;
+            }
+            .sigill {
+                width: 22px;
+                aspect-ratio: 100.1 / 98.2;
+                background: currentColor;
+                -webkit-mask: url("/assets/hk-sigill.svg") center / contain
+                    no-repeat;
+                mask: url("/assets/hk-sigill.svg") center / contain no-repeat;
+                flex-shrink: 0;
+            }
+            .wordmark {
+                font-size: 14px;
+                font-weight: 600;
+            }
+            .chrome .tld {
+                color: var(--glow-text);
+            }
+            .path {
+                color: var(--graphite);
+            }
+            .coords {
+                color: var(--stone);
+                letter-spacing: 0.1em;
+                white-space: nowrap;
+            }
+            /* Vägbandet: morgonytan, en Glöd-yta per skärm. Text i Bläck. */
+            .band {
+                display: flex;
+                justify-content: space-between;
+                gap: 16px;
+                flex-wrap: wrap;
+                padding: 8px var(--gut);
+                border-bottom: 1px solid var(--black);
+                background: var(--glow);
+                color: var(--black);
+                font-size: 12px;
+                font-weight: 500;
+            }
+            .band a {
+                font-weight: 600;
+            }
+            .band .muted {
+                color: var(--glow-text);
+            }
+            .band .state {
+                letter-spacing: 0.1em;
+            }
+
+            /* ===================== HUVUD ===================== */
+            .title {
+                padding: 88px var(--gut) 64px var(--gut);
+                border-bottom: 1px solid var(--frame);
+            }
+            .title .shell {
+                display: flex;
+                flex-direction: column;
+                gap: 32px;
+            }
+            .meta {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+            .title h1 {
+                font-size: clamp(40px, 6vw, 76px);
+                font-weight: 600;
+                line-height: 1.05;
+            }
+            .title h1 span {
+                color: var(--graphite);
+                font-weight: 300;
+            }
+            .ingress {
+                font-size: 15px;
+                font-weight: 300;
+                line-height: 1.8;
+                max-width: 60ch;
+                color: var(--light-graphite);
+            }
+            .ingress b {
+                color: var(--paper);
+                font-weight: 500;
+            }
+            .chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                font-size: 12.5px;
+            }
+            .chips span {
+                border: 1px solid var(--frame);
+                color: var(--light-graphite);
+                padding: 7px 16px;
+                white-space: nowrap;
+            }
+            .chips .status {
+                border-color: var(--light-graphite);
+                color: var(--paper);
+                font-weight: 600;
+            }
+
+            /* ===================== SEKTIONER ===================== */
+            .section {
+                padding: 64px var(--gut);
+                border-bottom: 1px solid var(--frame);
+            }
+            .section .shell {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+            }
+            .head {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .aside {
+                font-size: 12px;
+                font-weight: 300;
+                font-style: italic;
+                color: var(--graphite);
+                line-height: 1.6;
+                max-width: 44ch;
+            }
+            .card {
+                border: 1px solid var(--frame);
+                padding: 32px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                gap: 24px 40px;
+            }
+            .card p {
+                font-size: 13px;
+                font-weight: 300;
+                line-height: 1.7;
+                color: var(--light-graphite);
+            }
+            .card .q {
+                display: block;
+                font-size: 10.5px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--graphite);
+                margin-bottom: 6px;
+            }
+            .card .what {
+                font-size: 16px;
+                font-weight: 600;
+                color: var(--paper);
+            }
+            .card .what span:not(.q) {
+                display: block;
+                font-size: 13px;
+                font-weight: 300;
+                color: var(--light-graphite);
+                margin-top: 6px;
+            }
+            .measure {
+                display: block;
+                font-style: italic;
+                color: var(--graphite);
+                margin-top: 6px;
+            }
+
+            .split {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 56px;
+                align-items: start;
+            }
+            .split > div:first-child {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .split .label {
+                color: var(--dusk-label);
+            }
+            .h2 {
+                font-size: clamp(22px, 3vw, 30px);
+                font-weight: 600;
+                line-height: 1.3;
+            }
+            .lead {
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 1.8;
+                max-width: 44ch;
+                color: var(--light-graphite);
+            }
+            .terms {
+                display: flex;
+                flex-direction: column;
+                font-size: 14px;
+                border-bottom: 1px solid var(--frame);
+            }
+            .terms p {
+                display: flex;
+                gap: 16px;
+                padding: 16px 0;
+                border-top: 1px solid var(--frame);
+                line-height: 1.6;
+            }
+            .terms .arrow {
+                font-weight: 700;
+                color: var(--light-graphite);
+                flex-shrink: 0;
+            }
+            .terms b {
+                font-weight: 600;
+            }
+            .terms span:not(.arrow) {
+                font-weight: 300;
+                color: var(--light-graphite);
+            }
+            .terms span:not(.arrow) b {
+                color: var(--paper);
+            }
+
+            /* ===================== FOOTER ===================== */
+            .end {
+                padding: 48px var(--gut);
+            }
+            .foot {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 16px;
+                border-top: 1px solid var(--frame);
+                padding-top: 24px;
+                font-size: 12px;
+            }
+            .foot .mark {
+                font-weight: 600;
+            }
+            .foot .tld {
+                color: var(--glow);
+            }
+            .foot .tag {
+                font-weight: 300;
+                font-style: italic;
+                color: var(--graphite);
+            }
+            .foot a:hover {
+                color: var(--glow);
+            }
+
+            @media (max-width: 640px) {
+                :root {
+                    --gut: 20px;
+                }
+                .title {
+                    padding: 64px var(--gut) 48px var(--gut);
+                }
+                .card {
+                    padding: 24px;
+                }
+                .foot {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 12px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <a class="skip" href="#experiment">Hoppa till innehållet</a>
+
+        <!-- CHROME -->
+        <div class="chrome">
+            <a class="lockup" href="../">
+                <span class="sigill" aria-hidden="true"></span>
+                <span class="wordmark"
+                    >huvudkontoret<span class="tld">.xyz</span
+                    ><span class="path">/001</span></span
+                >
+            </a>
+            <span class="coords">WHITEBOARDEN · RESIDENT</span>
+        </div>
+        <div class="band">
+            <span
+                ><a href="../"><span class="g">&lt;-</span> .xyz</a>
+                <span class="muted">// bor här nu: /001</span></span
+            >
+            <span class="state"
+                ><span class="g">[ BOR HÄR ]</span>
+                <span class="g">-&gt; hjarnkontoret.app</span> när den bär</span
+            >
+        </div>
+
+        <!-- HUVUD -->
+        <header class="title">
+            <div class="shell">
+                <div class="meta label">
+                    <span>// RESIDENT · xyz-001</span>
+                    <span class="g">FÖRSTA COMMIT 2026-09-21</span>
+                </div>
+                <h1>brian <span>hjärnkontoret</span></h1>
+                <p class="ingress">
+                    Där tanken lämnar huvudet och tas om hand. Inte en hög
+                    till som ingen följer upp. <b>Hypotesen:</b> en tanke är
+                    värd att fånga först när något tar hand om den efteråt,
+                    och att ta hand om den får aldrig betyda att skriva om det
+                    du skrev.
+                </p>
+                <div class="chips">
+                    <span class="status">[ SKISS ]</span>
+                    <span>första experiment: xp-001</span>
+                    <span>mätvillkor: sätts före öppning</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- FÖRSTA EXPERIMENTET -->
+        <section class="section" id="experiment">
+            <div class="shell">
+                <div class="head">
+                    <span class="label">// FÖRSTA EXPERIMENTET · xyz-001/xp-001</span>
+                    <span class="aside"
+                        >Ny hypotes ger nytt nummer. Samma fråga behåller
+                        sitt.</span
+                    >
+                </div>
+                <article class="card">
+                    <p>
+                        <span class="q">// VARFÖR</span>Tankar fångas överallt
+                        och följs upp ingenstans. Varje verktyg som lovade att
+                        hjälpa blev en hög till.
+                    </p>
+                    <p class="what">
+                        <span class="q">// VAD</span>/001 brian
+                        <span
+                            >hjärnkontoret: en anteckningsbok där filerna är
+                            dina, originalen orörda och varje plug-in frågar en
+                            sak i taget.</span
+                        >
+                    </p>
+                    <p>
+                        <span class="q">// HUR</span>Originalet rörs aldrig.
+                        Verktygen skriver bredvid, i ett eget lager som säger
+                        vem som gjorde vad, och inget blir ett åtagande utan
+                        ditt ja. xp-001 är kärnloopen en gång genom terminalen:
+                        fånga, fråga, nästa steg, återuppta.<span class="measure"
+                            >mätvillkor: sätts före öppning</span
+                        >
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <!-- VILLKOR -->
+        <section class="section" id="villkor">
+            <div class="shell split">
+                <div>
+                    <span class="label">// VILLKOR FÖR ATT FLYTTA UT</span>
+                    <h2 class="h2">Residenter bor gratis.<br />Men inte för evigt.</h2>
+                    <p class="lead">
+                        När brian bär flyttar den ut till hjarnkontoret.app och
+                        den här adressen pekar vidare med
+                        <span class="g">-&gt;</span>.
+                        Bär den inte gallras den, och sidan blir en lärdom.
+                    </p>
+                </div>
+                <div class="terms">
+                    <p>
+                        <span class="arrow g">-&gt;</span
+                        ><span
+                            ><b>Mätvillkoret uppfyllt fyra veckor i rad.</b>
+                            Villkoret sätts före öppning och står här när det
+                            finns.</span
+                        >
+                    </p>
+                    <p>
+                        <span class="arrow g">-&gt;</span
+                        ><span
+                            ><b>Riktigt innehåll bakom varje yta.</b> Inga
+                            exempel. Det som inte finns står inte här.</span
+                        >
+                    </p>
+                    <p>
+                        <span class="arrow g">-&gt;</span
+                        ><span
+                            ><b>En namngiven ägare-nod.</b> Idén och
+                            experimentet är Magnus Renholms.</span
+                        >
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <section class="end">
+            <div class="shell">
+                <footer class="foot">
+                    <span class="mark"
+                        >huvudkontoret<span class="tld">.xyz</span
+                        ><span class="path">/001</span></span
+                    >
+                    <span class="tag"
+                        >resident på whiteboarden. flyttar när den bär.</span
+                    >
+                    <a href="../"><span class="g">&lt;-</span> .xyz</a>
+                </footer>
+            </div>
+        </section>
+
+        <!-- Cloudflare Web Analytics: the only measurement on the site. Cookieless,
+             so no consent banner; the token is a fact the gate holds every page to
+             (analytics in tools/check/facts.json). -->
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
+        ></script>
+    </body>
+</html>

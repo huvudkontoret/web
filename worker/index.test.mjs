@@ -39,6 +39,15 @@ test(".io does not answer for another domain's tree", async () => {
   assert.deepEqual(result.asked, [], "assets must not be consulted for a refused request");
 });
 
+test("the whiteboard's tree is refused on .io, and .xyz is refused until it goes live", async () => {
+  const crossed = await get("https://huvudkontoret.io/xyz/001/");
+  assert.equal(crossed.status, 404);
+  assert.deepEqual(crossed.asked, []);
+  const early = await get("https://huvudkontoret.xyz/001/");
+  assert.equal(early.status, 404);
+  assert.deepEqual(early.asked, []);
+});
+
 test("an unknown host is refused", async () => {
   const result = await get("https://example.com/");
   assert.equal(result.status, 404);
