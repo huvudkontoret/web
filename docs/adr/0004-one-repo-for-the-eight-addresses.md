@@ -17,9 +17,10 @@ its SYSTEMET section — `.ai`, `.dev`, `.app`, `.io`, `.cv`, `.name`, `.xyz`,
 other sixteen are held names with nothing designed for them.
 `src/lib/tld.ts` records all twenty-four and marks which is which.
 
-Exactly one address serves anything, and GitHub Pages serves it rather than
-this repo's Worker. So the build architecture is still fully open, and choosing
-it now is cheaper than choosing it after five domains are live.
+Exactly one address serves anything — `huvudkontoret.io`, on the Cloudflare
+Worker named `web` (ADR 0001, cut over 2026-08-26). The other lenses are still
+design-only, so the multi-address build architecture is still fully open, and
+choosing it now is cheaper than choosing it after five domains are live.
 
 Three things already constrain the choice:
 
