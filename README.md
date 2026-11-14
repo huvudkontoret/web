@@ -35,6 +35,11 @@ node --test tools/check/test.mjs src/lib/tld.test.mjs worker/index.test.mjs \
   && node tools/check/run.mjs && node tools/check/run.mjs --format
 ```
 
+Local dev answers as `huvudkontoret.io`, the first route, whatever Host the
+client sends. `npx wrangler dev --host localhost` behaves like a preview and
+serves every tree under its prefix, so the club page is at `/club/`;
+`--host huvudkontoret.club` answers as that host once it is live.
+
 Node 24 is the toolchain for the gate (it imports TypeScript directly). There
 is no `npm install`, no lockfile, and the gate has no dependencies — the site
 has no build step and the tooling must not give it one. Wrangler is pulled
@@ -49,9 +54,10 @@ deploy.
 | `profil.html` | The press kit at `/profil`: the marks, the colours and the rules, mirrored from the graphic profile (ADR 0005) |
 | `index.md` · `llms.txt` · `llms-full.txt` | Agent surfaces — the same company, written for machines |
 | `robots.txt` · `sitemap.xml` · `.well-known/` | Crawl policy, resource list, API catalog and an installable agent skill |
-| `assets/` | Images, icons and fonts |
+| `assets/` | Images, icons and fonts, shared by every host |
+| `club/` | The evening page, the tree `huvudkontoret.club` will be served from |
 | `.assetsignore` | What the repo root narrows down to before it is served |
-| `wrangler.jsonc` · `worker/` | The Cloudflare Worker that serves the apex |
+| `wrangler.jsonc` · `worker/` | The Cloudflare Worker that serves the apex, mapping each host to its tree |
 | `tools/check/` | The gate — see its own README |
 | `docs/` | `adr/` decisions · `specs/` designs · `runbooks/` operations |
 | `CONTEXT.md` | Domain language and the rules that hold everywhere. Read this one |
@@ -61,8 +67,8 @@ deploy.
 The asset directory is the repo root, so without a rule the whole checkout is
 the website. `.assetsignore` is that rule, and it narrows the site to
 `index.html`, `profil.html`, `index.md`, `llms.txt`, `llms-full.txt`,
-`robots.txt`, `sitemap.xml`, `.well-known/` and `assets/`. The gate asserts that set is
-*exactly* what survives, so a new file at the repo root cannot quietly appear
+`robots.txt`, `sitemap.xml`, `.well-known/`, `assets/` and `club/`. The gate
+asserts that set is *exactly* what survives, so a new file at the repo root cannot quietly appear
 on the site.
 
 Nothing is hidden by this. The repo is public; excluding a file stops it from

@@ -5,7 +5,10 @@
  */
 
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
+
+import { parseJsonc } from "../../tools/check/lib/jsonc.mjs";
 
 import {
   awaitingDelegation,
@@ -111,13 +114,52 @@ test("the registry holds every huvudkontoret.* domain and no others", () => {
  * `.io` publishes the lens set in its SYSTEMET section. That page is the
  * authority (ADR 0002), so this list changing means the page changed first —
  * and if it did not, the registry is wrong.
+ *
+ * `.club` is the one exception, and it is named rather than absorbed: the
+ * canon's domain register made it a lens on 2026-09-11 and "Club v2" designed
+ * its page, but .io's list has not taken it up. A tenth entry here needs the
+ * same two things — a row in that register and a page to serve.
  */
-test("the lens set is exactly the eight addresses .io announces", () => {
+test("the lens set is the eight addresses .io announces, plus .club", () => {
   const lenses = Object.values(tlds)
     .filter((tld) => tld.kind !== "undecided")
     .map((tld) => tld.key)
     .sort();
-  assert.deepEqual(lenses, ["ai", "app", "cv", "dev", "io", "name", "vote", "xyz"]);
+  assert.deepEqual(lenses, ["ai", "app", "club", "cv", "dev", "io", "name", "vote", "xyz"]);
+});
+
+test(".club is a planned lens: it has a page, and the registry will not route it yet", () => {
+  assert.equal(tlds.club.kind, "surface");
+  assert.equal(tlds.club.tree, "/club/");
+  assert.equal(tlds.club.status, "planned");
+  assert.equal(canBeRouted(tlds.club), false, "the route is the go-live, and it arrives on its own");
+});
+
+/**
+ * `wrangler deploy` creates every custom domain it finds in wrangler.jsonc, so
+ * a route is a cutover and a registry row without one is a domain the Worker
+ * would answer for and never be asked about. The two are one decision. This is
+ * the check the registry's own header promises: a row and a route arrive
+ * together, or the gate fails.
+ */
+test("every live domain has a custom-domain route, and no other host has one", () => {
+  const config = parseJsonc(readFileSync(new URL("../../wrangler.jsonc", import.meta.url), "utf8"));
+  for (const route of config.routes ?? []) {
+    assert.equal(
+      route.custom_domain,
+      true,
+      `${JSON.stringify(route)} is not a custom-domain route — every route here is a domain this Worker owns`,
+    );
+  }
+  const routed = (config.routes ?? [])
+    .filter((route) => route.custom_domain)
+    .map((route) => route.pattern)
+    .sort();
+  assert.deepEqual(
+    routed,
+    routableTlds().map((tld) => tld.host).sort(),
+    "wrangler.jsonc and the registry disagree about which domains this Worker serves",
+  );
 });
 
 test("a held domain is not a lens and a lens is not held", () => {

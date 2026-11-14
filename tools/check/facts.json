@@ -1,13 +1,14 @@
 {
   "//pages": "The hand-written HTML pages. references and markup read each of them; a page left out here is published unchecked.",
-  "pages": ["index.html", "profil.html"],
+  "pages": ["index.html", "profil.html", "club/index.html"],
 
   "surfaces": ["index.html", "index.md", "llms.txt"],
 
-  "//analytics": "Cloudflare Web Analytics is the only measurement on the site: a cookieless beacon that reports page views, referrers, devices and Core Web Vitals per path, and nothing that identifies a person — which is why no consent banner comes with it. The homepage rebuild (8a67aa5) dropped the snippet and nothing noticed until the numbers were read, so the beacon is a fact here and the analytics check holds every page in pages to it. The token names the RUM site for huvudkontoret.io in the Cloudflare account; it is not a secret, it ships in the page.",
+  "//analytics": "Cloudflare Web Analytics is the only measurement on the site: a cookieless beacon that reports page views, referrers, devices and Core Web Vitals per path, and nothing that identifies a person — which is why no consent banner comes with it. The homepage rebuild (8a67aa5) dropped the snippet and nothing noticed until the numbers were read, so the beacon is a fact here and the analytics check holds every page in pages to it. The token names the RUM site for huvudkontoret.io in the Cloudflare account; it is not a secret, it ships in the page. A RUM site accepts beacons only from its own hostname, so a page served from another host needs that host's token: pageTokens overrides token per page. club/index.html has no entry yet because huvudkontoret.club has no RUM site yet, so until it gets one that page carries the .io token and its views are not recorded.",
   "analytics": {
     "script": "https://static.cloudflareinsights.com/beacon.min.js",
-    "token": "2e066831da72470a8e216a900e41152a"
+    "token": "2e066831da72470a8e216a900e41152a",
+    "pageTokens": {}
   },
 
   "sharedFacts": [
@@ -59,7 +60,8 @@
     "favicon.ico",
     "apple-touch-icon.png",
     ".well-known/",
-    "assets/"
+    "assets/",
+    "club/"
   ],
   "requiredPublished": ["index.html", "index.md", "llms.txt", "robots.txt", "sitemap.xml"],
 

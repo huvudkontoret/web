@@ -44,7 +44,7 @@ place instead of the zones.
 | `huvudkontoret.ai` | Ascio (via Loopia) | Loopia | `not-in-service` (lens, SNART) | 2026-05-12 |
 | `huvudkontoret.name` | Ascio (via Loopia) | Loopia | `planned` (lens) | 2026-05-12 |
 | `huvudkontoret.blog` | Ascio (via Loopia) | Loopia | `held` | 2026-05-12 |
-| `huvudkontoret.club` | Ascio (via Loopia) | Loopia | `held` | 2026-05-12 |
+| `huvudkontoret.club` | Ascio (via Loopia) | Cloudflare — Huvudkontoret | `planned` (lens since 2026-11-14, see below) | 2026-05-12 |
 | `huvudkontoret.link` | Ascio (via Loopia) | Loopia | `held` | 2026-05-12 |
 | `huvudkontoret.xyz` | Ascio (via Loopia) | Loopia | `planned` (lens) | 2026-05-12 |
 | `huvudkontoret.email` | Ascio (via Loopia) | Loopia | `held` | 2026-05-12 |
@@ -62,6 +62,16 @@ place instead of the zones.
 | `huvudkontoret.wtf` | Namecheap | Namecheap | `held` | 2026-08-11 |
 | `huvudkontoret.sh` | Namecheap | Namecheap | `held` | 2026-08-24 |
 | `huvudkontoret.systems` | Namecheap | Namecheap | `held` | 2026-08-24 |
+
+**Amended 2026-11-14: `.club` is a lens.** The canon's domain register lifted
+it from sketch to lens on 2026-09-11, when it got an owner node, and the design
+"Club v2" gave it a page, built here as `club/index.html`. From that date this
+document's counts read nine lenses and fifteen held names, so "the sixteen"
+below means fifteen.
+
+Its page is built and it is not routed yet. The zone still carries the
+held-name record and redirect from step 5, so `huvudkontoret.club` keeps
+answering 301 to `.io` until the route arrives.
 
 Renewals cluster: fourteen Ascio names fall due 2027-05-12, three Namecheap
 names 2027-05-13, `.wtf` 2027-08-11, `.sh` and `.systems` 2027-08-24, `.io` and
@@ -172,8 +182,20 @@ where the chain either holds or does not.
 `AAAA -> 100::` on apex and `www` from step 5, and Cloudflare refuses a custom
 domain on a hostname that already has records — `code 100117`, the same failure
 that broke the `.io` cutover on 2026-08-26. Remove the apex record, then let
-`wrangler deploy` create the domain; the redirect rule can go at the same time
-or stay until the route is verified, since a route is matched before it.
+`wrangler deploy` create the domain.
+
+**The redirect rule is what the apex answers until it is narrowed.**
+(Corrected 2026-11-14; this step used to say a route is matched before the
+rule.) Single Redirects run in the first request phase, ahead of any Worker, so
+for as long as the rule matches the apex it answers and the Worker is never
+asked. That makes the rule the switch: attach the domain and deploy behind it,
+then narrow it to `www` and point it at the lens's own apex.
+
+**The Worker has to run first.** The asset layer matches a request on its path
+alone and, left to itself, answers before the Worker: a lens's tree would be
+served under its prefix on `.io`, and `.io`'s pages on the lens. `wrangler.jsonc`
+puts the Worker first for everything outside `/assets/`, and the gate holds it
+there.
 
 `.name` goes first because it is the only lens whose content already exists as
 data — `src/content/nodes/magnusrenholm.yaml`, recoverable from `bf21a0b^`. The
@@ -238,6 +260,6 @@ nothing about `sync.huvudkontoret.dev`, which is a subdomain and unaffected.
   cheapest honest position is to renew once and revisit with the lenses live.
 - **What `.sh` and `.systems` are for.** Bought 2026-08-24, Namecheap, and held
   with no role. `.io` announces eight addresses, not ten, so neither is a lens
-  today. Adding one is a change to the SYSTEMET section before it is a change to
-  this repo — and both read as infrastructure names, which is territory `.dev`
+  today. Adding one is a change to the SYSTEMET section, or a row in the canon's
+  domain register plus a page as for `.club`, before it is a change to this repo — and both read as infrastructure names, which is territory `.dev`
   and `.cloud` already claim.

@@ -62,10 +62,14 @@ function checkPage(site, page, analytics, report) {
     } catch {
       token = undefined;
     }
-    if (token !== analytics.token) {
+    // A token names one Web Analytics site, and Cloudflare accepts a beacon
+    // only from that site's hostname. A page served from another host needs
+    // that host's token; carrying this one, it reports to nobody.
+    const expected = analytics.pageTokens?.[page] ?? analytics.token;
+    if (token !== expected) {
       report.fail(
         at(beacon.index),
-        `the beacon's token is ${JSON.stringify(token ?? config)}, not the site's ${analytics.token} — ` +
+        `the beacon's token is ${JSON.stringify(token ?? config)}, not the site's ${expected} — ` +
           "it would report to another site, or to nobody",
       );
     }

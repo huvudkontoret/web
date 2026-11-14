@@ -28,7 +28,7 @@ one.
 | Check | Holds |
 |---|---|
 | `publishing` | The repo root is safe to serve: every required surface is present, robots keeps its `Content-Signal` and `Sitemap` lines, and no build output is committed |
-| `workers` | The Worker publishes **exactly** the site: `wrangler.jsonc` keeps its custom domain and `preview_urls`, and `.assetsignore` narrows the repo root to the published set — no more, no less, including the paths git never tracks but wrangler uploads anyway |
+| `workers` | The Worker publishes **exactly** the site: `wrangler.jsonc` keeps its custom domain and `preview_urls` and lets no page be answered before the Worker has mapped its host to a tree, and `.assetsignore` narrows the repo root to the published set — no more, no less, including the paths git never tracks but wrangler uploads anyway |
 | `references` | Every local link, asset and anchor in each page (`pages` in `facts.json`) resolves to a file **git tracks**; `/profil` resolves to `profil.html`, the way the Worker serves it |
 | `sitemap` | `sitemap.xml` advertises every public page and only pages: each `<loc>` points at something real, each declared page has an entry, and each entry uses the page's canonical URL |
 | `markup` | Each page is structurally sound: balanced structural tags, one non-empty `<title>`, `lang` set, unique ids, `alt` on images, a doctype |
@@ -101,8 +101,9 @@ file everyone believed was excluded.
 Cloudflare consumes the root `_headers` file as configuration, so `workers`
 excludes it from the published asset set. It sets `Content-Signal` on static
 responses; the Worker sets the same policy on its own responses.
-The gate also requires the Worker entry point, asset binding and homepage
-routing rules, so static serving cannot silently bypass content negotiation.
+The gate also requires the Worker entry point, the asset binding and that
+every path outside `/assets/` reaches the Worker first, so static serving can
+bypass neither host mapping nor content negotiation.
 
 The facts live in `facts.json`, not in code — the shared facts across the agent
 surfaces, the addresses not yet in service, the required files, the ignore

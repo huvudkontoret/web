@@ -22,6 +22,8 @@
  * own SYSTEMET section — eight addresses, each with a POW line and an accent —
  * and the graphic profile owns the accents (ADR 0002). This file follows that
  * page. When the two disagree, the page is right and this file is the bug.
+ * One exception is listed apart below: the canon's domain register can lift a
+ * lens before .io's page takes it up, as it did for .club.
  */
 
 /** What the Worker does with a domain — not what the registrar thinks. */
@@ -183,11 +185,30 @@ export const tlds = {
     delegation: "cloudflare-hk",
   },
 
+  // ── Lifted by the canon ─────────────────────────────────────────────────
+  // A lens that .io's list does not carry. The canon's domain register lifted
+  // .club from sketch to lens on 2026-09-11, when it got an owner node, and
+  // the design "Club v2" gave it a page: club/index.html. It was a held name
+  // here until that page was built, which is why it sits apart from the eight.
+  // Its accent is still a proposal in the canon (Linsen club 1a), so the page
+  // carries it and the shared profile does not.
+
+  /** The evenings: one meetup a month in Luleå, with a calendar and a sign-up. */
+  club: {
+    key: "club",
+    host: "huvudkontoret.club",
+    kind: "surface",
+    tree: "/club/",
+    status: "planned",
+    registrar: "ascio",
+    delegation: "cloudflare-hk",
+  },
+
   // ── Held ────────────────────────────────────────────────────────────────
   // Registered, renewed, and not a lens. The May 2026 domain strategy gives
-  // several of them a purpose — .blog editorial, .club community, .link short
-  // URLs, .email newsletters — but .io does not announce them and nothing is
-  // designed for them, so a purpose on paper is not a lens. .sh and .systems
+  // several of them a purpose — .blog editorial, .link short URLs, .email
+  // newsletters — but .io does not announce them and nothing is designed for
+  // them, so a purpose on paper is not a lens. .sh and .systems
   // were bought on 2026-08-24 with no role attached, which is the same state
   // arrived at deliberately. Listed here so that "no decision" is visible
   // rather than implied.
@@ -196,15 +217,6 @@ export const tlds = {
     host: "huvudkontoret.blog",
     kind: "undecided",
     tree: "/blog/",
-    status: "held",
-    registrar: "ascio",
-    delegation: "cloudflare-hk",
-  },
-  club: {
-    key: "club",
-    host: "huvudkontoret.club",
-    kind: "undecided",
-    tree: "/club/",
     status: "held",
     registrar: "ascio",
     delegation: "cloudflare-hk",

@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>huvudkontoret.club · AI, pizza och öl 17 november</title>
+        <meta
+            name="description"
+            content="Meetup på vårt kontor i Luleå, tisdag 17 november klockan 17:30. Tre punkter om AI och utvecklarrollen, sen pizza, öl och alkoholfria alternativ."
+        />
+        <meta name="theme-color" content="#0E0D09" />
+        <meta property="og:title" content="huvudkontoret.club · AI, pizza och öl 17 november" />
+        <meta property="og:description" content="Meetup på vårt kontor i Luleå, tisdag 17 november klockan 17:30. Tre punkter om AI och utvecklarrollen, sen pizza och öl." />
+        <meta property="og:url" content="https://huvudkontoret.club/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="sv_SE" />
+        <link rel="canonical" href="https://huvudkontoret.club/" />
+        <!-- Only /assets/ is shared across the hosts (SHARED_PATHS in
+             src/lib/tld.ts), so every asset here is root-absolute and lives
+             there: this page is served at the root of huvudkontoret.club from
+             the club/ tree, and a relative URL would resolve inside that tree.
+             The two icons browsers ask for by convention are the exception:
+             they are copies inside club/, so /favicon.ico answers on this
+             host as it does on .io. -->
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        <!-- The MonoLisa blocks the first view needs: Latin upright, and
+             Latin-1 for å ä ö, the middle dot and the degree sign. Nothing on
+             this page is italic. The rest load on demand through
+             unicode-range. crossorigin is required even same-origin: a font
+             preload without it is fetched twice. -->
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0080-00FF.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+            rel="stylesheet"
+        />
+
+        <style>
+            /* ===================== TYPOGRAPHY ===================== */
+            /* MonoLisa carries all typography; Permanent Marker is the hero-only
+               accent. Same files and rule as the homepage: assets/fonts/README.md. */
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0100-017F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0100-017F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0100-017F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0100-017F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-20A0-20CF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+20A0-20CF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-20A0-20CF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+20A0-20CF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+
+            /* ===================== CONSTANTS ===================== */
+            /* The profile's dark scale and the lens accent, by their own names
+               (ADR 0002). This lens is dark throughout, so only the darkness
+               surfaces are declared. The canon is the design "Club v2" in the
+               claude.ai project huvudkontoret.club. */
+            :root {
+                --night: #0e0d09; /* Natt */
+                --panel: #14130d; /* Panel */
+                --frame: #3a382f; /* Ram */
+                --paper: #f4f2ec; /* Papper */
+                --light-graphite: #b5b1a6; /* Ljusgrafit */
+                --graphite: #8a877d; /* Grafit */
+
+                /* The group colour. The 2 % rule: here it only marks hover and focus. */
+                --signal: #d9481c;
+
+                /* POW for .club, full colour on dark. A proposal in the canon
+                   (Linsen club 1a, 2026-09-11) until the owner node locks it. */
+                --pow-club: #4e9fd8;
+
+                --shell: 1240px;
+                --gut: clamp(20px, 5vw, 48px);
+                --gap: clamp(40px, 6vw, 64px);
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+            html {
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+                background: var(--night);
+                /* The chrome is sticky, 58 px tall and 81 px when it wraps:
+                   an anchor target must not land under it. */
+                scroll-padding-top: 96px;
+            }
+            body {
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                background: var(--night);
+                color: var(--paper);
+                font-family: "MonoLisa", ui-monospace, monospace;
+                -webkit-font-smoothing: antialiased;
+            }
+            /* Ligatures are off in copy and grammar: `->` and `//` are the
+               profile's own signs and must stay two characters. */
+            body,
+            body * {
+                font-variant-ligatures: none;
+                font-feature-settings: "liga" 0, "clig" 0, "calt" 0;
+            }
+            h1,
+            h2,
+            h3,
+            p,
+            ol {
+                margin: 0;
+            }
+            ol {
+                padding: 0;
+                list-style: none;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            a:hover {
+                color: var(--signal);
+                text-decoration: underline;
+            }
+            /* The design has no links. The two addresses are links here, and a
+               link inside running text carries an underline at rest so it can
+               be found without hovering. */
+            .signup p a,
+            .foot a {
+                text-decoration: underline;
+                text-underline-offset: 3px;
+            }
+            :focus-visible {
+                outline: 2px solid var(--signal);
+                outline-offset: 3px;
+            }
+
+            /* ===================== GRAMMAR ===================== */
+            /* `//` labels and `[ STATUS ]` never wrap. */
+            .label {
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--light-graphite);
+                white-space: nowrap;
+            }
+            .label--pow {
+                color: var(--pow-club);
+            }
+            .status {
+                font-size: 13px;
+                font-weight: 500;
+                letter-spacing: 0.06em;
+                color: var(--graphite);
+                white-space: nowrap;
+            }
+            .nowrap {
+                white-space: nowrap;
+            }
+
+            .shell {
+                max-width: var(--shell);
+                margin: 0 auto;
+                padding-left: var(--gut);
+                padding-right: var(--gut);
+            }
+
+            /* ===================== CHROME ===================== */
+            .chrome {
+                position: sticky;
+                top: 0;
+                z-index: 3;
+                background: var(--night);
+                border-bottom: 1px solid var(--frame);
+            }
+            .chrome .shell {
+                padding-top: 16px;
+                padding-bottom: 16px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+                gap: 8px 24px;
+            }
+            .wordmark {
+                font-size: 18px;
+                font-weight: 500;
+                white-space: nowrap;
+            }
+            .wordmark .tld {
+                color: var(--pow-club);
+            }
+
+            main {
+                flex: 1;
+            }
+
+            /* ===================== NEXT EVENING ===================== */
+            .evening {
+                padding-top: clamp(40px, 8vw, 72px);
+                padding-bottom: clamp(48px, 8vw, 72px);
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+                gap: var(--gap);
+                align-items: end;
+            }
+            .evening__intro {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+                min-width: 0;
+            }
+            .evening__title {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+                font-size: inherit;
+                font-weight: inherit;
+            }
+            .evening__date {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .evening__when {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0 0.6em;
+                font-size: clamp(16px, 2.4vw, 22px);
+                font-weight: 400;
+                color: var(--light-graphite);
+            }
+            /* Two columns start at 996 px, and the column never fits the line on
+               one row in MonoLisa. Stack it outright, so the narrower fallback
+               face cannot fit it on one and shift the hero when the font
+               arrives. */
+            @media (min-width: 996px) {
+                .evening__when {
+                    flex-direction: column;
+                }
+            }
+            .evening__day {
+                font-size: clamp(56px, 10vw, 112px);
+                font-weight: 600;
+                letter-spacing: -0.03em;
+                line-height: 1;
+            }
+            /* The effect face, hero only and never under 40 px. */
+            .evening__name {
+                font-family: "Permanent Marker", cursive;
+                font-size: clamp(48px, 8vw, 88px);
+                font-weight: 400;
+                line-height: 1.05;
+            }
+            /* Up to 435 px the title is two rows in Permanent Marker and one in
+               the fallback. Reserve both, so the swap moves nothing below. */
+            @media (max-width: 435px) {
+                .evening__name {
+                    min-height: 2.1em;
+                }
+            }
+            .evening__lede {
+                font-size: 15px;
+                line-height: 1.7;
+                color: var(--light-graphite);
+                max-width: 52ch;
+                text-wrap: pretty;
+            }
+
+            /* ===================== SIGN-UP ===================== */
+            .signup {
+                background: var(--panel);
+                border: 1px solid var(--frame);
+                padding: clamp(20px, 4vw, 32px);
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                min-width: 0;
+            }
+            .signup h2 {
+                font-size: clamp(22px, 3vw, 28px);
+                font-weight: 600;
+                line-height: 1.3;
+            }
+            .signup p {
+                font-size: 14px;
+                line-height: 1.7;
+                color: var(--light-graphite);
+            }
+
+            /* ===================== PROGRAMME AND PROMISE ===================== */
+            /* One column until three tracks of 300 px fit, then the label takes
+               one track and the list two. The canon writes this as an auto-fit
+               grid with a two-track span, which overflows sideways under
+               380 px: the span forces a second track the viewport has no room
+               for. Spelled out with a media query instead. It matches the
+               canon from 1124 px up and below 380 px. In between the canon
+               confines the label to a narrower track, which is not reproduced:
+               the label gets the full width, and its one line of text breaks
+               differently. */
+            .band {
+                border-top: 1px solid var(--frame);
+            }
+            .band .shell {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                gap: 24px var(--gap);
+                align-items: start;
+            }
+            .band--program .shell {
+                padding-top: clamp(40px, 7vw, 64px);
+                padding-bottom: clamp(40px, 7vw, 64px);
+            }
+            .band--promise .shell {
+                padding-top: clamp(40px, 7vw, 56px);
+                padding-bottom: clamp(40px, 7vw, 56px);
+            }
+            @media (min-width: 1124px) {
+                .band .shell {
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                }
+                .band__body {
+                    grid-column: span 2;
+                }
+            }
+            .band__head {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .band__head h2 {
+                font-weight: 500;
+            }
+            .band__head p {
+                font-size: 14px;
+                line-height: 1.7;
+                color: var(--light-graphite);
+            }
+
+            .program {
+                display: flex;
+                flex-direction: column;
+                border-top: 1px solid var(--frame);
+            }
+            .program li {
+                display: grid;
+                grid-template-columns: 64px minmax(0, 1fr);
+                gap: 16px;
+                padding: 22px 0;
+                border-bottom: 1px solid var(--frame);
+                align-items: baseline;
+            }
+            .program__no {
+                font-size: 14px;
+                font-weight: 700;
+                color: var(--pow-club);
+                white-space: nowrap;
+            }
+            .program__item {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+            .program__item h3 {
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 1.4;
+            }
+            .program__item p {
+                font-size: 14px;
+                line-height: 1.7;
+                color: var(--light-graphite);
+                max-width: 60ch;
+            }
+
+            .promise {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                gap: 14px;
+                font-size: 14px;
+                line-height: 1.7;
+                color: var(--light-graphite);
+            }
+            .promise li {
+                display: grid;
+                grid-template-columns: 40px minmax(0, 1fr);
+                gap: 16px;
+            }
+            .promise__no {
+                font-weight: 700;
+                color: var(--graphite);
+            }
+            .promise strong {
+                font-weight: 600;
+                color: var(--paper);
+            }
+
+            /* ===================== FOOTER ===================== */
+            .foot {
+                border-top: 1px solid var(--frame);
+            }
+            .foot .shell {
+                padding-top: 24px;
+                padding-bottom: 24px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 8px 24px;
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.06em;
+                color: var(--light-graphite);
+            }
+        </style>
+    </head>
+    <body>
+        <header class="chrome">
+            <div class="shell">
+                <span class="wordmark" translate="no">huvudkontoret<span class="tld">.club</span></span>
+                <span class="label">SKEPPSBROGATAN 8 · 17 NOV</span>
+            </div>
+        </header>
+
+        <main>
+            <section class="evening shell" aria-labelledby="kvall">
+                <div class="evening__intro">
+                    <span class="label label--pow">// NÄSTA KVÄLL</span>
+                    <h1 class="evening__title" id="kvall" aria-label="17 november: AI, pizza och öl. Tisdag klockan 17:30, Skeppsbrogatan 8.">
+                        <span class="evening__date">
+                            <span class="evening__when"><span class="nowrap">tisdag klockan 17:30 ·</span> <span class="nowrap">Skeppsbrogatan 8</span></span>
+                            <time class="evening__day" datetime="2026-11-17T17:30+01:00">17 november</time>
+                        </span>
+                        <span class="evening__name">AI, pizza och öl.</span>
+                    </h1>
+                    <p class="evening__lede">Vi bjuder in till meetup på vårt kontor. Tre punkter om AI och utvecklarrollen, sen pizza, öl och alkoholfria alternativ.</p>
+                </div>
+
+                <!-- Sign-up closed on 5 November, so the page carries only the
+                     closed state of the canon's sign-up panel. The open states
+                     (the form link, the own form, the receipt) return with the
+                     next evening. -->
+                <div class="signup" id="anmal">
+                    <span class="status">[ STÄNGD ]</span>
+                    <h2>Anmälan stängde 5 november.</h2>
+                    <p>Står du på listan ses vi 17:30. Frågor till <a href="mailto:hej@huvudkontoret.io">hej@huvudkontoret.io</a>.</p>
+                </div>
+            </section>
+
+            <section class="band band--program" aria-labelledby="program">
+                <div class="shell">
+                    <div class="band__head">
+                        <h2 class="label" id="program">// PROGRAM</h2>
+                        <p>Tisdag 17 november · 17:30 till 20:00. Skeppsbrogatan 8, Luleå.</p>
+                    </div>
+                    <ol class="program band__body">
+                        <li>
+                            <span class="program__no">/01</span>
+                            <div class="program__item">
+                                <h3>Utvecklarrollen i förändring</h3>
+                                <p>Hur påverkas våra arbetssätt och vilka kunskaper blir viktigare framåt?</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="program__no">/02</span>
+                            <div class="program__item">
+                                <h3>Trendspaning</h3>
+                                <p>Vi delar spaningar om AI och systemutveckling och diskuterar tillsammans med er.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="program__no">/03</span>
+                            <div class="program__item">
+                                <h3>Demo</h3>
+                                <p>Vi visar teknik byggt hos oss.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="program__no">sen</span>
+                            <div class="program__item">
+                                <h3>Pizza och öl</h3>
+                                <p>Vi bjuder på pizza, öl och alkoholfria alternativ. Stanna kvar, träffa andra i branschen och fortsätt diskussionerna.</p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="band band--promise" aria-labelledby="loftet">
+                <div class="shell">
+                    <div class="band__head">
+                        <h2 class="label" id="loftet">// LÖFTET</h2>
+                    </div>
+                    <ol class="promise band__body">
+                        <li><span class="promise__no">/01</span><span><strong>En kväll i månaden.</strong> I Luleå. Den första är 17 november.</span></li>
+                        <li><span class="promise__no">/02</span><span><strong>Anmälan dör med kvällen.</strong> Listan raderas dagen efter. Inget nyhetsbrev.</span></li>
+                        <li><span class="promise__no">/03</span><span><strong>Något som kör.</strong> En demo, sen pizza och öl. Ingen pitch.</span></li>
+                        <li><span class="promise__no">/04</span><span><strong>Varje kväll lämnar spår.</strong> Uppföljningen står på kvällens adress inom en vecka.</span></li>
+                    </ol>
+                </div>
+            </section>
+        </main>
+
+        <footer class="foot">
+            <div class="shell">
+                <span>huvudkontoret · Luleå · 65.5848° N / 22.1547° E</span>
+                <!-- The mirror's date: it changes every time the page does. -->
+                <span><a href="mailto:hej@huvudkontoret.io">hej@huvudkontoret.io</a> · uppdaterad 2026-11-14</span>
+            </div>
+        </footer>
+
+        <!-- Cloudflare Web Analytics: the only measurement on the site. Cookieless,
+             so no consent banner; the token is a fact the gate holds every page to
+             (analytics in tools/check/facts.json). -->
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
+        ></script>
+    </body>
+</html>
