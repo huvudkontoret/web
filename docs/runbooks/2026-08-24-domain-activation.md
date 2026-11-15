@@ -44,7 +44,7 @@ place instead of the zones.
 | `huvudkontoret.ai` | Ascio (via Loopia) | Loopia | `not-in-service` (lens, SNART) | 2026-05-12 |
 | `huvudkontoret.name` | Ascio (via Loopia) | Loopia | `planned` (lens) | 2026-05-12 |
 | `huvudkontoret.blog` | Ascio (via Loopia) | Loopia | `held` | 2026-05-12 |
-| `huvudkontoret.club` | Ascio (via Loopia) | Cloudflare — Huvudkontoret | `planned` (lens since 2026-11-14, see below) | 2026-05-12 |
+| `huvudkontoret.club` | Ascio (via Loopia) | Cloudflare — Huvudkontoret | `live` (lens since 2026-11-14, see below) | 2026-05-12 |
 | `huvudkontoret.link` | Ascio (via Loopia) | Loopia | `held` | 2026-05-12 |
 | `huvudkontoret.xyz` | Ascio (via Loopia) | Loopia | `planned` (lens) | 2026-05-12 |
 | `huvudkontoret.email` | Ascio (via Loopia) | Loopia | `held` | 2026-05-12 |
@@ -69,9 +69,60 @@ it from sketch to lens on 2026-09-11, when it got an owner node, and the design
 document's counts read nine lenses and fifteen held names, so "the sixteen"
 below means fifteen.
 
-Its page is built and it is not routed yet. The zone still carries the
-held-name record and redirect from step 5, so `huvudkontoret.club` keeps
-answering 301 to `.io` until the route arrives.
+It is also the first lens to go live after `.io`, so it is the proof step 3
+gave to `.name`. Two things in that step turned out differently and are
+corrected there: the redirect rule decides what the apex answers for as long
+as it matches, and the Worker has to run before asset lookup for the host to
+decide anything.
+
+Before the day:
+
+- The Worker-first routing is already in production and `.io` has been checked
+  with it. It lands with the page, ahead of the route, so the one change that
+  touches every `.io` page is not made in the same deploy as the cutover.
+- `assets/fonts/README.md` says what the MonoLisa licence covers on a second
+  domain.
+- `huvudkontoret.club` has its own Web Analytics site, and its token is in
+  `club/index.html` and under `pageTokens` in `tools/check/facts.json`. Without
+  it the page goes live unmeasured.
+- The account's Workers plan is known. On Free, every page request now counts
+  against the daily quota (see the comment in `wrangler.jsonc`).
+- `npx wrangler dev --host huvudkontoret.club` shows the club page at `/` and
+  a 404 at `/profil`.
+
+The order. The redirect rule is the switch, not DNS: it runs before the Worker,
+so the apex keeps answering with today's 301 until the rule is narrowed.
+
+0. Have the pull request that sets `status: "live"` and adds the route green
+   and ready to merge. Nothing else merges to `main` until step 3 is done.
+1. In the `huvudkontoret.club` zone, turn on Always Use HTTPS. Then delete the
+   proxied `AAAA @ -> 100::` and, back to back, add `huvudkontoret.club` as a
+   custom domain on the Worker `web` (Workers & Pages > web > Settings >
+   Domains & Routes). Keep the `www` record and leave the redirect rule alone.
+   Apex and `www` keep answering 301 to `.io`; the only gap is the seconds
+   between the two actions.
+2. Merge the pull request and wait for the production build. `wrangler deploy`
+   finds the domain it declares already attached.
+3. Narrow the zone's redirect rule to `www.huvudkontoret.club` and point it at
+   `https://huvudkontoret.club/`. The club page is live from this moment.
+4. Verify. `https://huvudkontoret.club/` answers 200 with the title
+   `huvudkontoret.club · AI, pizza och öl 17 november`;
+   `http://huvudkontoret.club/` answers 301 to the `https` address;
+   `https://huvudkontoret.club/profil` and `https://huvudkontoret.io/club/` are
+   both 404; `www` redirects to the apex. Then the `.io` surface: `/`,
+   `/profil`, `/index.md`, `/llms.txt`, `/robots.txt` and `/sitemap.xml` answer
+   200, `/.well-known/api-catalog` answers `application/linkset+json`, and
+   `curl -H 'Accept: text/markdown' https://huvudkontoret.io/` answers
+   `text/markdown`.
+
+To back out: (1) widen the redirect rule back to apex and `www` ->
+`https://huvudkontoret.io/`, the held-name rule from step 5. That restores
+today's behaviour at once, whatever the Worker does. (2) Revert the pull
+request and let the build deploy. (3) Remove the custom domain from the Worker
+if it is still listed, and recreate the proxied `AAAA @ -> 100::` back to back.
+If `huvudkontoret.io` itself misbehaves after a deploy, roll the Worker back to
+the previous version first (`npx wrangler rollback`, or Deployments in the
+dashboard), then revert.
 
 Renewals cluster: fourteen Ascio names fall due 2027-05-12, three Namecheap
 names 2027-05-13, `.wtf` 2027-08-11, `.sh` and `.systems` 2027-08-24, `.io` and
@@ -189,7 +240,8 @@ that broke the `.io` cutover on 2026-08-26. Remove the apex record, then let
 rule.) Single Redirects run in the first request phase, ahead of any Worker, so
 for as long as the rule matches the apex it answers and the Worker is never
 asked. That makes the rule the switch: attach the domain and deploy behind it,
-then narrow it to `www` and point it at the lens's own apex.
+then narrow it to `www` and point it at the lens's own apex. The `.club`
+amendment above gives the order.
 
 **The Worker has to run first.** The asset layer matches a request on its path
 alone and, left to itself, answers before the Worker: a lens's tree would be

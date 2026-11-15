@@ -199,7 +199,7 @@ export const tlds = {
     host: "huvudkontoret.club",
     kind: "surface",
     tree: "/club/",
-    status: "planned",
+    status: "live",
     registrar: "ascio",
     delegation: "cloudflare-hk",
   },
