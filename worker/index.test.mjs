@@ -51,6 +51,41 @@ test("a registered but not-yet-live domain is refused", async () => {
   assert.deepEqual(result.asked, []);
 });
 
+test(".club is refused until it goes live, page or no page", async () => {
+  const result = await get("https://huvudkontoret.club/");
+  assert.equal(result.status, 404);
+  assert.deepEqual(result.asked, [], "club/index.html exists, and the Worker must still not reach for it");
+});
+
+test("the club tree is not a second address on .io", async () => {
+  for (const path of ["/club/", "/club/index.html"]) {
+    const crossed = await get(`https://huvudkontoret.io${path}`);
+    assert.equal(crossed.status, 404, path);
+    assert.deepEqual(crossed.asked, [], path);
+  }
+});
+
+/** An ASSETS binding that answers everything with one html_handling redirect. */
+function redirectingTo(location) {
+  return { ASSETS: { fetch: () => Promise.resolve(new Response(null, { status: 307, headers: { Location: location } })) } };
+}
+
+test("a redirect that leads into another host's tree is a 404, not a signpost", async () => {
+  // The asset layer answers /club, /club.html and /%63lub/ with a redirect to
+  // /club/. On .io that is the club host's tree.
+  for (const path of ["/club", "/club.html", "/%63lub/"]) {
+    const response = await worker.fetch(new Request(`https://huvudkontoret.io${path}`), redirectingTo("/club/"));
+    assert.equal(response.status, 404, path);
+    assert.equal(response.headers.get("Location"), null, path);
+  }
+});
+
+test("a redirect inside .io's own tree passes through untouched", async () => {
+  const response = await worker.fetch(new Request("https://huvudkontoret.io/profil.html"), redirectingTo("/profil"));
+  assert.equal(response.status, 307);
+  assert.equal(response.headers.get("Location"), "/profil");
+});
+
 test("a domain declared not in service is refused", async () => {
   const result = await get("https://huvudkontoret.vote/");
   assert.equal(result.status, 404);

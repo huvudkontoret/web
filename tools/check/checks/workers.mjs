@@ -34,11 +34,51 @@ function readConfig(site, report) {
   }
 }
 
+/**
+ * The one path prefix every host shares (SHARED_PATHS in src/lib/tld.ts), and
+ * so the only one the asset layer may answer without asking the Worker.
+ */
+const SHARED_EXCEPTION = "!/assets/*";
+
 function checkConfig(config, facts, report) {
-  if (config.main !== "worker/index.ts" || config.assets?.binding !== "ASSETS" ||
-      !Array.isArray(config.assets?.run_worker_first) ||
-      !["/", "/index.html"].every((path) => config.assets.run_worker_first.includes(path))) {
-    report.fail("wrangler.jsonc", "homepage negotiation requires worker/index.ts, the ASSETS binding and run_worker_first for / and /index.html");
+  // The asset layer matches a request on its path alone. Any path it is
+  // allowed to answer before the Worker is therefore served from whichever
+  // tree holds it, on every routed host — the club page on huvudkontoret.io,
+  // .io's pages on huvudkontoret.club. Host mapping only exists for the paths
+  // the Worker sees first, so it has to see all of them.
+  const first = config.assets?.run_worker_first;
+  const everyPath = first === true || (Array.isArray(first) && first.includes("/*"));
+  if (config.main !== "worker/index.ts" || config.assets?.binding !== "ASSETS" || !everyPath) {
+    report.fail(
+      "wrangler.jsonc",
+      'host mapping and homepage negotiation require worker/index.ts, the ASSETS binding and run_worker_first ' +
+        'covering every path ("/*") — a path the Worker does not see first is served on every host',
+    );
+  }
+  for (const pattern of Array.isArray(first) ? first : []) {
+    if (typeof pattern !== "string") {
+      report.fail("wrangler.jsonc", `run_worker_first holds ${JSON.stringify(pattern)}, expected path patterns`);
+      continue;
+    }
+    if (pattern.startsWith("!") && pattern !== SHARED_EXCEPTION) {
+      report.fail(
+        "wrangler.jsonc",
+        `run_worker_first exempts ${pattern} from the Worker — only ${SHARED_EXCEPTION} may skip it, ` +
+          "because only /assets/ is shared by every host",
+      );
+    }
+  }
+
+  // A fallback page is the asset layer answering after the Worker has mapped
+  // the host: a miss inside club/ would come back as .io's homepage, on
+  // huvudkontoret.club, with status 200.
+  const fallback = config.assets?.not_found_handling;
+  if (fallback !== undefined && fallback !== "none") {
+    report.fail(
+      "wrangler.jsonc",
+      `assets.not_found_handling is ${JSON.stringify(fallback)} — a miss in one host's tree would be answered ` +
+        "with a page from the root tree, on every host",
+    );
   }
 
   if (config.assets?.directory !== ".") {

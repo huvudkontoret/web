@@ -53,7 +53,15 @@ cover serving it from a website, and the personal ("Developer") plan is
 personal: MonoLisa's own FAQ sends a company or a product to the commercial
 ("Creator") plan. Two things about this site put it there:
 
-- **Web.** Self-hosting the `.woff2` files from `huvudkontoret.io`.
+- **Web.** Self-hosting the `.woff2` files from `huvudkontoret.io`, and from
+  the other `huvudkontoret.*` domains this Worker serves: `/assets/fonts/` is
+  shared by every host, and `huvudkontoret.club` is the first lens to load
+  them. The EULA's section 3.b grants one domain with its subdomains. FaceType
+  was asked on 2026-10-10 about every `huvudkontoret.[tld]` we own, future
+  ones included, and answered that they are treated as one website. That
+  answer exists only as an e-mail, so the e-mail and not the EULA is what a
+  second domain rests on. It is filed in the canon
+  (`uploads/monolisa-mejl-2026-10-23.pdf`, recorded in `Typsnittet`).
 - **Logotype.** The wordmark in the chrome and the footer is set in MonoLisa,
   and the EULA carves logotypes out into a separate right.
 

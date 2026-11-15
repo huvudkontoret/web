@@ -92,7 +92,7 @@ function baseline() {
       '  // The site is the repo root; https://example.com/ in a comment must not confuse the parser.',
       '  "name": "web",',
       '  "main": "worker/index.ts",',
-      '  "assets": { "directory": ".", "binding": "ASSETS", "run_worker_first": ["/", "/index.html"] },',
+      '  "assets": { "directory": ".", "binding": "ASSETS", "run_worker_first": ["/*", "!/assets/*"] },',
       '  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],',
       '  "preview_urls": true,',
       "}",
@@ -302,17 +302,44 @@ test("workers: the _headers exception does not hide other root files", () => {
   assertFires(workers, { "_headers.txt": "configuration\n" }, "would be served from the site but is not part of it");
 });
 
-test("workers: homepage negotiation cannot be bypassed by static asset routing", () => {
+test("workers: static asset routing cannot answer a page before the Worker does", () => {
+  const first = '"run_worker_first": ["/*", "!/assets/*"]';
   for (const [before, after] of [
     ['"main": "worker/index.ts"', '"main": "worker/other.ts"'],
     ['"binding": "ASSETS"', '"binding": "OTHER"'],
-    ['"run_worker_first": ["/", "/index.html"]', '"run_worker_first": false'],
-    ['"run_worker_first": ["/", "/index.html"]', '"run_worker_first": ["/"]'],
+    [first, '"run_worker_first": false'],
+    [first, '"run_worker_first": ["/"]'],
+    // What the config carried while only the homepage needed the Worker: every
+    // other page was matched on its path alone, whatever the host.
+    [first, '"run_worker_first": ["/", "/index.html"]'],
   ]) {
     assertFires(workers, {
       "wrangler.jsonc": baseline()["wrangler.jsonc"].replace(before, after),
-    }, "homepage negotiation requires");
+    }, "host mapping and homepage negotiation require");
   }
+
+  // Running first for everything, with no exception at all, is also sound.
+  assertClean(workers, { "wrangler.jsonc": baseline()["wrangler.jsonc"].replace(first, '"run_worker_first": true') });
+});
+
+test("workers: only the shared asset path may skip the Worker", () => {
+  assertFires(workers, {
+    "wrangler.jsonc": baseline()["wrangler.jsonc"].replace('"!/assets/*"', '"!/assets/*", "!/club/*"'),
+  }, "exempts !/club/* from the Worker");
+
+  // Not a pattern at all is a finding, not a crash.
+  assertFires(workers, {
+    "wrangler.jsonc": baseline()["wrangler.jsonc"].replace('"!/assets/*"', '"!/assets/*", 1'),
+  }, "expected path patterns");
+});
+
+test("workers: a fallback page would answer for the wrong host", () => {
+  const withFallback = (value) => ({
+    "wrangler.jsonc": baseline()["wrangler.jsonc"].replace('"binding": "ASSETS",', `"binding": "ASSETS", "not_found_handling": "${value}",`),
+  });
+  assertFires(workers, withFallback("single-page-application"), "would be answered with a page from the root tree");
+  assertFires(workers, withFallback("404-page"), "would be answered with a page from the root tree");
+  assertClean(workers, withFallback("none"));
 });
 
 test("workers: excluding a surface the agents depend on is a finding", () => {
@@ -692,6 +719,18 @@ test("analytics: a beacon commented out is gone, not present", () => {
 
 test("analytics: a beacon carrying another site's token is a finding", () => {
   assertFires(analytics, homepageWith(BEACON.replace(FACTS.analytics.token, "0000")), 'is "0000", not the site\'s');
+});
+
+test("analytics: a page served from another host is held to that host's token", () => {
+  const facts = {
+    ...FACTS,
+    pages: [...FACTS.pages, "club/index.html"],
+    analytics: { ...FACTS.analytics, pageTokens: { "club/index.html": "c1ub" } },
+  };
+  const page = (token) =>
+    `<!doctype html>\n<html lang="sv"><head><title>Club</title></head><body>${BEACON.replace(FACTS.analytics.token, token)}</body></html>\n`;
+  assertClean(analytics, { "club/index.html": page("c1ub") }, facts);
+  assertFires(analytics, { "club/index.html": page(FACTS.analytics.token) }, 'not the site\'s c1ub', facts);
 });
 
 test("analytics: a beacon with no configuration reports to nobody, and is a finding", () => {

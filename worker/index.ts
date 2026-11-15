@@ -6,11 +6,14 @@
  * a neighbouring domain, so huvudkontoret.io/name/x is a 404 rather than a
  * second address for the same page.
  *
- * The homepage runs this script before asset lookup to negotiate Markdown.
- * Other existing assets are served directly; misses reach the routing rules.
+ * Every request outside /assets/ runs this script before asset lookup
+ * (run_worker_first in wrangler.jsonc). That is what makes the mapping hold:
+ * the asset layer matches on the path alone, so a path it answered by itself
+ * would be served from whichever tree holds it, on every host. The homepage
+ * also negotiates Markdown here.
  */
 
-import { byHost, crossesTree, isShared, toAssetPath } from "../src/lib/tld.ts";
+import { byHost, crossesTree, isShared, toAssetPath, type Tld } from "../src/lib/tld.ts";
 
 interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
@@ -81,6 +84,17 @@ function isPreviewHost(host: string): boolean {
   return host.endsWith(".workers.dev") || ["localhost", "127.0.0.1", "[::1]"].includes(host);
 }
 
+/**
+ * The asset layer also answers near-misses with a redirect: `/club`,
+ * `/club.html` and `/%63lub/` on huvudkontoret.io all come back as `Location:
+ * /club/`. That path belongs to another host, so following it ends in the 404
+ * below — and the redirect itself says the tree is there. Refuse it here.
+ */
+function leavesTree(response: Response, tld: Tld): boolean {
+  const location = response.headers.get("Location");
+  return location !== null && crossesTree(new URL(location, "https://host.invalid").pathname, tld);
+}
+
 function notFound(): Response {
   return withPolicy(new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } }));
 }
@@ -99,6 +113,7 @@ export default {
 
     const target = new URL(url);
     target.pathname = toAssetPath(url.pathname, tld);
-    return serveAsset(new Request(target, request), env);
+    const response = await serveAsset(new Request(target, request), env);
+    return leavesTree(response, tld) ? notFound() : response;
   },
 };

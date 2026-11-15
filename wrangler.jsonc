@@ -12,9 +12,19 @@
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
-    // The homepage negotiates HTML/Markdown before static asset lookup.
-    // Other assets keep the direct static serving path.
-    "run_worker_first": ["/", "/index.html"]
+    // The Worker sees every request before static asset lookup, because the
+    // asset layer matches on the path alone: left to itself it would serve
+    // club/index.html at huvudkontoret.io/club/ and .io's pages on
+    // huvudkontoret.club. The Worker maps Host to tree and refuses the rest,
+    // and the homepage negotiates HTML/Markdown on the same pass. /assets/ is
+    // the one exception — it is shared by every host (SHARED_PATHS in
+    // src/lib/tld.ts), so nothing there needs deciding.
+    //
+    // The price is one Worker invocation per page request instead of one per
+    // homepage request. On the Workers Free plan a spent daily request quota,
+    // which the account's Workers share, then answers 429 for every page on
+    // every host and not only for the homepage. /assets/ keeps working.
+    "run_worker_first": ["/*", "!/assets/*"]
     // not_found_handling is deliberately unset: the default returns a plain
     // 404, which is what GitHub Pages does here today (custom_404: false).
     // Setting "404-page" would need a 404.html this site does not have.

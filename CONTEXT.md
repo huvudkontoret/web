@@ -31,11 +31,11 @@ terms that describe the live site — static site, published set, agent surface
 | render(node, perspective) | The system's one abstraction. Everything else is arranging what a perspective is allowed to change |
 | chrome | The huvudkontoret layer: the constant shell around any rendering — routing, top bar, layout primitives, typography base, system identity. `src/layouts/Shell.astro`. The feeling to aim for is portal / OS / browser chrome: clean, structured, slightly institutional; not corporate, not generic SaaS |
 | POW | A perspective's point of view, stated in one line ("Personporträtt / bio / människa" for `.name`). It sits in the token table, not in prose scattered across pages |
-| tokens | A perspective's design contract in `src/lib/tokens.ts`: label, role, POW, accent color and the Tailwind classes derived from it. Adding a perspective starts here — `.name` (coral, Identity) and `.cv` (mint, Capability) are implemented; `.dev`, `.ai`, `.club`, `.blog`, `.link` are named but unbuilt |
+| tokens | A perspective's design contract in `src/lib/tokens.ts`: label, role, POW, accent color and the Tailwind classes derived from it. Adding a perspective starts here — `.name` (coral, Identity) and `.cv` (mint, Capability) are implemented; `.dev`, `.ai`, `.blog`, `.link` are named but unbuilt |
 | agent surface | A file published for machines rather than browsers: `llms.txt` (curated entry point), `index.md` (token-efficient homepage), `sitemap.xml`, `robots.txt`, `.well-known/api-catalog` and `.well-known/agent-skills/` (an installable skill describing how to talk about Huvudkontoret). They are content, maintained by hand, and they drift from the site unless updated with it |
 | Content-Signal policy | The published stance the agent surfaces state: content may be used for search and AI input; model training is not granted |
 | static site | The deployed artifact: `index.html`, `profil.html` and their siblings at the repo root. Served by the Cloudflare Worker in `wrangler.jsonc`, which owns `huvudkontoret.io` as a custom domain (ADR 0001, cut over 2026-08-26). `server: cloudflare` on the apex is the correct answer; `server: GitHub.com` would mean something has been rolled back |
-| published set | What `.assetsignore` lets the Worker serve: `index.html`, `profil.html`, `index.md`, `llms.txt`, `llms-full.txt`, `robots.txt`, `sitemap.xml`, `.well-known/`, `assets/`. The asset directory is the repo root, so everything else — agent instructions, docs, the gate's own source — is excluded by name. The gate asserts this set exactly |
+| published set | What `.assetsignore` lets the Worker serve: `index.html`, `profil.html`, `index.md`, `llms.txt`, `llms-full.txt`, `robots.txt`, `sitemap.xml`, `.well-known/`, `assets/`, and `club/`, the tree `huvudkontoret.club` is served from (planned, not routed yet). The Worker runs before asset lookup for everything outside `assets/`, so a tree answers only on its own host: `huvudkontoret.io/club/` is a 404. The asset directory is the repo root, so everything else — agent instructions, docs, the gate's own source — is excluded by name. The gate asserts this set exactly |
 
 ## Rules that hold everywhere
 
@@ -95,7 +95,11 @@ terms that describe the live site — static site, published set, agent surface
   same Worker production runs, so `.assetsignore` decides what exists locally
   too and `/CLAUDE.md` answers 404 here exactly as it does on the apex. The
   static site still needs no build step, and there is no `npm run dev` here to
-  reach for — the app that had one is gone.
+  reach for — the app that had one is gone. Local dev answers as the first
+  route, `huvudkontoret.io`, whatever Host the client sends. To see a lens,
+  name the host: `npx wrangler dev --host localhost` behaves like a preview
+  and serves every tree under its prefix (`/club/`), and `--host
+  huvudkontoret.club` answers as that host once it is live.
 - Gate for the static site: `hk verify web`, or `node tools/check/run.mjs`
   directly — the same commands `.github/workflows/pr.yml` runs on every pull
   request. What it asserts lives in `tools/check/facts.json`; why it asserts it
@@ -131,11 +135,13 @@ body and its validators; Markdown responses use `text/markdown; charset=utf-8`.
 There is no automatic HTML conversion or token counting. Other pages, including
 `/profil`, keep their existing representation.
 
-Only the homepage paths use `assets.run_worker_first`; other existing assets
-keep Cloudflare's direct static serving path. `_headers` sets
-`Content-Signal: search=yes, ai-input=yes, ai-train=no` for static responses,
-and the Worker sets the same policy for responses it handles. Keep those values
-consistent with `robots.txt`.
+Every path outside `/assets/` runs the Worker before asset lookup
+(`assets.run_worker_first` in `wrangler.jsonc`), because that is where the host
+is mapped to its tree; only `/assets/` keeps Cloudflare's direct static serving
+path. `_headers` still applies to what the Worker fetches through the asset
+binding and sets `Content-Signal: search=yes, ai-input=yes, ai-train=no` there;
+the Worker sets the same policy on every response it returns, its own 404s
+included. Keep those values consistent with `robots.txt`.
 
 Run `hk dev web`, then compare:
 
