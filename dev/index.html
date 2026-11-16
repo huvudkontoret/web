@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>huvudkontoret.dev</title>
+        <meta
+            name="description"
+            content="huvudkontoret.dev shows the build: documentation, architecture, projects."
+        />
+        <meta name="theme-color" content="#F4F2EC" />
+        <meta property="og:title" content="huvudkontoret.dev" />
+        <meta property="og:description" content="huvudkontoret.dev shows the build: documentation, architecture, projects." />
+        <meta property="og:url" content="https://huvudkontoret.dev/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_US" />
+        <link rel="canonical" href="https://huvudkontoret.dev/" />
+        <!-- Only /assets/ is shared across the hosts (SHARED_PATHS in
+             src/lib/tld.ts), so every asset here is root-absolute and lives
+             there. Links between the lens's own pages are relative: the browser
+             resolves them against the page, which is right both at the root of
+             huvudkontoret.dev and under /dev/ on a preview. The two icons browsers ask
+             for by convention are the exception: they are copies inside dev/,
+             so /favicon.ico answers on this host as it does on .io. -->
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        <!-- The MonoLisa blocks the first view needs: Latin upright, and
+             Latin-1 for the middle dot, the degree sign and the å in Luleå.
+             Nothing on this page is italic. The rest load on demand through
+             unicode-range. crossorigin is required even same-origin: a font
+             preload without it is fetched twice. -->
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0080-00FF.woff2" as="font" type="font/woff2" crossorigin />
+
+        <style>
+            /* ===================== TYPOGRAPHY ===================== */
+            /* MonoLisa carries all typography. Same files and rule as the
+               homepage: assets/fonts/README.md. */
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0100-017F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0100-017F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0100-017F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0100-017F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-20A0-20CF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+20A0-20CF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-20A0-20CF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+20A0-20CF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+
+            /* ===================== CONSTANTS ===================== */
+            /* The profile's light scale and the lens accent, by their own names
+               (ADR 0002). Same chrome, rows and footer as kl/index.html, whose
+               canon is the design "kl dev". The canon's own mockup for this
+               root predates the lens having anything to show, so the page
+               carries only what is here: one line and one row. */
+            :root {
+                --black: #16150f; /* Bläck */
+                --paper: #f4f2ec; /* Papper */
+                --stone: #5a574e; /* Sten */
+                --line-soft: #dcd9d1; /* inner dividers in tables */
+
+                /* The group colour. The 2 % rule: here it only marks hover and focus. */
+                --signal: #d9481c;
+
+                /* POW for .dev, in its paper tone: text on a light surface. */
+                --pow-dev: #3e7a4a;
+
+                --shell: 1060px;
+                --gut: 48px;
+                --pad: 88px;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+            html {
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+                background: var(--paper);
+            }
+            body {
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                background: var(--paper);
+                color: var(--black);
+                font-family: "MonoLisa", ui-monospace, monospace;
+                -webkit-font-smoothing: antialiased;
+            }
+            /* Ligatures are off in copy and grammar: `->` and `//` are the
+               profile's own signs and must stay two characters. */
+            body,
+            body * {
+                font-variant-ligatures: none;
+                font-feature-settings: "liga" 0, "clig" 0, "calt" 0;
+            }
+            h1,
+            h2,
+            p,
+            ul {
+                margin: 0;
+            }
+            ul {
+                padding: 0;
+                list-style: none;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            a:hover {
+                color: var(--signal);
+                text-decoration: underline;
+            }
+            :focus-visible {
+                outline: 2px solid var(--signal);
+                outline-offset: 3px;
+            }
+
+            /* ===================== GRAMMAR ===================== */
+            /* `//` labels, `[ STATUS ]`, `->` and `<-` never wrap. */
+            .g {
+                white-space: nowrap;
+            }
+            .label {
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--stone);
+            }
+
+            .shell {
+                max-width: var(--shell);
+                margin: 0 auto;
+            }
+
+            /* ===================== CHROME ===================== */
+            .chrome {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                padding: 16px var(--gut);
+                border-bottom: 1px solid var(--black);
+                font-size: 12px;
+                font-weight: 500;
+            }
+            .lockup {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            }
+            /* The sigill takes its colour through a mask; the original file is
+               never redrawn. */
+            .sigill {
+                width: 22px;
+                aspect-ratio: 100.1 / 98.2;
+                background: currentColor;
+                -webkit-mask: url("/assets/hk-sigill.svg") center / contain
+                    no-repeat;
+                mask: url("/assets/hk-sigill.svg") center / contain no-repeat;
+                flex-shrink: 0;
+            }
+            .wordmark {
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 1.15;
+                white-space: nowrap;
+            }
+            /* The dot belongs to the address. */
+            .wordmark .tld {
+                color: var(--pow-dev);
+            }
+
+            main {
+                flex: 1;
+            }
+            .band {
+                padding: var(--pad) var(--gut);
+                border-bottom: 1px solid var(--black);
+            }
+
+            /* ===================== POINT OF VIEW ===================== */
+            /* The lens's POW line. The profile's original is Swedish, "visar
+               bygget: dokumentation, arkitektur, projekt" (quoted in
+               src/lib/tld.ts); this lens is written in English. It is a line
+               and not a headline, so it is set between kl's h1 and h2. */
+            .pow h1 {
+                font-size: clamp(28px, 4.4vw, 52px);
+                font-weight: 600;
+                line-height: 1.15;
+                letter-spacing: -0.02em;
+                text-wrap: balance;
+            }
+
+            /* ===================== WHAT IS HERE ===================== */
+            .here .shell {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            /* One row per thing that exists. The list is its own container,
+               so the row restacks on the width it actually has. */
+            .rows {
+                container-type: inline-size;
+                font-size: 13.5px;
+                border-bottom: 1px solid var(--black);
+            }
+            .row {
+                display: grid;
+                grid-template-columns: 16ch minmax(0, 1fr) auto auto;
+                gap: 8px 24px;
+                padding: 16px 0;
+                border-top: 1px solid var(--black);
+                align-items: baseline;
+            }
+            /* The whole row leads to the page: the name's link is stretched
+               over it, and the one other link in the row is lifted above. */
+            .row {
+                position: relative;
+            }
+            .row .name {
+                font-size: 14px;
+                font-weight: 600;
+            }
+            .row .name::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+            }
+            .row .what {
+                font-weight: 300;
+                line-height: 1.6;
+                max-width: 66ch;
+                color: var(--stone);
+                text-wrap: pretty;
+            }
+            .row .status {
+                font-weight: 600;
+                color: var(--stone);
+            }
+            .row .out {
+                position: relative;
+                z-index: 1;
+                padding: 4px 0;
+                font-weight: 600;
+            }
+            @container (max-width: 720px) {
+                .row {
+                    grid-template-columns: minmax(0, 1fr) auto;
+                }
+                .row .what {
+                    grid-column: 1 / -1;
+                    grid-row: 2;
+                }
+                /* Only as wide as its text: the rest of the line belongs to
+                   the row's own link. */
+                .row .out {
+                    grid-column: 1 / -1;
+                    justify-self: start;
+                }
+            }
+
+            /* ===================== FOOTER ===================== */
+            .foot {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 16px;
+                padding: 32px var(--gut);
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--stone);
+            }
+            /* A link inside running text carries an underline at rest so it
+               can be found without hovering. */
+            .foot a {
+                padding: 4px 0;
+                text-decoration: underline;
+                text-underline-offset: 3px;
+            }
+
+            @media (max-width: 640px) {
+                :root {
+                    --gut: 20px;
+                    --pad: 64px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header class="chrome">
+            <span class="lockup" translate="no">
+                <span class="sigill" aria-hidden="true"></span>
+                <span class="wordmark">huvudkontoret<span class="tld">.dev</span></span>
+            </span>
+        </header>
+
+        <main>
+            <div class="band pow">
+                <div class="shell">
+                    <h1>shows the build: documentation, architecture, projects</h1>
+                </div>
+            </div>
+
+            <section class="band here" aria-labelledby="here-title">
+                <div class="shell">
+                    <h2 class="label g" id="here-title">// DOCUMENTATION</h2>
+                    <!-- What is actually here, and nothing else. The line is
+                         kl's own intro, as kl/index.html carries it. -->
+                    <ul class="rows">
+                        <li class="row">
+                            <a class="name" href="kl/" translate="no">/kl</a>
+                            <span class="what">kl is klockan. A CLI, a terminal UI, a menu bar, apps for phone, tablet and watch, and an MCP server, all reading one append-only log on your own disk.</span>
+                            <span class="status g">[ EXPERIMENT ]</span>
+                            <a class="out g" href="https://huvudkontoret.xyz/002/">-&gt; .xyz/002</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer class="foot">
+            <span>huvudkontoret · Luleå · <span class="g">65.5848° N / 22.1547° E</span></span>
+            <!-- The page's own date: it changes every time the page does. -->
+            <span><a class="g" href="https://huvudkontoret.io/">&lt;- huvudkontoret.io</a> · <span class="g">updated 2026-11-16</span></span>
+        </footer>
+
+        <!-- Cloudflare Web Analytics: the only measurement on the site. Cookieless,
+             so no consent banner; the token is a fact the gate holds every page to
+             (analytics in tools/check/facts.json). -->
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
+        ></script>
+    </body>
+</html>
