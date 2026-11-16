@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>kl · time tracking · huvudkontoret.dev/kl</title>
+        <meta
+            name="description"
+            content="kl is klockan. A CLI, a terminal UI, a menu bar, apps for phone, tablet and watch, and an MCP server, all reading one append-only log on your own disk."
+        />
+        <meta name="theme-color" content="#F4F2EC" />
+        <meta property="og:title" content="kl · time tracking · huvudkontoret.dev/kl" />
+        <meta property="og:description" content="Track time where the work happens." />
+        <meta property="og:url" content="https://huvudkontoret.dev/kl/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_US" />
+        <link rel="canonical" href="https://huvudkontoret.dev/kl/" />
+        <!-- Only /assets/ is shared across the hosts (SHARED_PATHS in
+             src/lib/tld.ts), so every asset here is root-absolute and lives
+             there. Links between the lens's own pages are relative: the browser
+             resolves them against the page, which is right both at the root of
+             huvudkontoret.dev and under /dev/ on a preview. The two icons browsers ask
+             for by convention are the exception: they are copies inside dev/,
+             so /favicon.ico answers on this host as it does on .io. -->
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        <!-- The MonoLisa blocks the first view needs: Latin upright, and
+             Latin-1 for the middle dot (and å ä ö once the page is switched to
+             Swedish). Nothing on this page is italic. The rest load on demand
+             through unicode-range. crossorigin is required even same-origin: a
+             font preload without it is fetched twice. -->
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0080-00FF.woff2" as="font" type="font/woff2" crossorigin />
+
+        <style>
+            /* ===================== TYPOGRAPHY ===================== */
+            /* MonoLisa carries all typography. Same files and rule as the
+               homepage: assets/fonts/README.md. */
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0100-017F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0100-017F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0100-017F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0100-017F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-20A0-20CF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+20A0-20CF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-20A0-20CF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+20A0-20CF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+
+            /* ===================== CONSTANTS ===================== */
+            /* The profile's light scale and the lens accent, by their own names
+               (ADR 0002). This lens is Papper throughout. The canon is the
+               design "kl dev" (kl dev.dc.html). */
+            :root {
+                --black: #16150f; /* Bläck */
+                --paper: #f4f2ec; /* Papper */
+                --stone: #5a574e; /* Sten */
+                --graphite: #8a877d; /* Grafit */
+                --light-graphite: #b5b1a6; /* Ljusgrafit */
+                --line-soft: #dcd9d1; /* inner dividers in tables */
+                --white: #ffffff; /* raised surface on Papper */
+
+                /* The group colour. The 2 % rule: here it marks the prompt,
+                   hover and focus. */
+                --signal: #d9481c;
+                --signal-text: #c34119; /* Signal as text on a light surface */
+                --receipt-text: #347d42; /* Kvitto as text on a light surface */
+
+                /* POW for .dev, in its paper tone: text on a light surface. */
+                --pow-dev: #3e7a4a;
+
+                --shell: 1060px;
+                --gut: 48px;
+                --pad: 88px;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+            html {
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+                background: var(--paper);
+            }
+            body {
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                background: var(--paper);
+                color: var(--black);
+                font-family: "MonoLisa", ui-monospace, monospace;
+                -webkit-font-smoothing: antialiased;
+            }
+            /* Ligatures are off in copy and grammar: `->` and `//` are the
+               profile's own signs and must stay two characters. */
+            body,
+            body * {
+                font-variant-ligatures: none;
+                font-feature-settings: "liga" 0, "clig" 0, "calt" 0;
+            }
+            h1,
+            h2,
+            p,
+            ul,
+            dl,
+            dd,
+            pre,
+            figure {
+                margin: 0;
+            }
+            ul {
+                padding: 0;
+                list-style: none;
+            }
+            code,
+            pre {
+                font: inherit;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            a:hover {
+                color: var(--signal);
+                text-decoration: underline;
+            }
+            :focus-visible {
+                outline: 2px solid var(--signal);
+                outline-offset: 3px;
+            }
+
+            /* ===================== GRAMMAR ===================== */
+            /* `//` labels, `[ STATUS ]`, `->` and `<-` never wrap. */
+            .g {
+                white-space: nowrap;
+            }
+            .label {
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--stone);
+            }
+            /* A command or an address inside running text. */
+            .lit {
+                font-weight: 500;
+                color: var(--black);
+                white-space: nowrap;
+            }
+            /* Not selectable, so copying a line gives the command and not
+               its prompt. */
+            .prompt {
+                font-weight: 700;
+                color: var(--signal);
+                -webkit-user-select: none;
+                user-select: none;
+            }
+
+            .shell {
+                max-width: var(--shell);
+                margin: 0 auto;
+            }
+
+            /* ===================== CHROME ===================== */
+            .chrome {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                padding: 16px var(--gut);
+                border-bottom: 1px solid var(--black);
+                font-size: 12px;
+                font-weight: 500;
+            }
+            .lockup {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            }
+            .lockup:hover {
+                color: inherit;
+                text-decoration: none;
+            }
+            /* The sigill takes its colour through a mask; the original file is
+               never redrawn. */
+            .sigill {
+                width: 22px;
+                aspect-ratio: 100.1 / 98.2;
+                background: currentColor;
+                -webkit-mask: url("/assets/hk-sigill.svg") center / contain
+                    no-repeat;
+                mask: url("/assets/hk-sigill.svg") center / contain no-repeat;
+                flex-shrink: 0;
+            }
+            .wordmark {
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 1.15;
+                white-space: nowrap;
+            }
+            /* The dot belongs to the address. */
+            .wordmark .tld {
+                color: var(--pow-dev);
+            }
+            .wordmark .path {
+                color: var(--stone);
+            }
+            .chrome ul {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 24px;
+                letter-spacing: 0.1em;
+            }
+            /* Padding on an inline box changes no layout; it only makes the
+               12 px links 24 px tall to hit. The buttons get theirs below,
+               after the reset that would otherwise remove it. */
+            .chrome nav a {
+                padding: 4px 0;
+            }
+            .chrome .out {
+                font-weight: 600;
+                letter-spacing: 0;
+            }
+            .chrome__state {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 16px;
+            }
+            .state {
+                color: var(--stone);
+                letter-spacing: 0.1em;
+                white-space: nowrap;
+            }
+            .lang {
+                display: flex;
+                gap: 16px;
+            }
+            .lang button {
+                all: unset;
+                padding: 4px 0;
+                margin: -4px 0;
+                cursor: pointer;
+                white-space: nowrap;
+                font-weight: 500;
+            }
+            .lang button:hover {
+                color: var(--signal-text);
+            }
+            /* `all: unset` takes the focus ring with it. */
+            .lang button:focus-visible {
+                outline: 2px solid var(--signal);
+                outline-offset: 3px;
+            }
+
+            main {
+                flex: 1;
+            }
+
+            /* ===================== BANDS ===================== */
+            /* Every band is the same two tracks: the claim on the left, the
+               proof on the right, one column when two do not fit. */
+            .band {
+                padding: var(--pad) var(--gut);
+                border-bottom: 1px solid var(--black);
+            }
+            .split {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+                gap: 56px;
+                align-items: start;
+            }
+            /* A grid item is as wide as its content by default; the two code
+               boxes scroll inside themselves instead. */
+            .split > * {
+                min-width: 0;
+            }
+            .claim {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .claim h2 {
+                font-size: clamp(24px, 3.2vw, 34px);
+                font-weight: 600;
+                line-height: 1.25;
+            }
+            .claim p:not(.label) {
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 1.7;
+                max-width: 44ch;
+                color: var(--stone);
+                text-wrap: pretty;
+            }
+
+            /* ===================== TITLE ===================== */
+            .band--title {
+                padding-bottom: 72px;
+            }
+            .band--title .split {
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+                align-items: end;
+            }
+            .title {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+            }
+            .title h1 {
+                font-size: clamp(40px, 6vw, 72px);
+                font-weight: 600;
+                line-height: 1.05;
+                letter-spacing: -0.02em;
+            }
+            .title .intro {
+                font-size: 15px;
+                font-weight: 300;
+                line-height: 1.7;
+                max-width: 52ch;
+                color: var(--stone);
+                text-wrap: pretty;
+            }
+            /* The address stays on one row; what it leads to may take the
+               next one when the column is narrow. */
+            .title .more {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0 1ch;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            .title .more span:last-child {
+                font-weight: 300;
+                color: var(--stone);
+            }
+            /* The canon sets this link on one row, and at its own width the
+               row is some 18 px longer than the column: it ends in the gap
+               between the tracks. Kept from the width where that still leaves
+               half the gap free. */
+            @media (min-width: 1144px) {
+                .title .more {
+                    flex-wrap: nowrap;
+                    white-space: nowrap;
+                    /* The box ends where the text does, so the focus ring
+                       goes round the link and not through it. */
+                    width: max-content;
+                }
+            }
+            /* A long line wraps, as it does in a terminal and in the canon:
+               the install command is the one line nobody should have to
+               scroll sideways for. */
+            .term {
+                background: var(--black);
+                color: var(--paper);
+                padding: 20px 24px;
+                font-size: 13px;
+                line-height: 1.8;
+            }
+            .term code {
+                display: block;
+                overflow-wrap: anywhere;
+            }
+            .term .answer {
+                color: var(--light-graphite);
+                padding-left: 1.6em;
+            }
+            /* The cursor: the profile's only standing motion. */
+            .cursor {
+                display: inline-block;
+                width: 0.55em;
+                height: 1em;
+                margin-left: 4px;
+                background: var(--paper);
+                vertical-align: text-bottom;
+                animation: blink 1.1s step-end infinite;
+            }
+            @keyframes blink {
+                0%,
+                49% {
+                    opacity: 1;
+                }
+                50%,
+                100% {
+                    opacity: 0;
+                }
+            }
+
+            /* ===================== ROWS ===================== */
+            /* Commands and surfaces: a name, what it is and, for a surface,
+               its status. The list is its own container, so a row restacks on
+               the width it actually has and not on the viewport's: the two
+               tracks of a band are narrow both on a phone and just above the
+               point where they sit side by side. */
+            .rows {
+                container-type: inline-size;
+                font-size: 13.5px;
+                border-bottom: 1px solid var(--black);
+            }
+            .row {
+                display: grid;
+                grid-template-columns: minmax(16ch, max-content) minmax(0, 1fr);
+                gap: 4px 24px;
+                padding: 14px 0;
+                border-top: 1px solid var(--line-soft);
+                align-items: baseline;
+            }
+            /* The design cuts a long name with an ellipsis. The track grows
+               instead, so a name stays whole when a visitor widens the
+               spacing. */
+            .row dt {
+                font-weight: 500;
+                white-space: nowrap;
+            }
+            .row dd {
+                font-weight: 300;
+                color: var(--stone);
+            }
+            .rows--surfaces .row {
+                grid-template-columns: minmax(16ch, max-content) minmax(0, 1fr) auto;
+            }
+            .row .status {
+                font-weight: 600;
+                white-space: nowrap;
+            }
+            .row .status--ok {
+                color: var(--receipt-text);
+            }
+            @container (max-width: 340px) {
+                .rows--commands .row {
+                    grid-template-columns: minmax(0, 1fr);
+                }
+            }
+            @container (max-width: 400px) {
+                .rows--surfaces .row {
+                    grid-template-columns: minmax(0, 1fr) auto;
+                }
+                .rows--surfaces .what {
+                    grid-column: 1 / -1;
+                    grid-row: 2;
+                }
+            }
+
+            /* ===================== CODE ===================== */
+            .code {
+                border: 1px solid var(--black);
+                background: var(--white);
+                padding: 20px 24px;
+                font-size: 12.5px;
+                line-height: 1.8;
+                overflow-x: auto;
+            }
+            .code figcaption {
+                font-size: 10.5px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--stone);
+                margin-bottom: 10px;
+                white-space: nowrap;
+            }
+            /* The log is an artifact: the hard shadow is the profile's, and
+               only artifacts carry it. */
+            .code--artifact {
+                padding: 24px;
+                font-size: 12px;
+                box-shadow: 8px 8px 0 rgba(22, 21, 15, 0.15);
+            }
+            .code--artifact figcaption {
+                margin-bottom: 12px;
+            }
+            .code--artifact pre + pre {
+                margin-top: 8px;
+            }
+            .code .elided {
+                color: var(--stone);
+            }
+
+            /* ===================== LOG ===================== */
+            .band--log .split {
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+                align-items: center;
+            }
+            .band--log .claim p:not(.label) {
+                max-width: 46ch;
+            }
+            /* The sync address, coloured the way the profile writes an
+               address: the name in Bläck, the lens in its own tone. */
+            .address {
+                font-weight: 500;
+                white-space: nowrap;
+                color: var(--graphite);
+            }
+            .address .name {
+                color: var(--black);
+            }
+            .address .tld {
+                color: var(--pow-dev);
+            }
+
+            /* ===================== SOURCE ===================== */
+            .sources {
+                font-size: 14px;
+                border-bottom: 1px solid var(--black);
+            }
+            .sources li {
+                border-top: 1px solid var(--line-soft);
+            }
+            .sources li:first-child {
+                border-top-color: var(--black);
+            }
+            .sources a {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 4px 16px;
+                padding: 16px 0;
+                font-weight: 600;
+            }
+            .sources a span:last-child {
+                font-weight: 300;
+                color: var(--stone);
+            }
+
+            /* ===================== FOOTER ===================== */
+            .foot {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 16px;
+                padding: 32px var(--gut);
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--stone);
+            }
+
+            @media (max-width: 640px) {
+                :root {
+                    --gut: 20px;
+                    --pad: 64px;
+                }
+                .band--title {
+                    padding-bottom: 56px;
+                }
+                .split {
+                    gap: 40px;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .cursor {
+                    animation: none;
+                }
+            }
+        </style>
+        <!-- The language switch is the only thing here that needs script.
+             Without it the page is complete in English, and two buttons that
+             do nothing are worse than none. -->
+        <noscript>
+            <style>
+                .lang {
+                    display: none;
+                }
+            </style>
+        </noscript>
+    </head>
+    <body>
+        <header class="chrome">
+            <a class="lockup" href="../" translate="no">
+                <span class="sigill" aria-hidden="true"></span>
+                <span class="wordmark">huvudkontoret<span class="tld">.dev</span><span class="path">/kl</span></span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#commands" data-t="navCommands">COMMANDS</a></li>
+                    <li><a href="#surfaces" data-t="navSurfaces">SURFACES</a></li>
+                    <li><a href="#agents" data-t="navAgents">AGENTS</a></li>
+                    <li><a href="#log" data-t="navLog">LOG</a></li>
+                    <li><a href="#source" data-t="navSource">SOURCE</a></li>
+                    <li><a class="out g" href="https://huvudkontoret.xyz/002/">-&gt; .xyz/002</a></li>
+                </ul>
+            </nav>
+            <div class="chrome__state">
+                <span class="state">DEV · [ EXPERIMENT ]</span>
+                <!-- The mark is the design's, and it is hidden from assistive
+                     technology: aria-pressed already says which one is on. -->
+                <div class="lang">
+                    <button type="button" data-lang="en" aria-pressed="true"><span aria-hidden="true">[x]</span> EN</button>
+                    <button type="button" data-lang="sv" aria-pressed="false"><span aria-hidden="true">[ ]</span> SV</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="band band--title">
+                <div class="shell split">
+                    <div class="title">
+                        <!-- Two units, so the status can take the next row on a
+                             narrow screen without either of them breaking. The
+                             status word is the same in both languages; the
+                             script swaps only the first unit. -->
+                        <p class="label"><span class="g" id="title-label">// KL · TIME TRACKING ·</span> <span class="g">[ EXPERIMENT ]</span></p>
+                        <h1 data-t="h1">Track time where the work happens.</h1>
+                        <p class="intro" data-t="intro">kl is klockan. A CLI, a terminal UI, a menu bar, apps for phone, tablet and watch, and an MCP server, all reading one append-only log on your own disk.</p>
+                        <a class="more" href="https://huvudkontoret.xyz/002/"><span class="g">-&gt; huvudkontoret.xyz/002</span> <span data-t="introLink">the experiment and its conditions</span></a>
+                    </div>
+                    <div class="term" translate="no">
+                        <code><b class="prompt">$</b> brew install huvudkontoret/tap/kl</code>
+                        <code><b class="prompt">$</b> kl start fyr -n "sketch"</code>
+                        <code class="answer">started 'fyr' at 09:02</code>
+                        <code><b class="prompt">$</b> kl stop</code>
+                        <code class="answer">stopped 'fyr' at 11:30 · 2h 28m</code>
+                        <code><b class="prompt">$</b> kl<span class="cursor" aria-hidden="true"></span></code>
+                    </div>
+                </div>
+            </div>
+
+            <section class="band" id="commands" aria-labelledby="commands-title">
+                <div class="shell split">
+                    <div class="claim">
+                        <p class="label g" data-t="cmdLabel">// COMMANDS</p>
+                        <h2 id="commands-title" data-t="cmdH2">One command per event</h2>
+                        <p><span data-t="cmdP1a">Projects are created the first time you name them. Starting a timer stops the one running. Every command takes</span> <code class="lit" translate="no">--json</code><span data-t="cmdP1b">. stdout is data, stderr is notices.</span></p>
+                        <p><span data-t="cmdP2a">See</span> <code class="lit" translate="no">kl help &lt;subcommand&gt;</code> <span data-t="cmdP2b">for detailed help.</span></p>
+                    </div>
+                    <!-- The prompt is decoration here: sixteen rows read out as
+                         "dollar" help nobody. -->
+                    <dl class="rows rows--commands">
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl status</code></dt>
+                            <dd>Show the running timer and today's total. The default.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl start</code></dt>
+                            <dd>Start a timer (a running one is stopped first).</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl stop</code></dt>
+                            <dd>Stop the running timer.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl add</code></dt>
+                            <dd>Log a finished session after the fact.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl report</code></dt>
+                            <dd>Summarize tracked time per project and day; a week also shows its status and target.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl log</code></dt>
+                            <dd>List recent sessions with their short ids.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl edit</code></dt>
+                            <dd>Change a session's project, times or note.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl delete</code></dt>
+                            <dd>Delete a session (tombstone in the log).</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl projects</code></dt>
+                            <dd>Manage projects.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl week</code></dt>
+                            <dd>Show, close and reopen ISO weeks, and set the week target.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl tui</code></dt>
+                            <dd>Full-screen terminal UI: the line, the ruler and the receipt on one screen.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl mcp</code></dt>
+                            <dd>Run an MCP server over stdio, exposing kl as tools for agents.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl remind</code></dt>
+                            <dd>Reminders: forgotten timer, empty weekday yesterday.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl sync</code></dt>
+                            <dd>Sync the event log with the kl sync server.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl config</code></dt>
+                            <dd>Read and change settings in the config file.</dd>
+                        </div>
+                        <div class="row">
+                            <dt translate="no"><b class="prompt" aria-hidden="true">$</b> <code>kl completions</code></dt>
+                            <dd>Print a shell completion script (zsh, bash or fish).</dd>
+                        </div>
+                    </dl>
+                </div>
+            </section>
+
+            <section class="band" id="surfaces" aria-labelledby="surfaces-title">
+                <div class="shell split">
+                    <div class="claim">
+                        <p class="label g" data-t="surfLabel">// SURFACES</p>
+                        <h2 id="surfaces-title" data-t="surfH2">One log, every surface</h2>
+                        <p data-t="surfP">Every surface writes the same events. A closed week goes to export; reopening it is logged.</p>
+                    </div>
+                    <dl class="rows rows--surfaces">
+                        <div class="row">
+                            <dt>kl</dt>
+                            <dd class="what">CLI and full-screen terminal UI.</dd>
+                            <dd class="status status--ok">[ OK ]</dd>
+                        </div>
+                        <div class="row">
+                            <dt>kl mcp</dt>
+                            <dd class="what">Nine kl_* tools for agents.</dd>
+                            <dd class="status status--ok">[ OK ]</dd>
+                        </div>
+                        <div class="row">
+                            <dt>kl-bar</dt>
+                            <dd class="what">macOS menu bar. Owns the periodic sync.</dd>
+                            <dd class="status status--ok">[ OK ]</dd>
+                        </div>
+                        <div class="row">
+                            <dt>iPhone</dt>
+                            <dd class="what">Full copy of the log. Syncs on open and close.</dd>
+                            <dd class="status status--ok">[ OK ]</dd>
+                        </div>
+                        <div class="row">
+                            <dt>macOS, iPad</dt>
+                            <dd class="what">Window app. iPad and the foldable iPhone in landscape.</dd>
+                            <dd class="status">[ SKETCH ]</dd>
+                        </div>
+                        <div class="row">
+                            <dt>Android, watch</dt>
+                            <dd class="what">Android, watchOS and Fitbit Sense.</dd>
+                            <dd class="status">[ SKETCH ]</dd>
+                        </div>
+                        <div class="row">
+                            <dt>web, export</dt>
+                            <dd class="what">v4. Fortnox and Kleer as export targets.</dd>
+                            <dd class="status">[ SOON ]</dd>
+                        </div>
+                    </dl>
+                </div>
+            </section>
+
+            <section class="band" id="agents" aria-labelledby="agents-title">
+                <div class="shell split">
+                    <div class="claim">
+                        <p class="label g" data-t="agLabel">// AGENTS</p>
+                        <h2 id="agents-title" data-t="agH2">Same guards for agents</h2>
+                        <p><code class="lit" translate="no">kl mcp</code> <span data-t="agP">serves nine kl_* tools over stdio. An agent logs time through the same validation as you do. It cannot log the future.</span></p>
+                    </div>
+                    <!-- A box that scrolls sideways takes keyboard focus, so it
+                         can be scrolled without a pointer. The log further
+                         down is the other one. -->
+                    <figure class="code" tabindex="0" aria-labelledby="mcp-caption" translate="no">
+                        <figcaption id="mcp-caption">// MCP CLIENT CONFIG</figcaption>
+<pre><code>{"mcpServers": {
+  "kl": { "command": "kl", "args": ["mcp"] }
+}}</code></pre>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="band band--log" id="log" aria-labelledby="log-title">
+                <div class="shell split">
+                    <div class="claim">
+                        <p class="label g" data-t="logLabel">// LOG</p>
+                        <h2 id="log-title"><span data-t="logH2a">Lines are appended.</span> <br /><span data-t="logH2b">Nothing is rewritten.</span></h2>
+                        <p data-t="logP1">The truth is a JSONL file. State is derived on every run. Corrections are new events that point at old ones.</p>
+                        <p><span data-t="logP2a">Sync is optional. Devices exchange lines through</span> <span class="address" translate="no">kl.<span class="name">huvudkontoret</span><span class="tld">.dev</span>/sync/v1</span><span data-t="logP2b">. The clock runs on the local log alone.</span></p>
+                    </div>
+                    <figure class="code code--artifact" tabindex="0" aria-labelledby="log-caption" translate="no">
+                        <figcaption id="log-caption">// ~/.local/share/kl/events.jsonl</figcaption>
+<pre class="elided"><code>{"type":"project.created",
+ "data":{"slug":"fyr"}, …}</code></pre>
+<pre><code>{"type":"session.started",
+ "data":{"project":"fyr",
+  "start":"2026-09-23T09:02:00+02:00"},
+ "device":"…", "v":1}</code></pre>
+<pre class="elided"><code>{"type":"session.stopped", …}</code></pre>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="band" id="source" aria-labelledby="source-title">
+                <div class="shell split">
+                    <div class="claim">
+                        <p class="label g" data-t="srcLabel">// SOURCE</p>
+                        <h2 id="source-title" data-t="srcH2">Where it came from</h2>
+                    </div>
+                    <ul class="sources">
+                        <li>
+                            <a href="https://github.com/huvudkontoret/kl"><span class="g">-&gt; github.com/huvudkontoret/kl</span> <span data-t="src1">code, issues, releases</span></a>
+                        </li>
+                        <li>
+                            <a href="https://huvudkontoret.xyz/002/"><span class="g">-&gt; huvudkontoret.xyz/002</span> <span data-t="src2">the experiment</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer class="foot">
+            <span>huvudkontoret · Luleå · <span class="g">65.5848° N / 22.1547° E</span></span>
+            <!-- The page's own date: it changes every time the page does. -->
+            <span class="g"><span data-t="updated">updated</span> 2026-11-16</span>
+        </footer>
+
+        <!-- The language switch. English is the lens's original language and
+             is what the markup above carries, so the page is complete without
+             this script. T, CMDS and SURF are the design's own dictionaries and
+             data, kept verbatim: T is keyed by the data-t attributes, and CMDS
+             and SURF follow the two lists row by row. Commands, code, addresses
+             and the grammar are in neither, because they are never translated.
+             The choice is not stored anywhere: every visit starts in English. -->
+        <script>
+            (() => {
+                const T = {
+                    en: { navCommands:'COMMANDS', navSurfaces:'SURFACES', navAgents:'AGENTS', navLog:'LOG', navSource:'SOURCE',
+                        label:'// KL · TIME TRACKING · [ EXPERIMENT ]', h1:'Track time where the work happens.',
+                        intro:'kl is klockan. A CLI, a terminal UI, a menu bar, apps for phone, tablet and watch, and an MCP server, all reading one append-only log on your own disk.',
+                        introLink:'the experiment and its conditions',
+                        cmdLabel:'// COMMANDS', cmdH2:'One command per event',
+                        cmdP1a:'Projects are created the first time you name them. Starting a timer stops the one running. Every command takes', cmdP1b:'. stdout is data, stderr is notices.',
+                        cmdP2a:'See', cmdP2b:'for detailed help.',
+                        surfLabel:'// SURFACES', surfH2:'One log, every surface', surfP:'Every surface writes the same events. A closed week goes to export; reopening it is logged.',
+                        agLabel:'// AGENTS', agH2:'Same guards for agents', agP:'serves nine kl_* tools over stdio. An agent logs time through the same validation as you do. It cannot log the future.',
+                        logLabel:'// LOG', logH2a:'Lines are appended.', logH2b:'Nothing is rewritten.',
+                        logP1:'The truth is a JSONL file. State is derived on every run. Corrections are new events that point at old ones.',
+                        logP2a:'Sync is optional. Devices exchange lines through', logP2b:'. The clock runs on the local log alone.',
+                        srcLabel:'// SOURCE', srcH2:'Where it came from', src1:'code, issues, releases', src2:'the experiment', updated:'updated' },
+                    sv: { navCommands:'KOMMANDON', navSurfaces:'YTOR', navAgents:'AGENTER', navLog:'LOGG', navSource:'KÄLLA',
+                        label:'// KL · TIDRÄKNING · [ EXPERIMENT ]', h1:'Räkna tid där arbetet sker.',
+                        intro:'kl är klockan. Ett CLI, ett terminalgränssnitt, en menyrad, appar för telefon, surfplatta och klocka och en MCP-server. Alla läser samma logg på din egen disk, där rader bara läggs till.',
+                        introLink:'experimentet och dess villkor',
+                        cmdLabel:'// KOMMANDON', cmdH2:'Ett kommando per händelse',
+                        cmdP1a:'Projekt skapas första gången du nämner dem. En ny timer stoppar den som går. Alla kommandon tar', cmdP1b:'. stdout är data, stderr är notiser.',
+                        cmdP2a:'Se', cmdP2b:'för detaljerad hjälp.',
+                        surfLabel:'// YTOR', surfH2:'En logg, alla ytor', surfP:'Alla ytor skriver samma händelser. En stängd vecka går till export. Öppnas den igen loggas det.',
+                        agLabel:'// AGENTER', agH2:'Samma vakter för agenter', agP:'ger nio kl_*-verktyg över stdio. En agent loggar tid genom samma validering som du. Den kan inte logga framtiden.',
+                        logLabel:'// LOGG', logH2a:'Rader läggs till.', logH2b:'Inget skrivs om.',
+                        logP1:'Sanningen är en JSONL-fil. Tillståndet räknas fram vid varje körning. Rättelser är nya händelser som pekar på gamla.',
+                        logP2a:'Synk är valfri. Enheterna byter rader via', logP2b:'. Klockan går på den lokala loggen ensam.',
+                        srcLabel:'// KÄLLA', srcH2:'Var den kommer ifrån', src1:'kod, ärenden, släpp', src2:'experimentet', updated:'uppdaterad' }
+                };
+                const CMDS = [
+                    ['kl status', 'Show the running timer and today\'s total. The default.', 'Visar timern som går och dagens summa. Standard.'],
+                    ['kl start', 'Start a timer (a running one is stopped first).', 'Startar en timer (en som går stoppas först).'],
+                    ['kl stop', 'Stop the running timer.', 'Stoppar timern som går.'],
+                    ['kl add', 'Log a finished session after the fact.', 'Loggar ett avslutat pass i efterhand.'],
+                    ['kl report', 'Summarize tracked time per project and day; a week also shows its status and target.', 'Summerar tid per projekt och dag. En vecka visar också status och mål.'],
+                    ['kl log', 'List recent sessions with their short ids.', 'Listar senaste passen med korta id:n.'],
+                    ['kl edit', 'Change a session\'s project, times or note.', 'Ändrar ett pass projekt, tider eller anteckning.'],
+                    ['kl delete', 'Delete a session (tombstone in the log).', 'Raderar ett pass (gravsten i loggen).'],
+                    ['kl projects', 'Manage projects.', 'Hanterar projekt.'],
+                    ['kl week', 'Show, close and reopen ISO weeks, and set the week target.', 'Visar, stänger och öppnar ISO-veckor, och sätter veckomålet.'],
+                    ['kl tui', 'Full-screen terminal UI: the line, the ruler and the receipt on one screen.', 'Terminalgränssnitt i helskärm: raden, linjalen och kvittot på en skärm.'],
+                    ['kl mcp', 'Run an MCP server over stdio, exposing kl as tools for agents.', 'Kör en MCP-server över stdio som ger agenter kl som verktyg.'],
+                    ['kl remind', 'Reminders: forgotten timer, empty weekday yesterday.', 'Påminnelser: glömd timer, tom vardag igår.'],
+                    ['kl sync', 'Sync the event log with the kl sync server.', 'Synkar händelseloggen med kl:s synkserver.'],
+                    ['kl config', 'Read and change settings in the config file.', 'Läser och ändrar inställningar i konfigurationsfilen.'],
+                    ['kl completions', 'Print a shell completion script (zsh, bash or fish).', 'Skriver ut ett kompletteringsskript för skalet (zsh, bash eller fish).']
+                ];
+                const SURF = [
+                    ['kl', 'kl', 'CLI and full-screen terminal UI.', 'CLI och terminalgränssnitt i helskärm.', '[ OK ]'],
+                    ['kl mcp', 'kl mcp', 'Nine kl_* tools for agents.', 'Nio kl_*-verktyg för agenter.', '[ OK ]'],
+                    ['kl-bar', 'kl-bar', 'macOS menu bar. Owns the periodic sync.', 'Menyraden på Macen. Äger den periodiska synken.', '[ OK ]'],
+                    ['iPhone', 'iPhone', 'Full copy of the log. Syncs on open and close.', 'Full kopia av loggen. Synkar vid öppning och stängning.', '[ OK ]'],
+                    ['macOS, iPad', 'macOS, iPad', 'Window app. iPad and the foldable iPhone in landscape.', 'Fönsterapp. iPad och den vikbara iPhonen liggande.', '[ SKISS ]'],
+                    ['Android, watch', 'Android, klocka', 'Android, watchOS and Fitbit Sense.', 'Android, watchOS och Fitbit Sense.', '[ SKISS ]'],
+                    ['web, export', 'webb, export', 'v4. Fortnox and Kleer as export targets.', 'v4. Fortnox och Kleer som exportmål.', '[ SNART ]']
+                ];
+                // The design carries one status per surface, in Swedish. A
+                // status word follows the page language, one fixed word each;
+                // a word that is not listed here is the same in both.
+                const STATUS_EN = { '[ SKISS ]': '[ SKETCH ]', '[ SNART ]': '[ SOON ]' };
+                // The title label is one string in the dictionary and two units
+                // in the markup. The status is the second unit and never changes.
+                const TITLE_STATUS = ' [ EXPERIMENT ]';
+
+                const translated = document.querySelectorAll('[data-t]');
+                const titleLabel = document.getElementById('title-label');
+                const commands = document.querySelectorAll('.rows--commands dd');
+                const surfaces = document.querySelectorAll('.rows--surfaces .row');
+                const buttons = document.querySelectorAll('.lang button');
+
+                function show(lang) {
+                    const t = T[lang];
+                    const sv = lang === 'sv';
+                    document.documentElement.lang = lang;
+                    document.title = sv
+                        ? 'kl · tidräkning · huvudkontoret.dev/kl'
+                        : 'kl · time tracking · huvudkontoret.dev/kl';
+                    for (const element of translated) element.textContent = t[element.dataset.t];
+                    titleLabel.textContent = t.label.replace(TITLE_STATUS, '');
+                    commands.forEach((what, row) => {
+                        what.textContent = CMDS[row][sv ? 2 : 1];
+                    });
+                    surfaces.forEach((surface, row) => {
+                        const [name, what, status] = surface.children;
+                        const fact = SURF[row];
+                        name.textContent = fact[sv ? 1 : 0];
+                        what.textContent = fact[sv ? 3 : 2];
+                        status.textContent = sv ? fact[4] : (STATUS_EN[fact[4]] ?? fact[4]);
+                    });
+                    for (const button of buttons) {
+                        const on = button.dataset.lang === lang;
+                        button.setAttribute('aria-pressed', String(on));
+                        button.firstElementChild.textContent = on ? '[x]' : '[ ]';
+                    }
+                }
+
+                for (const button of buttons) {
+                    button.addEventListener('click', () => show(button.dataset.lang));
+                }
+            })();
+        </script>
+
+        <!-- Cloudflare Web Analytics: the only measurement on the site. Cookieless,
+             so no consent banner; the token is a fact the gate holds every page to
+             (analytics in tools/check/facts.json). -->
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
+        ></script>
+    </body>
+</html>
