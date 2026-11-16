@@ -37,7 +37,8 @@ node --test tools/check/test.mjs src/lib/tld.test.mjs worker/index.test.mjs \
 
 Local dev answers as `huvudkontoret.io`, the first route, whatever Host the
 client sends. `npx wrangler dev --host localhost` behaves like a preview and
-serves every tree under its prefix, so the club page is at `/club/`;
+serves every tree under its prefix, so the club page is at `/club/` and the
+whiteboard at `/xyz/`;
 `--host huvudkontoret.club` answers as that host once it is live.
 
 Node 24 is the toolchain for the gate (it imports TypeScript directly). There
@@ -56,6 +57,7 @@ deploy.
 | `robots.txt` · `sitemap.xml` · `.well-known/` | Crawl policy, resource list, API catalog and an installable agent skill |
 | `assets/` | Images, icons and fonts, shared by every host |
 | `club/` | The evening page, the tree `huvudkontoret.club` will be served from |
+| `xyz/` | The whiteboard: the wall and one page per resident, the tree `huvudkontoret.xyz` will be served from |
 | `.assetsignore` | What the repo root narrows down to before it is served |
 | `wrangler.jsonc` · `worker/` | The Cloudflare Worker that serves the apex, mapping each host to its tree |
 | `tools/check/` | The gate — see its own README |
@@ -67,7 +69,7 @@ deploy.
 The asset directory is the repo root, so without a rule the whole checkout is
 the website. `.assetsignore` is that rule, and it narrows the site to
 `index.html`, `profil.html`, `index.md`, `llms.txt`, `llms-full.txt`,
-`robots.txt`, `sitemap.xml`, `.well-known/`, `assets/` and `club/`. The gate
+`robots.txt`, `sitemap.xml`, `.well-known/`, `assets/`, `club/` and `xyz/`. The gate
 asserts that set is *exactly* what survives, so a new file at the repo root cannot quietly appear
 on the site.
 

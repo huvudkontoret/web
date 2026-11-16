@@ -38,7 +38,7 @@ function checkReferences(site, facts, surface, html, markup, exemptFont, report)
   // References are read from the full source: CSS url() lives inside <style>,
   // which stripRawText blanks out.
   for (const reference of references(html)) {
-    const path = toRepoPath(reference.url, site, facts);
+    const path = toRepoPath(reference.url, site, facts, surface);
     if (path === null) continue;
 
     if (exemptFont?.test(path)) {

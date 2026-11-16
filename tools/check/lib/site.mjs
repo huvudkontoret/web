@@ -74,8 +74,10 @@ export function pagePath(page) {
 /**
  * Map a URL found in the markup to the repo path it must resolve to, or null
  * when it is not ours to check (external host, mailto:, #anchor, data:).
+ * When `fromPage` is set, page-relative URLs resolve against that page's
+ * directory — needed once pages live under a tree like xyz/002/.
  */
-export function toRepoPath(url, site, facts) {
+export function toRepoPath(url, site, facts, fromPage = null) {
   const value = url.trim();
   if (!value || value.startsWith("#")) return null;
   if (/^(mailto|tel|data|javascript|blob):/i.test(value)) return null;
@@ -96,6 +98,15 @@ export function toRepoPath(url, site, facts) {
   } else {
     path = value.split("#")[0].split("?")[0];
     if (!path) return null;
+    // Page-relative URLs resolve against the page's directory. Root-absolute
+    // ones (leading /) and bare root-relative names stay as they are — the
+    // gate has only ever seen pages at the repo root, where the two coincide.
+    if (fromPage && !path.startsWith("/")) {
+      const base = fromPage.includes("/")
+        ? fromPage.slice(0, fromPage.lastIndexOf("/") + 1)
+        : "";
+      path = new URL(path, `https://example.invalid/${base}`).pathname;
+    }
   }
 
   path = path.split("#")[0].split("?")[0];
