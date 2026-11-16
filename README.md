@@ -39,7 +39,8 @@ Local dev answers as `huvudkontoret.io`, the first route, whatever Host the
 client sends. `npx wrangler dev --host localhost` behaves like a preview and
 serves every tree under its prefix, so the club page is at `/club/`, the
 whiteboard at `/xyz/` and the developer lens at `/dev/`;
-`--host huvudkontoret.club` answers as that host once it is live.
+`--host huvudkontoret.club`, `--host huvudkontoret.xyz` or
+`--host huvudkontoret.dev` answers as that host.
 
 Node 24 is the toolchain for the gate (it imports TypeScript directly). There
 is no `npm install`, no lockfile, and the gate has no dependencies — the site
@@ -56,11 +57,11 @@ deploy.
 | `index.md` · `llms.txt` · `llms-full.txt` | Agent surfaces — the same company, written for machines |
 | `robots.txt` · `sitemap.xml` · `.well-known/` | Crawl policy, resource list, API catalog and an installable agent skill |
 | `assets/` | Images, icons and fonts, shared by every host |
-| `club/` | The evening page, the tree `huvudkontoret.club` will be served from |
-| `xyz/` | The whiteboard: the wall and one page per resident, the tree `huvudkontoret.xyz` will be served from |
-| `dev/` | The developer lens: a root and one page per tool, the tree `huvudkontoret.dev` will be served from |
+| `club/` | The evening page, the tree `huvudkontoret.club` is served from |
+| `xyz/` | The whiteboard: the wall and one page per resident, the tree `huvudkontoret.xyz` is served from |
+| `dev/` | The developer lens: a root and one page per tool, the tree `huvudkontoret.dev` is served from |
 | `.assetsignore` | What the repo root narrows down to before it is served |
-| `wrangler.jsonc` · `worker/` | The Cloudflare Worker that serves the apex, mapping each host to its tree |
+| `wrangler.jsonc` · `worker/` | The Cloudflare Worker that serves `huvudkontoret.io` and the lens domains, mapping each host to its tree |
 | `tools/check/` | The gate — see its own README |
 | `docs/` | `adr/` decisions · `specs/` designs · `runbooks/` operations |
 | `CONTEXT.md` | Domain language and the rules that hold everywhere. Read this one |
@@ -81,7 +82,8 @@ being part of the website, not from being read on GitHub.
 ## Hosting
 
 Production is the Cloudflare Worker named `web` on `huvudkontoret.io`
-(ADR 0001). Cut over from GitHub Pages on 2026-08-26; `server: cloudflare` on
+(ADR 0001) and, from the same Worker, the lens domains
+`huvudkontoret.club`, `huvudkontoret.xyz` and `huvudkontoret.dev`. Cut over from GitHub Pages on 2026-08-26; `server: cloudflare` on
 the apex is the correct answer. `www` keeps a 301 to the apex through a zone
 redirect rule.
 

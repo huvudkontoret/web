@@ -38,7 +38,19 @@
   //
   // www keeps its 301 to the apex through a zone redirect rule rather than a
   // second custom domain. See docs/runbooks/2026-08-12-pages-to-workers-cutover.md.
-  "routes": [{ "pattern": "huvudkontoret.io", "custom_domain": true }],
+  //
+  // Every other entry is a lens going live, and the same rule holds for it:
+  // the route and `status: "live"` in src/lib/tld.ts are one decision, and
+  // src/lib/tld.test.mjs fails on one without the other. A lens's zone carries
+  // a placeholder record and a redirect rule until then: the apex record has to
+  // go and the rule has to be narrowed to www, in the order the runbook gives —
+  // docs/runbooks/2026-08-24-domain-activation.md, the `.club` amendment.
+  "routes": [
+    { "pattern": "huvudkontoret.io", "custom_domain": true },
+    { "pattern": "huvudkontoret.club", "custom_domain": true },
+    { "pattern": "huvudkontoret.xyz", "custom_domain": true },
+    { "pattern": "huvudkontoret.dev", "custom_domain": true }
+  ],
   // Every pull request gets a preview at <branch>-web.<subdomain>.workers.dev.
   // Restricted with Cloudflare Access — the previews show unreleased work.
   "preview_urls": true
