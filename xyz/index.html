@@ -19,8 +19,12 @@
              src/lib/tld.ts), so every asset here is root-absolute and lives
              there. Links between the lens's own pages are relative: the browser
              resolves them against the page, which is right both on the real
-             host and on the prefix-path preview. -->
+             host and on the prefix-path preview. The two icons browsers ask for by
+             convention are the exception: they are copies inside xyz/, so
+             /favicon.ico answers on this host as it does on .io. -->
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
         <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
         <!-- The MonoLisa blocks the first view needs: Latin upright and italic,
              Latin-1 for å ä ö and the middle dot. The rest load on demand
@@ -109,6 +113,10 @@
                 --dusk-text: #e8d9cc;
                 --dusk-label: #c98a5e;
                 --dusk-rule: #5a4030;
+
+                /* The residents' pens, one per resident that has been handed
+                   one. kl writes in blue. Pens are used on .xyz only. */
+                --pen-kl: #5fc9e8;
 
                 --shell: 1060px;
                 --gut: 48px;
@@ -355,7 +363,7 @@
             }
             .dusk .split {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
                 gap: 56px;
                 align-items: start;
             }
@@ -415,7 +423,7 @@
             }
             .lab {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
                 gap: 24px;
             }
             .card {
@@ -425,10 +433,13 @@
                 flex-direction: column;
                 gap: 16px;
             }
+            /* A long status goes under the number on a narrow card: the
+               number is a serial and never breaks. */
             .card-head {
                 display: flex;
                 justify-content: space-between;
                 align-items: baseline;
+                flex-wrap: wrap;
                 gap: 12px;
             }
             /* Ett experiment tar sin residents penna. Utan tilldelad penna
@@ -437,6 +448,10 @@
                 font-size: 12px;
                 font-weight: 700;
                 color: var(--light-graphite);
+                white-space: nowrap;
+            }
+            .xid--kl {
+                color: var(--pen-kl);
             }
             .status {
                 font-size: 10px;
@@ -582,6 +597,10 @@
             .foot a:hover {
                 color: var(--glow);
             }
+            .foot .date {
+                color: var(--graphite);
+                white-space: nowrap;
+            }
 
             @media (max-width: 640px) {
                 :root {
@@ -648,6 +667,9 @@
                     <span class="label">BOR HÄR NU</span>
                     <a class="chip" href="001/"
                         >/001 brian <span>anteckningsboken</span></a
+                    >
+                    <a class="chip" href="002/"
+                        >/002 kl <span>tidräkningen</span></a
                     >
                 </div>
                 <p class="obs">
@@ -748,6 +770,32 @@
                             >
                         </p>
                     </article>
+                    <article class="card">
+                        <div class="card-head">
+                            <span class="xid xid--kl">xyz-002/xp-001</span>
+                            <span class="status g">[ ANVÄNDS DAGLIGEN ]</span>
+                        </div>
+                        <p>
+                            <span class="q">// VARFÖR</span>Tid ska räknas där
+                            arbetet sker, inte rekonstrueras på fredagen.
+                        </p>
+                        <p class="what">
+                            <span class="q">// VAD</span
+                            ><a href="002/">/002 kl</a>
+                            <span
+                                >Tidrapportering från terminalen: kl start, kl
+                                stop, klart.</span
+                            >
+                        </p>
+                        <p>
+                            <span class="q">// HUR</span>kl start och kl stop i
+                            vardagen utan att någon tänker på det. Noll
+                            fredagar med kalendern som facit, tre månader i
+                            sträck.<span class="measure"
+                                >mätvillkor: veckan stängs &lt;2 min</span
+                            >
+                        </p>
+                    </article>
                 </div>
             </div>
         </section>
@@ -820,6 +868,8 @@
                     <a href="https://huvudkontoret.io/"
                         ><span class="g">&lt;-</span> tillbaka till nätverket</a
                     >
+                    <!-- The page's own date: it changes every time the page does. -->
+                    <span class="date">uppdaterad 2026-11-16</span>
                 </footer>
             </div>
         </section>

@@ -1,0 +1,2133 @@
+<!doctype html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>kl · tidräkningen · huvudkontoret.xyz/002</title>
+        <meta
+            name="description"
+            content="kl, tidräkningen: tidrapportering från terminalen. kl start, kl stop, klart. Resident xyz-002 på whiteboarden. Flyttar till drift när den bär."
+        />
+        <meta name="theme-color" content="#16150F" />
+        <meta property="og:title" content="kl · tidräkningen · huvudkontoret.xyz/002" />
+        <meta property="og:description" content="Tid ska räknas där arbetet sker, inte rekonstrueras på fredagen." />
+        <meta property="og:url" content="https://huvudkontoret.xyz/002/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="sv_SE" />
+        <link rel="canonical" href="https://huvudkontoret.xyz/002/" />
+        <!-- Only /assets/ is shared across the hosts (SHARED_PATHS in
+             src/lib/tld.ts), so every asset here is root-absolute and lives
+             there. Links to the lens's own pages are relative: the page is
+             served at /002/ on huvudkontoret.xyz and under /xyz/002/ on a
+             preview, and the browser resolves them right in both. The two icons browsers ask for by
+             convention are the exception: they are copies inside xyz/, so
+             /favicon.ico answers on this host as it does on .io. -->
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        <!-- The MonoLisa blocks the first view needs: Latin upright, Latin-1
+             for å ä ö and the middle dot, Latin italic for the line above the
+             terminal, Latin-1 italic for the ä in that line, and General
+             Punctuation for the dashes in the terminal's bar. The rest load
+             on demand through unicode-range. crossorigin is required even
+             same-origin: a font preload without it is fetched twice.
+             Permanent Marker is not loaded: this hero is the wordmark variant
+             and uses no effect face. -->
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0080-00FF.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/assets/fonts/MonoLisa-Variable-2000-206F.woff2" as="font" type="font/woff2" crossorigin />
+
+        <style>
+            /* ===================== TYPOGRAPHY ===================== */
+            /* MonoLisa carries all typography. Same files and rule as the
+               homepage: assets/fonts/README.md. The terminal's bar glyphs
+               (U+2591, U+2593) are in none of the licensed blocks, so they
+               fall through to the system monospace. */
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0020-007F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0080-00FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0080-00FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-0100-017F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0100-017F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-0100-017F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+0100-017F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-2000-206F.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+2000-206F;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-20A0-20CF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+20A0-20CF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-20A0-20CF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+20A0-20CF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-Variable-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+            @font-face {
+                font-family: "MonoLisa";
+                src: url("/assets/fonts/MonoLisa-VariableItalic-25A0-25FF.woff2") format("woff2");
+                font-weight: 100 900;
+                font-style: italic;
+                font-display: swap;
+                unicode-range: U+25A0-25FF;
+            }
+
+            /* ===================== CONSTANTS ===================== */
+            /* The profile's scale by its own names (ADR 0002). A resident
+               page lives on the evening shift: Bläck, with the resident's pen
+               as the accent. kl writes in blue. Glöd is the one morning
+               surface, the band under the chrome. The canon is the design
+               "kl xyz" in the claude.ai project huvudkontoret // kanon. */
+            :root {
+                --night: #0e0d09; /* Natt: the terminal surface */
+                --panel: #14130d; /* Panel */
+                --black: #16150f; /* Bläck */
+                --frame: #3a382f; /* Ram */
+                --stone: #5a574e; /* Sten */
+                --graphite: #8a877d; /* Grafit */
+                --light-graphite: #b5b1a6; /* Ljusgrafit */
+                --paper: #f4f2ec; /* Papper */
+                --signal: #d9481c; /* Signal */
+                --receipt: #46a758; /* Kvitto */
+                --alarm: #e5484d; /* Larm */
+
+                --glow: #f0862b; /* Glöd: the lens accent */
+                --pow-xyz: #a35b20; /* Glöd as text on a light surface */
+                --pen-kl: #5fc9e8; /* kl's pen. Pens are used on .xyz only. */
+
+                --shell: 1060px;
+                --gut: 48px;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+            html {
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+                background: var(--black);
+            }
+            body {
+                margin: 0;
+                background: var(--black);
+                color: var(--paper);
+                font-family: "MonoLisa", ui-monospace, monospace;
+                -webkit-font-smoothing: antialiased;
+            }
+            /* Ligatures are off everywhere: `->` and `//` are the profile's
+               own signs and must stay two characters. */
+            body,
+            body * {
+                font-variant-ligatures: none;
+                font-feature-settings: "liga" 0, "clig" 0, "calt" 0;
+            }
+            h1,
+            h2,
+            h3,
+            p,
+            ul,
+            dl,
+            dd,
+            pre {
+                margin: 0;
+            }
+            ul {
+                padding: 0;
+                list-style: none;
+            }
+            code,
+            pre {
+                font: inherit;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            a:hover {
+                color: var(--signal);
+                text-decoration: underline;
+            }
+            :focus-visible {
+                outline: 2px solid var(--signal);
+                outline-offset: 3px;
+            }
+
+            /* The grammar never wraps: // LABEL, [ STATUS ], -> and <-. */
+            .g {
+                white-space: nowrap;
+            }
+            .label {
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--graphite);
+            }
+            .shell {
+                max-width: var(--shell);
+                margin: 0 auto;
+            }
+            .aside {
+                font-size: 12px;
+                font-weight: 300;
+                font-style: italic;
+                line-height: 1.6;
+                color: var(--graphite);
+            }
+            .h2 {
+                font-size: clamp(24px, 3.2vw, 34px);
+                font-weight: 600;
+                line-height: 1.25;
+            }
+            .lead {
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 1.8;
+                max-width: 44ch;
+                color: var(--light-graphite);
+                text-wrap: pretty;
+            }
+            .skip {
+                position: absolute;
+                left: -9999px;
+                top: 0;
+                z-index: 100;
+                background: var(--black);
+                color: var(--paper);
+                padding: 12px 20px;
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .skip:focus {
+                left: 0;
+            }
+
+            /* ===================== CHROME ===================== */
+            .chrome {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 16px;
+                padding: 16px var(--gut);
+                border-bottom: 1px solid var(--black);
+                background: var(--paper);
+                color: var(--black);
+                font-size: 12px;
+                font-weight: 500;
+            }
+            /* The links are taller than they look: the negative margin gives
+               the hit area back without making the chrome any higher. */
+            .lockup {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                min-height: 44px;
+                margin: -11px 0;
+            }
+            /* On the light chrome and on Glöd a link keeps its ink on hover
+               and takes only the underline; Signal is for the dark surfaces. */
+            .chrome a:hover,
+            .band a:hover {
+                color: inherit;
+            }
+            .lockup:hover {
+                text-decoration: none;
+            }
+            /* The seal is coloured through a mask; the file is never redrawn. */
+            .seal {
+                width: 22px;
+                aspect-ratio: 100.1 / 98.2;
+                background: currentColor;
+                -webkit-mask: url("/assets/hk-sigill.svg") center / contain no-repeat;
+                mask: url("/assets/hk-sigill.svg") center / contain no-repeat;
+                flex-shrink: 0;
+            }
+            .wordmark {
+                font-size: 14px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+            .chrome .tld {
+                color: var(--pow-xyz);
+            }
+            .chrome .path {
+                color: var(--stone);
+            }
+            .chrome nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px 24px;
+                letter-spacing: 0.1em;
+            }
+            .chrome nav a {
+                padding: 8px 0;
+                margin: -8px 0;
+            }
+            .coords {
+                color: var(--stone);
+                letter-spacing: 0.1em;
+                white-space: nowrap;
+            }
+            /* The road band: the page's one Glöd surface, text in Bläck. */
+            .band {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 4px 16px;
+                padding: 8px var(--gut);
+                border-bottom: 1px solid var(--black);
+                background: var(--glow);
+                color: var(--black);
+                font-size: 12px;
+                font-weight: 500;
+            }
+            .band a {
+                font-weight: 600;
+            }
+            /* Signal on Glöd is orange on orange. Focus is drawn in Bläck here. */
+            .band a:focus-visible {
+                outline-color: var(--black);
+            }
+            .band__way {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0 1ch;
+            }
+            .band__state {
+                letter-spacing: 0.1em;
+            }
+
+            /* ===================== TITLE ===================== */
+            .title {
+                padding: 88px var(--gut) 72px var(--gut);
+                border-bottom: 1px solid var(--frame);
+            }
+            .title .shell {
+                display: flex;
+                flex-direction: column;
+                gap: 32px;
+            }
+            .meta {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+            .meta .pen {
+                color: var(--pen-kl);
+            }
+            .title h1 {
+                font-size: clamp(48px, 7vw, 88px);
+                font-weight: 600;
+                line-height: 1.02;
+                letter-spacing: -0.02em;
+            }
+            .title h1 span {
+                color: var(--graphite);
+                font-weight: 300;
+            }
+            .ingress {
+                font-size: 15px;
+                font-weight: 300;
+                line-height: 1.8;
+                max-width: 60ch;
+                color: var(--light-graphite);
+                text-wrap: pretty;
+            }
+            .ingress b,
+            .ingress code {
+                color: var(--paper);
+                font-weight: 500;
+            }
+            .chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                font-size: 12.5px;
+            }
+            .chips li {
+                border: 1px solid var(--frame);
+                color: var(--light-graphite);
+                padding: 7px 16px;
+                white-space: nowrap;
+            }
+            .chips .chips__status {
+                border-color: var(--pen-kl);
+                color: var(--pen-kl);
+                font-weight: 600;
+            }
+
+            /* ===================== SECTIONS ===================== */
+            .section {
+                padding: 88px var(--gut);
+                border-bottom: 1px solid var(--frame);
+                scroll-margin-top: 80px;
+            }
+            .split {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+                gap: 56px;
+                align-items: start;
+            }
+            .split > * {
+                min-width: 0;
+            }
+            .intro {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .head {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 8px 16px;
+            }
+
+            /* ===================== DEMO ===================== */
+            .demo {
+                padding-top: 64px;
+                padding-bottom: 64px;
+            }
+            .demo .shell {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            /* The frame carries the focus state for the whole terminal: it
+               lights up as soon as anything inside has focus, whether that
+               came from a click, a tap or the Tab key. */
+            .frame {
+                border: 1px solid var(--frame);
+                height: 600px;
+                overflow: hidden;
+            }
+            .frame:focus-within {
+                outline: 2px solid var(--signal);
+                outline-offset: 3px;
+            }
+
+            /* ===================== TERMINAL ===================== */
+            /* kl tui, redrawn from the design component. The markup below is
+               its first view and stands on its own; the script at the end of
+               the page takes it over. Its interface is English, as the design
+               component's is; the kl tui that shipped (0.5.x) is a different,
+               Swedish one-screen interface. */
+            .term {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                background: var(--night);
+                color: var(--paper);
+                font-size: 14px;
+                line-height: 1.6;
+                outline: none;
+            }
+            .term button {
+                font: inherit;
+                line-height: normal;
+                background: transparent;
+                border: 0;
+                padding: 0;
+                color: inherit;
+                cursor: pointer;
+                white-space: nowrap;
+            }
+            .term button:disabled {
+                cursor: default;
+            }
+            .term b {
+                font-weight: 700;
+            }
+            .term .dim {
+                color: var(--graphite);
+            }
+            .term__label {
+                font-size: 11.5px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--graphite);
+                white-space: nowrap;
+            }
+            .term__bar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 16px;
+                padding: 6px 24px;
+                background: var(--paper);
+                color: var(--night);
+                font-size: 12.5px;
+                font-weight: 500;
+                flex-shrink: 0;
+            }
+            .term__id,
+            .term__sync {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: baseline;
+                gap: 0 16px;
+                white-space: nowrap;
+            }
+            .term__name,
+            .term__clock {
+                font-weight: 700;
+            }
+            .term__tabs {
+                display: flex;
+                gap: 32px;
+                padding: 0 24px;
+                border-bottom: 1px solid var(--frame);
+                flex-shrink: 0;
+            }
+            .term .term__tab {
+                font-size: 12.5px;
+                letter-spacing: 0.08em;
+                padding: 8px 0;
+                color: var(--graphite);
+            }
+            .term .term__tab[aria-current] {
+                font-weight: 700;
+                color: var(--paper);
+            }
+            .term__body {
+                flex: 1;
+                min-height: 0;
+                overflow: auto;
+                padding: 24px;
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+            }
+            .view {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+                max-width: 880px;
+            }
+            .view--log {
+                max-width: 960px;
+            }
+            .run {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            .run__project {
+                font-size: 15px;
+                font-weight: 600;
+            }
+            .run__clock {
+                font-size: 72px;
+                font-weight: 600;
+                line-height: 1.05;
+                letter-spacing: -0.02em;
+            }
+            .run__meta,
+            .idle__hint,
+            .today__bar {
+                color: var(--light-graphite);
+            }
+            .idle {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .idle__line {
+                font-size: 15px;
+            }
+            .idle__hint b {
+                color: var(--paper);
+            }
+            /* The blinking cursor is the profile's only standing motion. */
+            .cursor {
+                display: inline-block;
+                width: 0.6em;
+                height: 1.1em;
+                margin-left: 4px;
+                background: var(--paper);
+                vertical-align: text-bottom;
+                animation: blink 1.1s step-end infinite;
+            }
+            @keyframes blink {
+                0%,
+                49% {
+                    opacity: 1;
+                }
+                50%,
+                100% {
+                    opacity: 0;
+                }
+            }
+            .today {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                border-top: 1px solid var(--frame);
+                padding-top: 16px;
+            }
+            .today__line {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 0 16px;
+            }
+            /* The component writes the bar and its percentage as one line
+               with two spaces between. Two cells and a two-character gap draw
+               the same line, and let it break between them on a phone. */
+            .today__bar {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0 2ch;
+                white-space: nowrap;
+            }
+            .recent,
+            .days {
+                display: flex;
+                flex-direction: column;
+            }
+            .recent .term__label,
+            .days .term__label {
+                padding-bottom: 8px;
+            }
+            .rows {
+                display: flex;
+                flex-direction: column;
+            }
+            .row {
+                display: grid;
+                gap: 16px;
+                white-space: nowrap;
+            }
+            .row--session {
+                grid-template-columns: 8ch 13ch 8ch 12ch minmax(0, 1fr);
+            }
+            .row--session b {
+                font-weight: 600;
+            }
+            .row--log {
+                grid-template-columns: 8ch 13ch 8ch 12ch minmax(0, 1fr) 3ch;
+                cursor: pointer;
+            }
+            .row--report {
+                grid-template-columns: 12ch minmax(0, 1fr) 9ch;
+            }
+            .row--total {
+                border-top: 1px solid var(--frame);
+                margin-top: 4px;
+                padding-top: 4px;
+                font-weight: 700;
+            }
+            .row .num {
+                text-align: right;
+            }
+            .row .note,
+            .row .bar {
+                color: var(--light-graphite);
+                overflow: hidden;
+            }
+            .row .note {
+                text-overflow: ellipsis;
+            }
+            .row.is-cursor {
+                font-weight: 700;
+            }
+            .day {
+                display: flex;
+                flex-direction: column;
+            }
+            .day__head {
+                display: flex;
+                justify-content: space-between;
+                gap: 16px;
+                border-bottom: 1px solid var(--frame);
+                padding-bottom: 4px;
+                margin-bottom: 4px;
+            }
+            .day__head b,
+            .report__head {
+                font-weight: 600;
+            }
+            .day__total,
+            .report__empty {
+                color: var(--light-graphite);
+            }
+            .term__modal {
+                flex-shrink: 1;
+                min-height: 0;
+                max-height: 60%;
+                overflow-y: auto;
+                border-top: 1px solid var(--paper);
+                padding: 16px 24px;
+                background: var(--panel);
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .term__modal[hidden] {
+                display: none;
+            }
+            .help {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+                gap: 4px 24px;
+                font-size: 13px;
+            }
+            .help div {
+                display: flex;
+            }
+            .help dt {
+                font-weight: 700;
+                min-width: 6ch;
+                white-space: pre;
+            }
+            .help dd {
+                color: var(--light-graphite);
+            }
+            .picker {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px 24px;
+            }
+            .term .picker button {
+                white-space: pre;
+            }
+            .term .picker .is-picked {
+                font-weight: 700;
+            }
+            .prompt {
+                display: flex;
+                align-items: baseline;
+                gap: 8px;
+            }
+            .prompt__sign {
+                color: var(--signal);
+                font-weight: 700;
+            }
+            /* The caret is the prompt's focus mark, in Signal, and the frame
+               around the terminal is lit while the prompt has focus. */
+            .prompt input {
+                flex: 1;
+                min-width: 0;
+                background: transparent;
+                border: 0;
+                outline: none;
+                padding: 0;
+                color: var(--paper);
+                font: inherit;
+                font-weight: 500;
+                caret-color: var(--signal);
+            }
+            .prompt input::placeholder {
+                color: var(--graphite);
+                opacity: 1;
+            }
+            .term__foot {
+                flex-shrink: 0;
+                border-top: 1px solid var(--frame);
+                padding: 6px 24px;
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 16px;
+                font-size: 12.5px;
+            }
+            .term__keys {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+            .term .term__key {
+                color: var(--light-graphite);
+                line-height: 1.6;
+            }
+            .term .term__key b {
+                color: var(--paper);
+            }
+            .term__notice {
+                white-space: nowrap;
+            }
+            .term__notice--meta {
+                color: var(--graphite);
+            }
+            .term__notice--err {
+                color: var(--alarm);
+            }
+            /* Fingers get the profile's taller targets; the mouse keeps the
+               terminal's own line height. Sixteen pixels in the prompt keeps
+               iOS from zooming the page when it takes focus. */
+            @media (pointer: coarse) {
+                .term .term__tab {
+                    padding: 12px 0;
+                }
+                .term .term__key,
+                .term .picker button,
+                .term .term__answer {
+                    padding: 9px 0;
+                }
+                .term .term__answer {
+                    padding-left: 12px;
+                    padding-right: 12px;
+                }
+                .prompt input {
+                    font-size: 16px;
+                }
+                .prompt input::placeholder {
+                    font-size: 13px;
+                }
+            }
+
+            /* ===================== COMMANDS ===================== */
+            .commands {
+                display: flex;
+                flex-direction: column;
+                font-size: 13.5px;
+                border-bottom: 1px solid var(--frame);
+            }
+            .command {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                gap: 24px;
+                padding: 14px 0;
+                border-top: 1px solid var(--frame);
+                align-items: baseline;
+            }
+            /* The design cuts a long command off with an ellipsis. A command
+               nobody can read in full is no reference, so it wraps instead,
+               hanging under its own first letter. Flags and time ranges are
+               marked up so that a line never ends in the middle of one. */
+            .command dt {
+                display: flex;
+                gap: 1ch;
+                font-weight: 500;
+            }
+            .command dt b {
+                color: var(--signal);
+                font-weight: 700;
+            }
+            .command code {
+                min-width: 0;
+                overflow-wrap: anywhere;
+            }
+            .command dd {
+                font-weight: 300;
+                color: var(--light-graphite);
+            }
+
+            /* ===================== SURFACES ===================== */
+            .surfaces-section .shell {
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+            }
+            .head__title {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .surfaces-section .aside {
+                font-size: 13px;
+                max-width: 40ch;
+            }
+            /* Shared lines: the grid's own Ram shows through a 1 px gap. */
+            .surfaces {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+                gap: 1px;
+                background: var(--frame);
+                border: 1px solid var(--frame);
+            }
+            .surface {
+                background: var(--black);
+                padding: 24px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                min-height: 198px; /* the design's 150 px is content-box: 150 + 2 x 24 padding */
+            }
+            .surface__head {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 8px;
+            }
+            .surface h3 {
+                font-size: 15px;
+                font-weight: 600;
+            }
+            .state {
+                font-size: 11px;
+                font-weight: 600;
+                letter-spacing: 0.08em;
+            }
+            .state--ok {
+                color: var(--receipt);
+            }
+            .state--sketch {
+                color: var(--pen-kl);
+            }
+            .state--soon {
+                color: var(--graphite);
+            }
+            .surface p {
+                font-size: 13px;
+                font-weight: 300;
+                line-height: 1.7;
+                color: var(--light-graphite);
+            }
+
+            /* ===================== THE LOG ===================== */
+            .log-section .split {
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+                align-items: center;
+            }
+            .log-section .lead {
+                max-width: 46ch;
+            }
+            /* An artefact: the profile's hard shadow, never a soft one. */
+            .jsonl {
+                background: var(--night);
+                border: 1px solid var(--paper);
+                box-shadow: 8px 8px 0 rgba(244, 242, 236, 0.12);
+                padding: 24px;
+                font-size: 12px;
+                line-height: 1.8;
+                overflow-x: auto;
+            }
+            .jsonl__path {
+                display: block;
+                font-size: 10.5px;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                color: var(--graphite);
+                margin-bottom: 12px;
+                white-space: nowrap;
+            }
+            .jsonl pre {
+                color: var(--light-graphite);
+            }
+            .jsonl pre + pre {
+                margin-top: 8px;
+            }
+            .jsonl .jsonl__lit {
+                color: var(--paper);
+            }
+
+            /* ===================== TERMS ===================== */
+            .terms {
+                display: flex;
+                flex-direction: column;
+                font-size: 14px;
+                border-bottom: 1px solid var(--frame);
+            }
+            .terms li {
+                display: flex;
+                gap: 16px;
+                padding: 16px 0;
+                border-top: 1px solid var(--frame);
+            }
+            .terms .arrow {
+                font-weight: 700;
+                color: var(--pen-kl);
+                flex-shrink: 0;
+            }
+            .terms b {
+                font-weight: 600;
+            }
+            .terms span span {
+                font-weight: 300;
+                color: var(--light-graphite);
+            }
+
+            /* ===================== FOOTER ===================== */
+            .end {
+                padding: 48px var(--gut);
+            }
+            .foot {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 16px;
+                border-top: 1px solid var(--frame);
+                padding-top: 24px;
+                font-size: 12px;
+            }
+            .foot .mark {
+                font-weight: 600;
+                white-space: nowrap;
+            }
+            /* In darkness the address takes full Glöd. */
+            .foot .tld {
+                color: var(--glow);
+            }
+            .foot .path,
+            .foot .tag,
+            .foot__date {
+                color: var(--graphite);
+            }
+            .foot .tag {
+                font-weight: 300;
+                font-style: italic;
+            }
+            .foot__links {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px 24px;
+            }
+            .foot__links a + a,
+            .foot__links a + a:hover {
+                color: var(--light-graphite);
+            }
+            .foot__date {
+                white-space: nowrap;
+            }
+
+            /* ===================== NARROW ===================== */
+            /* The design is drawn at one width. Below 640 px the page follows
+               the wall: a 20 px gutter and tighter sections. */
+            @media (max-width: 640px) {
+                :root {
+                    --gut: 20px;
+                }
+                .title {
+                    padding: 64px var(--gut) 48px var(--gut);
+                }
+                /* "tidräkningen" is twelve characters and must fit the
+                   column on one line: 48 px does from 400 px up, and under
+                   that the size follows the width. */
+                .title h1 {
+                    font-size: clamp(36px, calc((100vw - 40px) / 7.5), 48px);
+                }
+                .section {
+                    padding: 64px var(--gut);
+                }
+                .demo {
+                    padding-top: 48px;
+                    padding-bottom: 48px;
+                }
+                .split {
+                    gap: 40px;
+                }
+                .command {
+                    grid-template-columns: minmax(0, 1fr);
+                    gap: 4px;
+                }
+                .jsonl {
+                    padding: 16px;
+                }
+                .term__bar,
+                .term__foot {
+                    padding-left: 16px;
+                    padding-right: 16px;
+                }
+                .term__bar,
+                .term__foot,
+                .term__keys {
+                    gap: 0 16px;
+                }
+                .term__tabs {
+                    gap: 16px;
+                    padding: 0 16px;
+                }
+                .term__body,
+                .term__modal {
+                    padding: 16px;
+                }
+                .run__clock {
+                    font-size: clamp(44px, 15vw, 72px);
+                }
+                /* The component's rows are one line of fixed columns, about
+                   sixty characters wide. A phone has thirty, so here a
+                   session takes two lines: time, length and project above,
+                   id and note below. A report row puts its bar below. */
+                .row {
+                    gap: 0 8px;
+                }
+                .row--session,
+                .row--log {
+                    grid-template-columns: 11ch 6ch minmax(0, 1fr);
+                    padding-bottom: 6px;
+                }
+                .row--log {
+                    grid-template-columns: 11ch 6ch minmax(0, 1fr) 2ch;
+                }
+                .row--session > :nth-child(1),
+                .row--log > :nth-child(1) {
+                    grid-area: 2 / 1;
+                }
+                .row--session > :nth-child(2),
+                .row--log > :nth-child(2) {
+                    grid-area: 1 / 1;
+                }
+                .row--session > :nth-child(3),
+                .row--log > :nth-child(3) {
+                    grid-area: 1 / 2;
+                }
+                .row--session > :nth-child(4),
+                .row--log > :nth-child(4) {
+                    grid-area: 1 / 3;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .row--session > :nth-child(5),
+                .row--log > :nth-child(5) {
+                    grid-area: 2 / 2 / auto / -1;
+                }
+                .row--log > :nth-child(6) {
+                    grid-area: 1 / 4;
+                }
+                .row--report {
+                    grid-template-columns: minmax(0, 1fr) 9ch;
+                }
+                .row--report > :nth-child(2) {
+                    grid-area: 2 / 1 / auto / -1;
+                }
+                /* A prompt's label is longer than a phone is wide. */
+                .term__notice,
+                .term__modal .term__label {
+                    white-space: normal;
+                }
+                .foot {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 12px;
+                }
+            }
+            /* The last forty pixels: the day's bar is 32 characters and the
+               log's longest line 38, and both have to fit a 320 px screen. */
+            @media (max-width: 380px) {
+                .term {
+                    font-size: 12px;
+                }
+                .term__bar,
+                .term .term__tab {
+                    font-size: 11.5px;
+                }
+                .term__tabs {
+                    gap: 12px;
+                }
+                .jsonl {
+                    font-size: 10.5px;
+                }
+            }
+            /* At 320 px the path label is wider than the box. */
+            @media (max-width: 344px) {
+                .jsonl {
+                    padding: 12px;
+                    font-size: 10px;
+                }
+                .jsonl__path {
+                    font-size: 9.5px;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .cursor {
+                    animation: none;
+                }
+            }
+        </style>
+        <noscript><style>.demo .aside { display: none; }</style></noscript>
+    </head>
+
+    <body>
+        <a class="skip" href="#content">Hoppa till innehållet</a>
+
+        <header>
+            <div class="chrome">
+                <a class="lockup" href="../">
+                    <span class="seal" aria-hidden="true"></span>
+                    <span class="wordmark" translate="no">huvudkontoret<span class="tld">.xyz</span><span class="path">/002</span></span>
+                </a>
+                <!-- The design also carries "-> öppna kl" here, a link to the
+                     kl web app. That app is not live, so the link is left out
+                     until it has an address to point at. -->
+                <nav aria-label="Sidsektioner">
+                    <a href="#kommandon">KOMMANDON</a>
+                    <a href="#ytor">YTOR</a>
+                    <a href="#loggen">LOGGEN</a>
+                    <a href="#villkor">VILLKOR</a>
+                </nav>
+                <span class="coords">WHITEBOARDEN · RESIDENT</span>
+            </div>
+            <!-- The residents are listed as the wall lists them today. When
+                 one moves in or out, this line changes with xyz/index.html. -->
+            <div class="band">
+                <span class="band__way">
+                    <a class="g" href="../">&lt;- .xyz</a>
+                    <span class="g">// bor här nu: /001 brian · /002 kl</span>
+                </span>
+                <span class="band__state"><span class="g">xyz-002 · [ BOR HÄR ]</span> <span class="g">-&gt; drift</span> <span class="g">när den bär</span></span>
+            </div>
+        </header>
+
+        <main id="content">
+            <header class="title">
+                <div class="shell">
+                    <div class="meta label">
+                        <span class="g">// RESIDENT · <span class="pen">BLÅ PENNA</span></span>
+                        <span class="g">SEDAN JULI 2026</span>
+                    </div>
+                    <h1>kl <span>tidräkningen</span></h1>
+                    <p class="ingress">Tidrapportering från terminalen: <code class="g">kl start</code>, <code class="g">kl stop</code>, klart. Namnet kommer från klockan, som i kl. 14:00. <b>Hypotesen:</b> tid ska räknas där arbetet sker, inte rekonstrueras på fredagen.</p>
+                    <ul class="chips">
+                        <li class="chips__status">[ ANVÄNDS DAGLIGEN ]</li>
+                        <li>lokal först, ren text</li>
+                        <li>mätvillkor: veckan stängs &lt;2 min</li>
+                    </ul>
+                </div>
+            </header>
+
+            <section class="section demo" aria-labelledby="demo-title">
+                <div class="shell">
+                    <div class="head">
+                        <h2 class="label g" id="demo-title">// RÄKNA TID, PÅ RIKTIGT</h2>
+                        <span class="aside">ingen skärmdump. verktyget är sidan.</span>
+                    </div>
+                    <div class="frame">
+                        <!-- The first view of kl tui, as static markup: the
+                             sample week on Wednesday at 14:47:12. With
+                             scripting the terminal below redraws these regions
+                             and makes the buttons live; without it this is
+                             what stands. -->
+                        <div class="term" id="kl-tui" role="group" aria-label="kl tui" aria-describedby="tui-hint">
+                            <div class="term__bar">
+                                <div class="term__id">
+                                    <span class="term__name"># kl tui</span>
+                                    <span data-tui="view">status · week 39</span>
+                                </div>
+                                <div class="term__sync">
+                                    <span>synced 14:44 — pushed 1, pulled 0</span>
+                                    <span class="term__clock" data-tui="clock">wed 2026-09-23 14:47:12</span>
+                                </div>
+                            </div>
+                            <div class="term__tabs" data-tui="tabs">
+                                <button class="term__tab" type="button" data-key="1" aria-current="true" disabled>[1] status</button>
+                                <button class="term__tab" type="button" data-key="2" disabled>[2] log</button>
+                                <button class="term__tab" type="button" data-key="3" disabled>[3] report</button>
+                            </div>
+                            <div class="term__body" data-tui="body">
+                                <div class="view">
+                                    <div class="run">
+                                        <span class="run__project">kull</span>
+                                        <span class="run__clock">1:42:12</span>
+                                        <span class="run__meta">since 13:05<span class="dim"> · </span>note: exportflöde</span>
+                                    </div>
+                                    <div class="today">
+                                        <span class="today__line"><span>today: <b>5h 15m</b></span><span class="dim">wed 2026-09-23</span></span>
+                                        <span class="today__bar"><span>▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░</span><span>66 % of 8h</span></span>
+                                    </div>
+                                    <div class="recent">
+                                        <span class="term__label">// RECENT</span>
+                                        <ul class="rows">
+                                            <li class="row row--session"><span class="dim">6b0d4e8</span><span>10:55–12:00</span><span class="num">1h 5m</span><b>banken</b><span class="note">förberedelse</span></li>
+                                            <li class="row row--session"><span class="dim">a3f91c2</span><span>08:12–10:40</span><span class="num">2h 28m</span><b>gruvan</b><span class="note">datamodell</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="term__modal" data-tui="modal" hidden></div>
+                            <div class="term__foot">
+                                <div class="term__keys" data-tui="keys">
+                                    <button class="term__key" type="button" data-key="s" disabled><b>s</b> stop</button>
+                                    <button class="term__key" type="button" data-key="p" disabled><b>p</b> switch</button>
+                                    <button class="term__key" type="button" data-key="n" disabled><b>n</b> note</button>
+                                    <button class="term__key" type="button" data-key="Tab" disabled><b>Tab</b> view</button>
+                                    <button class="term__key" type="button" data-key="?" disabled><b>?</b> help</button>
+                                    <button class="term__key" type="button" data-key="q" disabled><b>q</b> quit</button>
+                                </div>
+                                <span class="term__notice term__notice--meta" data-tui="notice" role="status">ready · ? for help</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="aside" id="tui-hint">klicka i rutan. s startar och stoppar, p byter projekt, 2 visar loggen, 3 rapporten, ? allt.</p>
+                </div>
+            </section>
+
+            <section class="section" id="kommandon">
+                <div class="shell split">
+                    <div class="intro">
+                        <span class="label g">// KOMMANDON</span>
+                        <h2 class="h2">Ett kommando<br />per händelse</h2>
+                        <p class="lead">Projekt skapas första gången du nämner dem. En ny start stoppar den som går. Framtiden går inte att logga.</p>
+                    </div>
+                    <dl class="commands">
+                        <div class="command">
+                            <dt><b>$</b><code>kl</code></dt>
+                            <dd>timern som går och dagens summa</dd>
+                        </div>
+                        <div class="command">
+                            <dt><b>$</b><code>kl start fyr <span class="g">-n</span> "skiss"</code></dt>
+                            <dd>startar en timer, stoppar den som går</dd>
+                        </div>
+                        <div class="command">
+                            <dt><b>$</b><code>kl stop <span class="g">--at</span> 17:00</code></dt>
+                            <dd>stoppar vid ett klockslag som redan varit</dd>
+                        </div>
+                        <div class="command">
+                            <dt><b>$</b><code>kl add fyr <span class="g">09:00-11:30</span> <span class="g">--yesterday</span></code></dt>
+                            <dd>lägger till ett pass i efterhand</dd>
+                        </div>
+                        <div class="command">
+                            <dt><b>$</b><code>kl report week</code></dt>
+                            <dd>ISO-veckan per projekt, måndag först</dd>
+                        </div>
+                        <div class="command">
+                            <dt><b>$</b><code>kl week close</code></dt>
+                            <dd>stänger veckan, kl week open öppnar den igen</dd>
+                        </div>
+                        <div class="command">
+                            <dt><b>$</b><code>kl "jobbade <span class="g">09-11</span> på fyr igår"</code></dt>
+                            <dd>svenska, tolkat och bekräftat innan det sparas</dd>
+                        </div>
+                        <div class="command">
+                            <dt><b>$</b><code>kl mcp</code></dt>
+                            <dd>samma kommandon som verktyg för agenter</dd>
+                        </div>
+                    </dl>
+                </div>
+            </section>
+
+            <section class="section surfaces-section" id="ytor">
+                <div class="shell">
+                    <div class="head">
+                        <div class="head__title">
+                            <span class="label g">// YTOR</span>
+                            <h2 class="h2">En logg, många ytor</h2>
+                        </div>
+                        <span class="aside">Alla ytor läser samma logg och skriver genom samma vakter.</span>
+                    </div>
+                    <ul class="surfaces">
+                        <li class="surface">
+                            <div class="surface__head">
+                                <h3>kl</h3>
+                                <span class="state state--ok g">[ OK ]</span>
+                            </div>
+                            <p>CLI:t och kl tui i helskärm. Skriptbart, <code class="g">--json</code> överallt, stdout är data och stderr är notiser.</p>
+                        </li>
+                        <li class="surface">
+                            <div class="surface__head">
+                                <h3>kl mcp</h3>
+                                <span class="state state--ok g">[ OK ]</span>
+                            </div>
+                            <p>Nio kl_*-verktyg över stdio. Agenter rapporterar tid genom samma vakter som du.</p>
+                        </li>
+                        <li class="surface">
+                            <div class="surface__head">
+                                <h3>kl-bar</h3>
+                                <span class="state state--ok g">[ OK ]</span>
+                            </div>
+                            <p>Menyraden på Macen: timern i en blick, start och stopp, synk var femte minut.</p>
+                        </li>
+                        <li class="surface">
+                            <div class="surface__head">
+                                <h3>iPhone</h3>
+                                <span class="state state--ok g">[ OK ]</span>
+                            </div>
+                            <p>En full kopia av loggen i telefonen. Synkar när appen öppnas och stängs.</p>
+                        </li>
+                        <li class="surface">
+                            <div class="surface__head">
+                                <h3>macOS, iPad</h3>
+                                <span class="state state--sketch g">[ SKISS ]</span>
+                            </div>
+                            <p>Fönsterappen. iPad och den vikbara iPhonen liggande.</p>
+                        </li>
+                        <li class="surface">
+                            <div class="surface__head">
+                                <h3>Android, klocka</h3>
+                                <span class="state state--sketch g">[ SKISS ]</span>
+                            </div>
+                            <p>Android, watchOS och Fitbit Sense. Samma logg, samma vakter.</p>
+                        </li>
+                        <li class="surface">
+                            <div class="surface__head">
+                                <h3>webb och export</h3>
+                                <span class="state state--soon g">[ SNART ]</span>
+                            </div>
+                            <p>v4: webben, plus export till Fortnox och Kleer.</p>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section log-section" id="loggen">
+                <div class="shell split">
+                    <div class="intro">
+                        <span class="label g">// LOGGEN ÄR SANNINGEN</span>
+                        <h2 class="h2">Rader läggs till.<br />Inget skrivs om.</h2>
+                        <p class="lead">Sanningen är en JSONL-fil på din egen disk. Tillståndet räknas fram vid varje körning. Två enheter slås ihop genom att deras rader läggs ihop, så synk är en union och aldrig en konflikt. Fortnox och Kleer blir exportmål, inte förvaring.</p>
+                    </div>
+                    <!-- The lines inside <pre> start at the margin on purpose:
+                         their leading spaces are the JSON's own indentation. -->
+                    <div class="jsonl">
+                        <span class="jsonl__path">// ~/.local/share/kl/events.jsonl</span>
+                        <pre>{"type":"project.created",
+ "data":{"slug":"fyr"}, …}</pre>
+                        <pre class="jsonl__lit">{"type":"session.started",
+ "data":{"project":"fyr",
+  "start":"2026-09-23T09:02:00+02:00"},
+ "device":"…", "v":1}</pre>
+                        <pre>{"type":"session.stopped", …}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="villkor">
+                <div class="shell split">
+                    <div class="intro">
+                        <span class="label g">// VILLKOR FÖR ATT FLYTTA UT</span>
+                        <h2 class="h2">Räknar den rätt<br />flyttar den till drift.</h2>
+                        <p class="lead">När kl bär blir den koncernens tidräkning och statusen här ändras. Bär den inte gallras den, och sidan blir en lärdom.</p>
+                    </div>
+                    <ul class="terms">
+                        <li>
+                            <span class="arrow g">-&gt;</span>
+                            <span><b>Start, stopp, klart.</b> <span>kl start och kl stop i vardagen utan att någon tänker på det.</span></span>
+                        </li>
+                        <li>
+                            <span class="arrow g">-&gt;</span>
+                            <span><b>Veckan stängs &lt;2 min.</b> <span>kl week, rätta med kl edit, klart.</span></span>
+                        </li>
+                        <li>
+                            <span class="arrow g">-&gt;</span>
+                            <span><b>Inga rekonstruktioner.</b> <span>Noll fredagar med kalendern som facit, tre månader i sträck.</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer class="end">
+            <div class="shell foot">
+                <span class="mark" translate="no">huvudkontoret<span class="tld">.xyz</span><span class="path">/002</span></span>
+                <span class="tag">resident på whiteboarden. flyttar till drift när den bär.</span>
+                <span class="foot__links">
+                    <a class="g" href="../">&lt;- .xyz</a>
+                    <a href="https://huvudkontoret.dev/kl/">dokumentationen: <span class="g">huvudkontoret.dev/kl -&gt;</span></a>
+                    <a href="https://github.com/huvudkontoret/kl">källkoden: <span class="g">huvudkontoret/kl -&gt;</span></a>
+                </span>
+                <!-- The page's own date: it changes every time the page does. -->
+                <span class="foot__date">uppdaterad 2026-11-16</span>
+            </div>
+        </footer>
+
+        <!-- kl tui in the page. A re-implementation of the design component
+             "kl TUI": the same three views, keys, sample week and clock, with
+             nothing stored and nothing sent. It differs from the component in
+             what a page owes its visitor: Tab is left to the browser, a key is
+             only taken while the terminal has focus, and the arrow keys are
+             handed back to the page when the log's cursor cannot move. -->
+        <script>
+            (function () {
+                "use strict";
+
+                const root = document.getElementById("kl-tui");
+                if (!root) return;
+
+                // ---------- the sample week ----------
+                // Time is seconds from Monday 2026-09-21 00:00, the first day
+                // of ISO week 39. The clock stands at Wednesday 14:47:12 when
+                // the page loads and runs from there.
+                const DAY = 86400;
+                const at = (day, hour, minute) => day * DAY + hour * 3600 + minute * 60;
+                const LOADED_AT = at(2, 14, 47) + 12;
+                const WEEKDAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+                const VIEWS = ["status", "log", "report"];
+                // id, project, start, end, note. The project names are the
+                // design's own and fictional. A session without an end is the
+                // running timer.
+                const SEED = [
+                    ["4be0d19", "gruvan", at(-7, 8, 0), at(-7, 12, 0), "datamodell"],
+                    ["9a1c77e", "gruvan", at(-7, 13, 0), at(-7, 16, 30), ""],
+                    ["c02f5a3", "banken", at(-6, 8, 30), at(-6, 11, 30), "workshop"],
+                    ["71d3e08", "kull", at(-6, 12, 30), at(-6, 17, 0), "exportflöde"],
+                    ["e5a9b42", "gruvan", at(-5, 8, 0), at(-5, 12, 0), ""],
+                    ["0f6c2d9", "intern", at(-5, 13, 0), at(-5, 15, 0), "planering"],
+                    ["b83e1f0", "fyr", at(-4, 9, 0), at(-4, 12, 0), ""],
+                    ["2d7a9c4", "gruvan", at(-4, 13, 0), at(-4, 17, 30), ""],
+                    ["6e14b8a", "kull", at(-3, 8, 0), at(-3, 11, 0), ""],
+                    ["a90f3e7", "intern", at(-3, 12, 0), at(-3, 14, 0), "fredagsgenomgång"],
+                    ["3c5d0a1", "gruvan", at(0, 8, 5), at(0, 11, 50), "datamodell, del 1"],
+                    ["8f2b6e4", "gruvan", at(0, 12, 30), at(0, 16, 30), ""],
+                    ["d41e9b0", "banken", at(1, 8, 30), at(1, 10, 0), "workshop"],
+                    ["57a0c3f", "kull", at(1, 10, 15), at(1, 12, 0), "exportflöde"],
+                    ["e2c8f71", "gruvan", at(1, 13, 0), at(1, 17, 55), ""],
+                    ["a3f91c2", "gruvan", at(2, 8, 12), at(2, 10, 40), "datamodell"],
+                    ["6b0d4e8", "banken", at(2, 10, 55), at(2, 12, 0), "förberedelse"],
+                    ["f17c2a9", "kull", at(2, 13, 5), null, "exportflöde"],
+                ];
+                const HELP = [
+                    ["1 2 3", "status · log · report"],
+                    ["Tab", "next view"],
+                    ["s", "stop / start"],
+                    ["p", "switch project"],
+                    ["n", "edit running note"],
+                    ["j k", "move in log"],
+                    ["g G", "top / bottom"],
+                    ["e", "edit session"],
+                    ["d", "delete (log) · day (report)"],
+                    ["w", "week (report)"],
+                    ["[ ]", "back / forward"],
+                    ["q", "quit"],
+                ];
+
+                // ---------- formatting ----------
+                const pad = (n) => String(n).padStart(2, "0");
+                const duration = (seconds) => {
+                    const total = Math.round(seconds / 60);
+                    const hours = Math.floor(total / 60);
+                    const minutes = total % 60;
+                    if (hours === 0) return minutes + "m";
+                    if (minutes === 0) return hours + "h";
+                    return hours + "h " + minutes + "m";
+                };
+                const stopwatch = (seconds) => {
+                    const s = Math.max(0, Math.floor(seconds));
+                    const hours = Math.floor(s / 3600);
+                    const minutes = Math.floor((s % 3600) / 60);
+                    if (hours > 0) return hours + ":" + pad(minutes) + ":" + pad(s % 60);
+                    return minutes + ":" + pad(s % 60);
+                };
+                const timeOfDay = (seconds) => {
+                    const s = ((seconds % DAY) + DAY) % DAY;
+                    return pad(Math.floor(s / 3600)) + ":" + pad(Math.floor((s % 3600) / 60));
+                };
+                const dayOf = (seconds) => Math.floor(seconds / DAY);
+                const isoDate = (day) => new Date(Date.UTC(2026, 8, 21 + day)).toISOString().slice(0, 10);
+                const weekday = (day) => WEEKDAYS[((day % 7) + 7) % 7];
+                const bar = (value, max, width) => {
+                    const filled = max > 0 ? Math.min(width, Math.round((value / max) * width)) : 0;
+                    return "▓".repeat(filled) + "░".repeat(Math.max(0, width - filled));
+                };
+                const slugify = (text) =>
+                    text
+                        .trim()
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")
+                        .replace(/[^a-z0-9-]/g, "");
+                const randomId = () => Array.from({ length: 7 }, () => "0123456789abcdef"[Math.floor(Math.random() * 16)]).join("");
+
+                // ---------- state ----------
+                const state = {
+                    sessions: SEED.map(([id, project, start, end, note]) => ({ id, project, start, end, note })),
+                    elapsed: 0,
+                    view: "status",
+                    cursor: 0,
+                    period: "week",
+                    offset: 0,
+                    modal: null,
+                    pick: 0,
+                    input: "",
+                    notice: "ready · ? for help",
+                    tone: "meta",
+                };
+                // Set when a key moved the log's cursor, so the next draw
+                // scrolls the row into the terminal's own viewport.
+                let revealCursor = false;
+
+                const now = () => LOADED_AT + state.elapsed;
+                const endOf = (session) => (session.end == null ? now() : session.end);
+                const running = () => state.sessions.filter((s) => s.end == null).sort((a, b) => b.start - a.start)[0] || null;
+                const logRows = () => state.sessions.slice().sort((a, b) => b.start - a.start);
+                // Most recently used first, as the real picker has them.
+                const projects = () => {
+                    const last = new Map();
+                    state.sessions.forEach((s) => last.set(s.project, Math.max(last.has(s.project) ? last.get(s.project) : -1e9, s.start)));
+                    return Array.from(last.keys()).sort((a, b) => last.get(b) - last.get(a) || a.localeCompare(b));
+                };
+                const say = (text, tone) => {
+                    state.notice = text;
+                    state.tone = tone || "text";
+                };
+
+                // ---------- actions ----------
+                const start = (raw) => {
+                    const slug = slugify(raw || "");
+                    if (!slug) {
+                        say("kl: project name is empty", "err");
+                        return;
+                    }
+                    const time = now();
+                    const current = running();
+                    const notes = [];
+                    if (!projects().includes(slug)) notes.push("created project '" + slug + "'");
+                    if (current) notes.push("stopped '" + current.project + "' after " + duration(time - current.start));
+                    notes.push("started '" + slug + "' at " + timeOfDay(time));
+                    state.sessions.forEach((s) => {
+                        if (s.end == null) s.end = time;
+                    });
+                    state.sessions.push({ id: randomId(), project: slug, start: time, end: null, note: "" });
+                    state.modal = null;
+                    state.input = "";
+                    say(notes.join(" · "));
+                };
+                const stop = () => {
+                    const current = running();
+                    if (!current) {
+                        say("kl: no timer running", "err");
+                        return;
+                    }
+                    const time = now();
+                    current.end = time;
+                    say("stopped '" + current.project + "' at " + timeOfDay(time) + " (" + duration(time - current.start) + ")");
+                };
+                const saveNote = (value) => {
+                    const current = running();
+                    if (!current) return;
+                    current.note = value.trim();
+                    state.modal = null;
+                    state.input = "";
+                    say(current.note ? "note updated" : "note cleared");
+                };
+                const removeSession = () => {
+                    const row = logRows()[state.cursor];
+                    if (!row) return;
+                    state.sessions = state.sessions.filter((s) => s.id !== row.id);
+                    state.modal = null;
+                    state.cursor = Math.max(0, Math.min(state.cursor, state.sessions.length - 1));
+                    say("deleted " + row.id);
+                };
+                const openPicker = () => {
+                    state.modal = "picker";
+                    state.pick = 0;
+                    state.input = "";
+                };
+                const closePrompt = () => {
+                    state.modal = null;
+                    state.input = "";
+                };
+                const moveCursor = (to) => {
+                    const next = Math.max(0, Math.min(state.sessions.length - 1, to));
+                    if (next === state.cursor) return false;
+                    state.cursor = next;
+                    revealCursor = true;
+                    return true;
+                };
+
+                // One key, as the tui reads it. Returns false when the key
+                // changed nothing, so the caller can leave it to the browser.
+                const press = (key) => {
+                    if (state.modal === "delete") {
+                        if (key === "y") removeSession();
+                        else if (key === "n" || key === "Escape") {
+                            state.modal = null;
+                            say("kept", "meta");
+                        } else return false;
+                        return true;
+                    }
+                    if (state.modal === "help") {
+                        state.modal = null;
+                        return true;
+                    }
+                    if (state.modal) {
+                        if (key !== "Escape") return false;
+                        closePrompt();
+                        return true;
+                    }
+                    const current = running();
+                    const actions = {
+                        1: () => {
+                            state.view = "status";
+                        },
+                        2: () => {
+                            state.view = "log";
+                        },
+                        3: () => {
+                            state.view = "report";
+                        },
+                        Tab: () => {
+                            state.view = VIEWS[(VIEWS.indexOf(state.view) + 1) % VIEWS.length];
+                        },
+                        "?": () => {
+                            state.modal = "help";
+                        },
+                        q: () => say("q quits the real tui. this one stays.", "meta"),
+                    };
+                    if (state.view === "status") {
+                        actions.s = () => (current ? stop() : openPicker());
+                        actions.p = openPicker;
+                        actions.n = () => {
+                            if (!current) {
+                                say("kl: no timer running", "err");
+                                return;
+                            }
+                            state.modal = "note";
+                            state.input = current.note || "";
+                        };
+                    }
+                    if (state.view === "log") {
+                        actions.j = actions.ArrowDown = () => moveCursor(state.cursor + 1);
+                        actions.k = actions.ArrowUp = () => moveCursor(state.cursor - 1);
+                        actions.g = () => moveCursor(0);
+                        actions.G = () => moveCursor(state.sessions.length - 1);
+                        actions.d = () => {
+                            if (logRows()[state.cursor]) state.modal = "delete";
+                        };
+                        actions.e = () => say("edit: project/start/end/note form (tab between fields)", "meta");
+                    }
+                    if (state.view === "report") {
+                        actions.d = () => {
+                            state.period = "day";
+                            state.offset = 0;
+                        };
+                        actions.w = () => {
+                            state.period = "week";
+                            state.offset = 0;
+                        };
+                        actions["["] = () => {
+                            state.offset -= 1;
+                        };
+                        actions["]"] = () => {
+                            state.offset = Math.min(0, state.offset + 1);
+                        };
+                    }
+                    if (!Object.hasOwn(actions, key)) return false;
+                    return actions[key]() !== false;
+                };
+
+                const report = () => {
+                    const today = dayOf(now());
+                    const from = state.period === "day" ? (today + state.offset) * DAY : state.offset * 7 * DAY;
+                    const to = from + (state.period === "day" ? DAY : 7 * DAY);
+                    const perProject = new Map();
+                    const perDay = new Map();
+                    state.sessions.forEach((s) => {
+                        const a = Math.max(s.start, from);
+                        const b = Math.min(endOf(s), to);
+                        if (b <= a) return;
+                        perProject.set(s.project, (perProject.get(s.project) || 0) + b - a);
+                        perDay.set(dayOf(a), (perDay.get(dayOf(a)) || 0) + b - a);
+                    });
+                    const rows = Array.from(perProject.entries()).sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0]));
+                    const max = rows.length ? rows[0][1] : 0;
+                    const first = dayOf(from);
+                    const last = dayOf(to - 1);
+                    const days = [];
+                    if (state.period === "week") {
+                        for (let day = first; day <= last; day += 1) {
+                            const seconds = perDay.get(day) || 0;
+                            days.push([weekday(day) + " " + isoDate(day).slice(5), bar(seconds, 10 * 3600, 20), seconds ? duration(seconds) : "-"]);
+                        }
+                    }
+                    return {
+                        header: first === last ? isoDate(first) + " (day)" : isoDate(first) + " – " + isoDate(last) + " (week)",
+                        rows: rows.map(([name, seconds]) => [name, bar(seconds, max, 24), duration(seconds)]),
+                        total: duration(rows.reduce((sum, row) => sum + row[1], 0)),
+                        days,
+                    };
+                };
+
+                // ---------- drawing ----------
+                const el = (tag, className, children, attributes) => {
+                    const node = document.createElement(tag);
+                    if (className) node.className = className;
+                    if (children != null) node.append(...[].concat(children));
+                    if (attributes) Object.keys(attributes).forEach((name) => node.setAttribute(name, attributes[name]));
+                    return node;
+                };
+                const button = (className, key, children) => el("button", className, children, { type: "button", "data-key": key });
+                const part = (name) => root.querySelector('[data-tui="' + name + '"]');
+                const parts = { view: part("view"), clock: part("clock"), tabs: part("tabs"), body: part("body"), modal: part("modal"), keys: part("keys"), notice: part("notice") };
+                const focusRoot = () => root.focus({ preventScroll: true });
+
+                // A region is rebuilt only when what it shows has changed, so
+                // the clock ticking does not disturb focus, selection or a
+                // screen reader. If focus sat on a button that was rebuilt, it
+                // goes back to the button with the same key, or to the terminal.
+                const drawn = new Map();
+                const draw = (region, children) => {
+                    const holder = el("div", "", children);
+                    const signature = holder.innerHTML;
+                    if (drawn.get(region) === signature) return;
+                    drawn.set(region, signature);
+                    // Same elements, new text: write the text in place.
+                    const flat = (node) => {
+                        const walker = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+                        const list = [];
+                        while (walker.nextNode()) list.push(walker.currentNode);
+                        return list;
+                    };
+                    const shell = (node) => (node.nodeType === 3 ? "#text" : node.cloneNode(false).outerHTML);
+                    const fresh = flat(holder);
+                    const old = flat(region);
+                    if (fresh.length === old.length && fresh.every((node, i) => shell(node) === shell(old[i]))) {
+                        fresh.forEach((node, i) => {
+                            if (node.nodeType === 3 && old[i].nodeValue !== node.nodeValue) old[i].nodeValue = node.nodeValue;
+                        });
+                        return;
+                    }
+                    const focused = region.contains(document.activeElement) ? document.activeElement : null;
+                    region.replaceChildren(...holder.childNodes);
+                    if (!focused) return;
+                    const key = focused.dataset.key;
+                    const again = key && Array.from(region.querySelectorAll("[data-key]")).find((node) => node.dataset.key === key);
+                    (again || root).focus({ preventScroll: true });
+                };
+                const setText = (node, text) => {
+                    if (node.textContent !== text) node.textContent = text;
+                };
+
+                const sessionCells = (session) => [
+                    el("span", "dim", session.id),
+                    el("span", "", timeOfDay(session.start) + "–" + (session.end == null ? "…" : timeOfDay(session.end))),
+                    el("span", "num", duration(endOf(session) - session.start)),
+                ];
+
+                const statusView = () => {
+                    const time = now();
+                    const today = dayOf(time);
+                    const current = running();
+                    const seconds = state.sessions.reduce((sum, s) => sum + Math.max(0, Math.min(endOf(s), (today + 1) * DAY) - Math.max(s.start, today * DAY)), 0);
+                    const recent = logRows()
+                        .filter((s) => dayOf(s.start) === today && s.end != null)
+                        .slice(0, 5);
+                    const head = current
+                        ? el("div", "run", [
+                              el("span", "run__project", current.project),
+                              el("span", "run__clock", stopwatch(time - current.start)),
+                              el("span", "run__meta", ["since " + timeOfDay(current.start), el("span", "dim", " · "), "note: " + (current.note || "-")]),
+                          ])
+                        : el("div", "idle", [
+                              el("span", "idle__line", ["no timer running", el("span", "cursor")]),
+                              el("span", "idle__hint", ["press ", el("b", "", "s"), " to start one. unknown names become new projects."]),
+                          ]);
+                    return el("div", "view", [
+                        head,
+                        el("div", "today", [
+                            el("span", "today__line", [el("span", "", ["today: ", el("b", "", duration(seconds))]), el("span", "dim", weekday(today) + " " + isoDate(today))]),
+                            el("span", "today__bar", [el("span", "", bar(seconds, 8 * 3600, 32)), el("span", "", Math.round(seconds / 288) + " % of 8h")]),
+                        ]),
+                        el("div", "recent", [
+                            el("span", "term__label", "// RECENT"),
+                            el(
+                                "ul",
+                                "rows",
+                                recent.map((s) => el("li", "row row--session", sessionCells(s).concat([el("b", "", s.project), el("span", "note", s.note || "")]))),
+                            ),
+                        ]),
+                    ]);
+                };
+
+                const logView = () => {
+                    const days = [];
+                    logRows().forEach((s, index) => {
+                        const day = dayOf(s.start);
+                        let group = days[days.length - 1];
+                        if (!group || group.day !== day) {
+                            group = { day, seconds: 0, rows: [] };
+                            days.push(group);
+                        }
+                        group.seconds += endOf(s) - s.start;
+                        const on = index === state.cursor;
+                        group.rows.push(
+                            el(
+                                "li",
+                                "row row--log" + (on ? " is-cursor" : ""),
+                                sessionCells(s).concat([el("span", "", s.project), el("span", "note", s.note || ""), el("span", "dim", on ? "<-" : "")]),
+                                { "data-row": index },
+                            ),
+                        );
+                    });
+                    return el(
+                        "div",
+                        "view view--log",
+                        days.map((group) =>
+                            el("div", "day", [
+                                el("div", "day__head", [el("b", "", isoDate(group.day) + " " + weekday(group.day)), el("span", "day__total", duration(group.seconds))]),
+                                el("ul", "rows", group.rows),
+                            ]),
+                        ),
+                    );
+                };
+
+                const reportRow = ([name, bars, total]) => el("li", "row row--report", [el("span", "", name), el("span", "bar", bars), el("span", "num", total)]);
+                const reportView = () => {
+                    const data = report();
+                    const children = [el("span", "report__head", data.header)];
+                    if (data.rows.length === 0) children.push(el("span", "report__empty", "[ TOM ] no sessions in this window."));
+                    children.push(
+                        el("div", "", [
+                            el("ul", "rows", data.rows.map(reportRow)),
+                            el("div", "row row--report row--total", [el("span", "", "total"), el("span"), el("span", "num", data.total)]),
+                        ]),
+                    );
+                    if (data.days.length) children.push(el("div", "days", [el("span", "term__label", "// PER DAY"), el("ul", "rows", data.days.map(reportRow))]));
+                    return el("div", "view", children);
+                };
+
+                // The prompt keeps its own element for as long as its modal is
+                // open: redrawing it would drop what the visitor is typing.
+                let modalKind = null;
+                let modalLabel = null;
+                let modalList = null;
+                let modalInput = null;
+
+                const onPromptKey = (event) => {
+                    if (event.isComposing) return;
+                    if (event.key === "Escape") {
+                        closePrompt();
+                        render();
+                        focusRoot();
+                        return;
+                    }
+                    if (state.modal === "picker") {
+                        const names = projects().slice(0, 8);
+                        const down = event.key === "j" || event.key === "ArrowDown";
+                        const up = event.key === "k" || event.key === "ArrowUp";
+                        if (!state.input && (down || up)) {
+                            event.preventDefault();
+                            state.pick = Math.max(0, Math.min(names.length - 1, state.pick + (down ? 1 : -1)));
+                            render();
+                            return;
+                        }
+                        if (event.key === "Enter") {
+                            start(state.input || names[state.pick]);
+                            render();
+                            if (!state.modal) focusRoot();
+                        }
+                    } else if (state.modal === "note" && event.key === "Enter") {
+                        saveNote(state.input);
+                        render();
+                        focusRoot();
+                    }
+                };
+
+                const buildModal = (kind) => {
+                    const hadFocus = parts.modal.contains(document.activeElement);
+                    modalKind = kind;
+                    modalLabel = modalList = modalInput = null;
+                    drawn.delete(parts.modal);
+                    parts.modal.replaceChildren();
+                    parts.modal.hidden = !kind;
+                    parts.modal.className = "term__modal" + (kind ? " term__modal--" + kind : "");
+                    parts.modal.setAttribute("aria-live", kind === "delete" || kind === "help" ? "polite" : "off");
+                    if (kind === "picker" || kind === "note") {
+                        modalLabel = el("span", "term__label", "", { id: "kl-tui-prompt" });
+                        modalInput = el("input", "", null, { type: "text", spellcheck: "false", autocomplete: "off", autocapitalize: "off", "aria-labelledby": "kl-tui-prompt" });
+                        if (kind === "picker") {
+                            modalList = el("div", "picker");
+                            modalInput.placeholder = "or type a new project name";
+                        }
+                        modalInput.value = state.input;
+                        modalInput.addEventListener("input", () => {
+                            state.input = modalInput.value;
+                            render();
+                        });
+                        modalInput.addEventListener("keydown", onPromptKey);
+                        parts.modal.append(modalLabel, ...(modalList ? [modalList] : []), el("div", "prompt", [el("span", "prompt__sign", "$"), modalInput]));
+                        modalInput.focus({ preventScroll: true });
+                        modalInput.setSelectionRange(modalInput.value.length, modalInput.value.length);
+                    } else if (hadFocus) {
+                        focusRoot();
+                    }
+                };
+
+                const drawModal = () => {
+                    const opened = state.modal !== modalKind;
+                    if (opened) buildModal(state.modal);
+                    const current = running();
+                    if (state.modal === "picker") {
+                        const typed = slugify(state.input);
+                        setText(modalLabel, "// " + (current ? "SWITCH FROM " + current.project.toUpperCase() : "START") + " · j/k · enter · esc");
+                        draw(
+                            modalList,
+                            projects()
+                                .slice(0, 8)
+                                .map((name, index) => {
+                                    const on = index === state.pick && !typed;
+                                    return el("button", on ? "is-picked" : "", "[" + (on ? "x" : " ") + "] " + name, { type: "button", "data-key": "pick " + name, "data-project": name });
+                                }),
+                        );
+                    } else if (state.modal === "note") {
+                        setText(modalLabel, "// NOTE · " + (current ? current.project : "") + " · enter saves · empty clears · esc");
+                    } else if (state.modal === "delete") {
+                        const row = logRows()[state.cursor];
+                        const what = row ? row.project + " " + isoDate(dayOf(row.start)) + " " + timeOfDay(row.start) : "";
+                        // The design names y and n as keys only. They are
+                        // buttons here, or a touch screen has no way out.
+                        draw(parts.modal, [el("span", "", ["delete ", el("b", "", row ? row.id : ""), " (" + what + ")? ", button("term__answer", "y", el("b", "", "y")), "/", button("term__answer", "n", el("b", "", "n"))])]);
+                        // Opened from a button: put focus on the safe answer.
+                        if (opened && document.activeElement !== root && root.contains(document.activeElement)) parts.modal.querySelector('[data-key="n"]').focus({ preventScroll: true });
+                    } else if (state.modal === "help") {
+                        draw(parts.modal, [el("dl", "help", HELP.map(([keys, what]) => el("div", "", [el("dt", "", keys), el("dd", "", what)])))]);
+                    }
+                };
+
+                const legend = () => {
+                    const current = running();
+                    const keys =
+                        state.view === "status"
+                            ? [["s", current ? "stop" : "start"], ["p", current ? "switch" : "pick"], ["n", "note"]]
+                            : state.view === "log"
+                              ? [["j", "down"], ["k", "up"], ["e", "edit"], ["d", "delete"]]
+                              : [["d", "day"], ["w", "week"], ["[", "back"], ["]", "forward"]];
+                    return keys.concat([["Tab", "view"], ["?", "help"], ["q", "quit"]]);
+                };
+
+                const render = () => {
+                    const time = now();
+                    const today = dayOf(time);
+                    setText(parts.view, state.view + " · week 39");
+                    setText(parts.clock, weekday(today) + " " + isoDate(today) + " " + timeOfDay(time) + ":" + pad(time % 60));
+                    draw(
+                        parts.tabs,
+                        VIEWS.map((view, index) => {
+                            const tab = button("term__tab", String(index + 1), "[" + (index + 1) + "] " + view);
+                            if (view === state.view) tab.setAttribute("aria-current", "true");
+                            return tab;
+                        }),
+                    );
+                    draw(parts.body, [state.view === "status" ? statusView() : state.view === "log" ? logView() : reportView()]);
+                    drawModal();
+                    draw(
+                        parts.keys,
+                        legend().map(([key, what]) => button("term__key", key, [el("b", "", key), " " + what])),
+                    );
+                    setText(parts.notice, state.notice);
+                    parts.notice.className = "term__notice term__notice--" + state.tone;
+                    if (revealCursor) {
+                        revealCursor = false;
+                        const row = parts.body.querySelector(".is-cursor");
+                        if (row) {
+                            // Room above for the day's heading, so the first
+                            // row of a day never arrives without its date.
+                            const box = parts.body.getBoundingClientRect();
+                            const line = row.getBoundingClientRect();
+                            if (state.cursor === 0) parts.body.scrollTop = 0;
+                            else if (line.top < box.top + 48) parts.body.scrollTop -= box.top + 48 - line.top;
+                            else if (line.bottom > box.bottom - 8) parts.body.scrollTop += line.bottom - box.bottom + 8;
+                        }
+                    }
+                };
+
+                // ---------- input ----------
+                // Keys are heard on the terminal itself, so they only arrive
+                // while it, or something inside it, has focus. Tab is never
+                // taken: it moves focus through the page as it does anywhere
+                // else, and the view it changes in the design component is one click
+                // or one digit away here.
+                root.addEventListener("keydown", (event) => {
+                    if (event.target === modalInput) return;
+                    if (event.key === "Tab" || event.isComposing) return;
+                    // Shortcuts belong to the browser. AltGr reports as Ctrl+Alt
+                    // and is how a Swedish keyboard types [ and ].
+                    if (event.metaKey || (event.ctrlKey && !event.altKey)) return;
+                    if (event.altKey && !event.ctrlKey && /^[a-z0-9]$/i.test(event.key)) return;
+                    if (["Shift", "Control", "Alt", "AltGraph", "Meta", "CapsLock"].includes(event.key)) return;
+                    // Enter and space on a focused button are that button's click.
+                    if (event.target.closest("button") && (event.key === "Enter" || event.key === " ")) return;
+                    // Any key closes the help, and that key keeps its own meaning.
+                    const closesHelp = state.modal === "help";
+                    if (!press(event.key)) return;
+                    if (!closesHelp) event.preventDefault();
+                    render();
+                });
+
+                root.addEventListener("click", (event) => {
+                    const control = event.target.closest("button");
+                    const row = event.target.closest("[data-row]");
+                    if (control && control.dataset.project) start(control.dataset.project);
+                    else if (control && parts.tabs.contains(control)) state.view = state.modal === "delete" ? state.view : VIEWS[Number(control.dataset.key) - 1];
+                    else if (control) press(control.dataset.key);
+                    else if (row) state.cursor = Number(row.dataset.row);
+                    else if (modalInput && event.target !== modalInput) modalInput.focus({ preventScroll: true });
+                    render();
+                });
+
+                root.tabIndex = 0;
+                render();
+                setInterval(() => {
+                    state.elapsed += 1;
+                    render();
+                }, 1000);
+            })();
+        </script>
+
+        <!-- Cloudflare Web Analytics: the only measurement on the site. Cookieless,
+             so no consent banner; the token is a fact the gate holds every page to
+             (analytics in tools/check/facts.json). -->
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "2e066831da72470a8e216a900e41152a"}'
+        ></script>
+    </body>
+</html>

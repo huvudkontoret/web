@@ -1,6 +1,6 @@
 {
   "//pages": "The hand-written HTML pages. references and markup read each of them; a page left out here is published unchecked.",
-  "pages": ["index.html", "profil.html", "club/index.html", "xyz/index.html", "xyz/001/index.html"],
+  "pages": ["index.html", "profil.html", "club/index.html", "xyz/index.html", "xyz/001/index.html", "xyz/002/index.html"],
 
   "surfaces": ["index.html", "index.md", "llms.txt"],
 

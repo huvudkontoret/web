@@ -15,9 +15,12 @@
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="sv_SE" />
         <link rel="canonical" href="https://huvudkontoret.xyz/001/" />
-        <!-- Assets are root-absolute and shared across hosts; links to the
-             lens's own pages are relative. See xyz/index.html. -->
+        <!-- Assets are root-absolute and shared across hosts, the two
+             conventional icons excepted; links to the lens's own pages are
+             relative. See xyz/index.html. -->
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
         <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
         <link rel="preload" href="/assets/fonts/MonoLisa-Variable-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="preload" href="/assets/fonts/MonoLisa-VariableItalic-0020-007F.woff2" as="font" type="font/woff2" crossorigin />
@@ -437,9 +440,10 @@
                 .title {
                     padding: 64px var(--gut) 48px var(--gut);
                 }
-                /* "anteckningsboken" is 16 characters: 34 px fits it in 350. */
+                /* "anteckningsboken" is 16 characters: 34 px fits it from 390 px
+                   up, and below that the word shrinks with the column. */
                 .title h1 {
-                    font-size: 34px;
+                    font-size: clamp(26px, calc((100vw - 40px) / 10.29), 34px);
                 }
                 .card {
                     padding: 24px;
@@ -470,7 +474,7 @@
         <div class="band">
             <span
                 ><a href="../"><span class="g">&lt;-</span> .xyz</a>
-                <span class="muted">// bor här nu: /001</span></span
+                <span class="muted">// bor här nu: /001 brian · /002 kl</span></span
             >
             <span class="state"
                 ><span class="g">[ BOR HÄR ]</span>
