@@ -51,10 +51,10 @@ test("byHost ignores a port and matches case-insensitively", () => {
   assert.equal(byHost("huvudkontoret.io:8787")?.key, "io");
 });
 
-test("only .io is live today — this step adds no domain", () => {
+test(".io and three lenses are live, and nothing else is", () => {
   assert.deepEqual(
-    liveTlds().map((tld) => tld.key),
-    ["io"],
+    liveTlds().map((tld) => tld.key).sort(),
+    ["club", "dev", "io", "xyz"],
   );
 });
 
@@ -128,13 +128,6 @@ test("the lens set is the eight addresses .io announces, plus .club", () => {
   assert.deepEqual(lenses, ["ai", "app", "club", "cv", "dev", "io", "name", "vote", "xyz"]);
 });
 
-test(".club is a planned lens: it has a page, and the registry will not route it yet", () => {
-  assert.equal(tlds.club.kind, "surface");
-  assert.equal(tlds.club.tree, "/club/");
-  assert.equal(tlds.club.status, "planned");
-  assert.equal(canBeRouted(tlds.club), false, "the route is the go-live, and it arrives on its own");
-});
-
 /**
  * `wrangler deploy` creates every custom domain it finds in wrangler.jsonc, so
  * a route is a cutover and a registry row without one is a domain the Worker
@@ -192,8 +185,8 @@ test("a held domain has no content designed for it", () => {
  */
 test("only a zone we own can carry a route", () => {
   assert.deepEqual(
-    routableTlds().map((tld) => tld.key),
-    ["io"],
+    routableTlds().map((tld) => tld.key).sort(),
+    ["club", "dev", "io", "xyz"],
   );
   assert.equal(canBeRouted(tlds.io), true);
 

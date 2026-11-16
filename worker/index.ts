@@ -85,6 +85,19 @@ function isPreviewHost(host: string): boolean {
 }
 
 /**
+ * A redirect from the asset layer names the path in the build, not the path on
+ * this host: `/index.html` on huvudkontoret.club comes back as `Location:
+ * /club/`, which the browser would follow straight into a 404. Put it back in
+ * the host's own terms.
+ */
+function inHostTerms(response: Response, tld: Tld): Response {
+  const location = response.headers.get("Location");
+  if (tld.tree === "/" || !location?.startsWith(tld.tree)) return response;
+  response.headers.set("Location", `/${location.slice(tld.tree.length)}`);
+  return response;
+}
+
+/**
  * The asset layer also answers near-misses with a redirect: `/club`,
  * `/club.html` and `/%63lub/` on huvudkontoret.io all come back as `Location:
  * /club/`. That path belongs to another host, so following it ends in the 404
@@ -114,6 +127,7 @@ export default {
     const target = new URL(url);
     target.pathname = toAssetPath(url.pathname, tld);
     const response = await serveAsset(new Request(target, request), env);
-    return leavesTree(response, tld) ? notFound() : response;
+    if (leavesTree(response, tld)) return notFound();
+    return inHostTerms(response, tld);
   },
 };

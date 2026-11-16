@@ -39,13 +39,34 @@ test(".io does not answer for another domain's tree", async () => {
   assert.deepEqual(result.asked, [], "assets must not be consulted for a refused request");
 });
 
-test("the whiteboard's tree is refused on .io, and .xyz is refused until it goes live", async () => {
-  const crossed = await get("https://huvudkontoret.io/xyz/001/");
-  assert.equal(crossed.status, 404);
-  assert.deepEqual(crossed.asked, []);
-  const early = await get("https://huvudkontoret.xyz/001/");
-  assert.equal(early.status, 404);
-  assert.deepEqual(early.asked, []);
+test("the whiteboard and the developer lens serve their own trees and nobody else's", async () => {
+  assert.deepEqual(await get("https://huvudkontoret.xyz/"), { status: 200, asked: ["/xyz/"] });
+  assert.deepEqual(await get("https://huvudkontoret.xyz/002/"), { status: 200, asked: ["/xyz/002/"] });
+  assert.deepEqual(await get("https://huvudkontoret.dev/kl/"), { status: 200, asked: ["/dev/kl/"] });
+
+  // A lens tree is a 404 on .io and on every other lens.
+  for (const url of [
+    "https://huvudkontoret.io/xyz/001/",
+    "https://huvudkontoret.io/dev/kl/",
+    "https://huvudkontoret.dev/xyz/002/",
+    "https://huvudkontoret.xyz/dev/kl/",
+    "https://huvudkontoret.club/xyz/",
+  ]) {
+    const crossed = await get(url);
+    assert.equal(crossed.status, 404, url);
+    assert.deepEqual(crossed.asked, [], url);
+  }
+});
+
+test("an address typed without its trailing slash lands on the page, not in the tree", async () => {
+  // The pages print their addresses as huvudkontoret.dev/kl and
+  // huvudkontoret.xyz/002. The asset layer redirects a directory to its
+  // slashed form and names the asset path when it does.
+  const kl = await worker.fetch(new Request("https://huvudkontoret.dev/kl"), redirectingTo("/dev/kl/"));
+  assert.equal(kl.status, 307);
+  assert.equal(kl.headers.get("Location"), "/kl/");
+  const resident = await worker.fetch(new Request("https://huvudkontoret.xyz/002"), redirectingTo("/xyz/002/"));
+  assert.equal(resident.headers.get("Location"), "/002/");
 });
 
 test("an unknown host is refused", async () => {
@@ -60,18 +81,21 @@ test("a registered but not-yet-live domain is refused", async () => {
   assert.deepEqual(result.asked, []);
 });
 
-test(".club is refused until it goes live, page or no page", async () => {
-  const result = await get("https://huvudkontoret.club/");
-  assert.equal(result.status, 404);
-  assert.deepEqual(result.asked, [], "club/index.html exists, and the Worker must still not reach for it");
+test(".club serves its own tree from its own root", async () => {
+  assert.deepEqual(await get("https://huvudkontoret.club/"), { status: 200, asked: ["/club/"] });
+  assert.deepEqual(await get("https://huvudkontoret.club/2026-11-17"), { status: 200, asked: ["/club/2026-11-17"] });
 });
 
-test("the club tree is not a second address on .io", async () => {
+test("the club tree is not a second address on .io, nor .io's pages on .club", async () => {
   for (const path of ["/club/", "/club/index.html"]) {
     const crossed = await get(`https://huvudkontoret.io${path}`);
     assert.equal(crossed.status, 404, path);
     assert.deepEqual(crossed.asked, [], path);
   }
+  // .io owns the root, so its pages have no prefix to refuse. On .club they
+  // are looked for inside club/, where they do not exist.
+  assert.deepEqual(await get("https://huvudkontoret.club/profil"), { status: 200, asked: ["/club/profil"] });
+  assert.deepEqual(await get("https://huvudkontoret.club/llms.txt"), { status: 200, asked: ["/club/llms.txt"] });
 });
 
 /** An ASSETS binding that answers everything with one html_handling redirect. */
@@ -89,10 +113,31 @@ test("a redirect that leads into another host's tree is a 404, not a signpost", 
   }
 });
 
-test("a redirect inside .io's own tree passes through untouched", async () => {
-  const response = await worker.fetch(new Request("https://huvudkontoret.io/profil.html"), redirectingTo("/profil"));
-  assert.equal(response.status, 307);
-  assert.equal(response.headers.get("Location"), "/profil");
+test("a redirect out of the asset layer is put back in the host's own terms", async () => {
+  // html_handling redirects /club/index.html to /club/. On huvudkontoret.club
+  // that path is `/`, and `/club/` would be a 404.
+  const onClub = await worker.fetch(new Request("https://huvudkontoret.club/index.html"), redirectingTo("/club/"));
+  assert.equal(onClub.status, 307);
+  assert.equal(onClub.headers.get("Location"), "/");
+
+  // Deeper than the root, and only the tree prefix goes.
+  const deeper = await worker.fetch(new Request("https://huvudkontoret.club/2026-11-17"), redirectingTo("/club/2026-11-17/"));
+  assert.equal(deeper.headers.get("Location"), "/2026-11-17/");
+
+  // .io's tree is the root, so its redirects are already in its own terms.
+  const onIo = await worker.fetch(new Request("https://huvudkontoret.io/profil.html"), redirectingTo("/profil"));
+  assert.equal(onIo.status, 307);
+  assert.equal(onIo.headers.get("Location"), "/profil");
+});
+
+test("a lens root is not .io's homepage: no Markdown negotiation, no discovery links", async () => {
+  const env = { ASSETS: fakeAssets() };
+  const response = await worker.fetch(
+    new Request("https://huvudkontoret.club/", { headers: { Accept: "text/markdown" } }),
+    env,
+  );
+  assert.deepEqual(env.ASSETS.asked, ["/club/"]);
+  assert.equal(response.headers.get("Link"), null);
 });
 
 test("a domain declared not in service is refused", async () => {
@@ -109,6 +154,10 @@ test("a domain we merely hold is refused like any stranger", async () => {
 
 test("shared assets resolve on any live host, unprefixed", async () => {
   assert.deepEqual(await get("https://huvudkontoret.io/assets/logo_pos.svg"), {
+    status: 200,
+    asked: ["/assets/logo_pos.svg"],
+  });
+  assert.deepEqual(await get("https://huvudkontoret.club/assets/logo_pos.svg"), {
     status: 200,
     asked: ["/assets/logo_pos.svg"],
   });

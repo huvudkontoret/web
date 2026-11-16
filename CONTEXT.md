@@ -34,8 +34,8 @@ terms that describe the live site — static site, published set, agent surface
 | tokens | A perspective's design contract in `src/lib/tokens.ts`: label, role, POW, accent color and the Tailwind classes derived from it. Adding a perspective starts here — `.name` (coral, Identity) and `.cv` (mint, Capability) are implemented; `.dev`, `.ai`, `.blog`, `.link` are named but unbuilt |
 | agent surface | A file published for machines rather than browsers: `llms.txt` (curated entry point), `index.md` (token-efficient homepage), `sitemap.xml`, `robots.txt`, `.well-known/api-catalog` and `.well-known/agent-skills/` (an installable skill describing how to talk about Huvudkontoret). They are content, maintained by hand, and they drift from the site unless updated with it |
 | Content-Signal policy | The published stance the agent surfaces state: content may be used for search and AI input; model training is not granted |
-| static site | The deployed artifact: `index.html`, `profil.html` and their siblings at the repo root. Served by the Cloudflare Worker in `wrangler.jsonc`, which owns `huvudkontoret.io` as a custom domain (ADR 0001, cut over 2026-08-26). `server: cloudflare` on the apex is the correct answer; `server: GitHub.com` would mean something has been rolled back |
-| published set | What `.assetsignore` lets the Worker serve: `index.html`, `profil.html`, `index.md`, `llms.txt`, `llms-full.txt`, `robots.txt`, `sitemap.xml`, `.well-known/`, `assets/`, and one tree per lens: `club/` for `huvudkontoret.club`, `xyz/` for `huvudkontoret.xyz` and `dev/` for `huvudkontoret.dev` (all planned, not routed yet). The Worker runs before asset lookup for everything outside `assets/`, so a tree answers only on its own host: `huvudkontoret.io/club/` is a 404. The asset directory is the repo root, so everything else — agent instructions, docs, the gate's own source — is excluded by name. The gate asserts this set exactly |
+| static site | The deployed artifact: `index.html`, `profil.html` and their siblings at the repo root. Served by the Cloudflare Worker in `wrangler.jsonc`, which owns `huvudkontoret.io` as a custom domain (ADR 0001, cut over 2026-08-26), and `huvudkontoret.club`, `huvudkontoret.xyz` and `huvudkontoret.dev` beside it, each mapped to its own tree. `server: cloudflare` on the apex is the correct answer; `server: GitHub.com` would mean something has been rolled back |
+| published set | What `.assetsignore` lets the Worker serve: `index.html`, `profil.html`, `index.md`, `llms.txt`, `llms-full.txt`, `robots.txt`, `sitemap.xml`, `.well-known/`, `assets/`, and one tree per lens: `club/` for `huvudkontoret.club`, `xyz/` for `huvudkontoret.xyz` and `dev/` for `huvudkontoret.dev` (all live). The Worker runs before asset lookup for everything outside `assets/`, so a tree answers only on its own host: `huvudkontoret.io/club/` is a 404. The asset directory is the repo root, so everything else — agent instructions, docs, the gate's own source — is excluded by name. The gate asserts this set exactly |
 
 ## Rules that hold everywhere
 
@@ -99,7 +99,7 @@ terms that describe the live site — static site, published set, agent surface
   route, `huvudkontoret.io`, whatever Host the client sends. To see a lens,
   name the host: `npx wrangler dev --host localhost` behaves like a preview
   and serves every tree under its prefix (`/club/`), and `--host
-  huvudkontoret.club` answers as that host once it is live.
+  huvudkontoret.club` (or `.xyz`, `.dev`) answers as that host.
 - Gate for the static site: `hk verify web`, or `node tools/check/run.mjs`
   directly — the same commands `.github/workflows/pr.yml` runs on every pull
   request. What it asserts lives in `tools/check/facts.json`; why it asserts it
